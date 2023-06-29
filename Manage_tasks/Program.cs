@@ -1,2 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Manage_tasks;
+
+Menu mainMenu = new Menu();
+mainMenu.Start();
+
