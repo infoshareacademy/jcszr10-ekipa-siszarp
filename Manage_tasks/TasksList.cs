@@ -9,7 +9,7 @@
 
 
         //kolejne właściwości do dodania jeśli zajdzie taka potrzeba
-        public List<Task> Tasks { get; set;}
+        public List<ProjectTask> Tasks { get; set;}
         public string TasksListName { get; set; }
         //
         /// <summary>
@@ -18,14 +18,14 @@
         /// <param name="TasksListName">Nazwa listy zadań.</param>
         public TasksList(string TasksListName)
         {
-            Tasks = new List<Task>();
+            Tasks = new List<ProjectTask>();
             this.TasksListName = TasksListName;
         }
         /// <summary>
         /// Metoda dodająca obiekt klasy Task do listy zadań.
         /// </summary>
         /// <param name="NewTask">Obiekt klasy Task</param>
-        public void AddTask(Task NewTask)
+        public void AddTask(ProjectTask NewTask)
         {           
             Tasks.Add(NewTask);
         }
@@ -43,7 +43,7 @@
         /// Metoda obsługująca usuwanie zadania.
         /// </summary>
         /// <param name="NewTask"></param>
-        public void RemoveTask(Task NewTask)
+        public void RemoveTask(ProjectTask NewTask)
         { 
             Tasks.Remove(NewTask); 
         }
@@ -52,9 +52,9 @@
         /// </summary>
         /// <param name="IndexOfTask">Indeks z listy Tasks</param>
         /// <returns>Zwraca zmienną klasy Task</returns>
-        public Task PickTask(int IndexOfTask)
+        public ProjectTask PickTask(int IndexOfTask)
         {
-            Task Task = Tasks[IndexOfTask];
+            ProjectTask Task = Tasks[IndexOfTask];
 
             return Task;
         }
