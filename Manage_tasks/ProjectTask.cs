@@ -8,10 +8,10 @@
         private int Id { get; } //do przyszłej obsługi bazy danych 
         
         //kolejne właściwości do dodania
-        public string TaskName { get; set; }
-        public string TaskDescription { get; set; }
+        internal string TaskName { get; set; }
+        internal string TaskDescription { get; set; }
         public Status Status;
-        public DateTime DueDate { get; set; }
+        internal DateTime DueDate { get; set; }
         //
 
         /// <summary>

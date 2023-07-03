@@ -23,7 +23,7 @@
         /// <summary>
         /// Metoda zmianiająca obecny status.
         /// </summary>
-        /// <param name="StatusAsNumber">Zmianna typu int32 określająca status jako numer.</param>
+        /// <param name="StatusAsNumber">Zmianna typu int32 określająca status jako numer od 0 do 2.</param>
         public void ChangeStatus(int StatusAsNumber)
         {
             CurrentStatus = StatusList[StatusAsNumber];

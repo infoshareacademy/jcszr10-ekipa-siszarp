@@ -6,7 +6,7 @@
     public class TasksList
     {
         private int Id { get; } //do przyszłej obsługi bazy danych
-
+        private IEdit _edit;
 
         //kolejne właściwości do dodania jeśli zajdzie taka potrzeba
         public List<ProjectTask> Tasks { get; set;}
@@ -21,6 +21,7 @@
             Tasks = new List<ProjectTask>();
             this.TasksListName = TasksListName;
         }
+        public TasksList() { }
         /// <summary>
         /// Metoda dodająca obiekt klasy Task do listy zadań.
         /// </summary>
@@ -58,6 +59,16 @@
 
             return Task;
         }
+
+        public TasksList(IEdit edit)
+        {
+            _edit = edit;
+        }
+        public void Edit(string newValue, ProjectTask task)
+        {
+            _edit.Edit(newValue, task);
+        }
+
             
      
     }
