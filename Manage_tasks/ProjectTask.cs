@@ -6,12 +6,12 @@
     public class ProjectTask
     {
         private int Id { get; } //do przyszłej obsługi bazy danych 
-        
+
         //kolejne właściwości do dodania
-        internal string TaskName { get; set; }
-        internal string TaskDescription { get; set; }
+        internal string TaskName;
+        internal string TaskDescription;
         public Status Status;
-        internal DateTime DueDate { get; set; }
+        internal DateTime DueDate;
         //
 
         /// <summary>
@@ -35,6 +35,7 @@
             //opis pozostaje do zmiany po ustaleniu wyglądu
             Console.WriteLine(TaskName + " " + TaskDescription + " " + DueDate + " " + Status.ShowCurrentStatus());
         }
+        
         
         
         

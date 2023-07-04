@@ -6,7 +6,7 @@
     public class TasksList
     {
         private int Id { get; } //do przyszłej obsługi bazy danych
-        private IEdit _edit;
+        private IEditTask _editTask;
 
         //kolejne właściwości do dodania jeśli zajdzie taka potrzeba
         public List<ProjectTask> Tasks { get; set;}
@@ -60,13 +60,13 @@
             return Task;
         }
 
-        public TasksList(IEdit edit)
+        public TasksList(IEditTask edit)
         {
-            _edit = edit;
+            _editTask = edit;
         }
-        public void Edit(string newValue, ProjectTask task)
+        public void EditTask(string newValue, ProjectTask task)
         {
-            _edit.Edit(newValue, task);
+            _editTask.EditTask(newValue, task);
         }
 
             
