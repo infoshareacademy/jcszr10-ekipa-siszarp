@@ -22,19 +22,11 @@ namespace Manage_tasks
             ProjectName = projectName;
             ProjectDescription = projectDescription;
             Tasks = new List<Task>();
-            Project GetProject()
-            {
-                return new Project(projectName, projectDescription);
-            }
         }
         public Project(string projectName)
         {
             ProjectName = projectName;
             Tasks = new List<Task>();
-            Project GetProject()
-            {
-                return new Project(projectName);
-            }
         }
 
         public void AddTask(Task task)
