@@ -30,7 +30,7 @@ namespace Manage_tasks
                                                                                      
 Witam w TaskMasterze !
 (Żeby kierować menu użyj strzałek na klawiaturze ↓ i ↑ lub enter żeby wybrac element menu.)";
-            string[] options = {  "Project", "Zadania", "POSTĘP PRAC", $"ZESPÓŁ" };
+            string[] options = { "Project's", "O nas", "Exit"};
 
 
             ManageMenu mainMenu = new ManageMenu(prompt, options );
@@ -38,15 +38,15 @@ Witam w TaskMasterze !
 
             switch (selectedIdex)
             {
-                case 0:
-                   //zrob to jezeli wybrany 0 element
-                    break;
-                case 1:
-                    //zrob to jezeli wybrany 1 element
-                    break;
-                case 2:
-                    //zrob to jezeli wybrany 2 element
-                    break;
+               case 0:
+                  //zrob to jezeli wybrany 0 element
+                   break;
+               case 1:
+                   //zrob to jezeli wybrany 1 element
+                   break;
+               case 2:
+                   //zrob to jezeli wybrany 2 element
+                   break;
 
             }
         }
@@ -68,8 +68,8 @@ Witam w TaskMasterze !
 
         private void RunFirstChoice()
         {
-            string promt =;
-            string[] options = {};
+            string promt = "Hello ";
+            string[] options = { "Hello " };
             ManageMenu FirstStepMenu = new ManageMenu(promt, options);
             int selectedIdex = FirstStepMenu.Run();
 
