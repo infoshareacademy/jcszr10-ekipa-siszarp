@@ -11,8 +11,7 @@
         internal string TaskName;
         internal string TaskDescription;
         public Status Status;
-        internal DateTime FinishDate;
-        
+        internal DateTime DueDate;
         //
 
         /// <summary>
@@ -20,12 +19,13 @@
         /// </summary>
         /// <param name="TaskName">Parametr przedstawiający nazwę zadania.</param>
         /// <param name="TaskDescription">Parametr przedstawiający opis zadania.</param>
-        public ProjectTask(string TaskName, string TaskDescription)
+        /// <param name="dueDate">Parametr wyrażający maksymalną date ukończenia.</param>
+        public ProjectTask(string TaskName, string TaskDescription, DateTime dueDate)
         {
             this.TaskName = TaskName;
             this.TaskDescription = TaskDescription;
             Status = new Status();
-            
+            DueDate = dueDate;
         }
         /// <summary>
         /// Metoda klasy wypisująca szczegóły wybranego zadania.
@@ -33,7 +33,7 @@
         public virtual void TaskDetails()
         {
             //opis pozostaje do zmiany po ustaleniu wyglądu
-            Console.WriteLine(TaskName + " " + TaskDescription + " " + Status.ShowCurrentStatus());
+            Console.WriteLine(TaskName + " " + TaskDescription + " " + DueDate + " " + Status.ShowCurrentStatus());
         }
         
         

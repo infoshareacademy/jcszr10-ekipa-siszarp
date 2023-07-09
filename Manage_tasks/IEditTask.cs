@@ -19,11 +19,11 @@
             task.TaskDescription = newTaskDescription;
         }
     }
-   //public class EditTaskDueDate :IEditTask
-   //{
-   //    public void EditTask(string newTaskDueDate, ProjectTask task)
-   //    {
-   //        task.DueDate = DateTime.Parse(newTaskDueDate);
-   //    }
-   //}
+    public class EditTaskDueDate :IEditTask
+    {
+        public void EditTask(string newTaskDueDate, ProjectTask task)
+        {
+            task.DueDate = DateTime.Parse(newTaskDueDate);
+        }
+    }
 }
