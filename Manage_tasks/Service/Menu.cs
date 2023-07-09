@@ -67,8 +67,10 @@ Witam w TaskMasterze !
 
         private void DisplayAboutInfo()
         {
+            BackgroundColor = ConsoleColor.White;
             Clear();
-            ForegroundColor = ConsoleColor.Yellow;
+            
+            ForegroundColor = ConsoleColor.Magenta;
             string aboutTitle = "== Ekipa - csharp ==";
             string about = @"
             Witaj w przestrzeni ekipy Siszarp! Skorzystaj 
@@ -76,7 +78,23 @@ Witam w TaskMasterze !
             którą razem stworzyliśmy. Każdy z nas zostawił tutaj
             swój ślad. Pamiętaj, że każda podróż zaczyna się
             od pierwszego kroku. – Lao Tzu.";
-            string infoMessage = "====  Zeby zmienic kolor textu [Any Key], zeby wyjsc [Escape]  ==== ";
+            string infoMessage = "====  Żeby zmienić kolor tekstu [Any Key], żeby wyjść [Escape]  ==== ";
+            string obrazek = @"                                 
+                                   /\
+                              /\  //\\
+                       /\    //\\///\\\        /\
+                      //\\  ///\////\\\\  /\  //\\
+         /\          /  ^ \/^ ^/^  ^  ^ \/^ \/  ^ \
+        / ^\    /\  / ^   /  ^/ ^ ^ ^   ^\ ^/  ^^  \
+       /^   \  / ^\/ ^ ^   ^ / ^  ^    ^  \/ ^   ^  \       *
+      /  ^ ^ \/^  ^\ ^ ^ ^   ^  ^   ^   ____  ^   ^  \     /|\
+     / ^ ^  ^ \ ^  _\___________________|  |_____^ ^  \   /||o\
+    / ^^  ^ ^ ^\  /______________________________\ ^ ^ \ /|o|||\
+   /  ^  ^^ ^ ^  /________________________________\  ^  /|||||o|\
+  /^ ^  ^ ^^  ^    ||___|___||||||||||||___|__|||      /||o||||||\       
+ / ^   ^   ^    ^  ||___|___||||||||||||___|__|||          | |           
+/ ^ ^ ^  ^  ^  ^   ||||||||||||||||||||||||||||||oooooooooo| |ooooooo  
+ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             ConsoleKeyInfo key;
             do
             {
@@ -90,8 +108,8 @@ Witam w TaskMasterze !
                     int numbercolor = rand.Next(6);
                     switch (numbercolor)
                     {
-                        case 0: ForegroundColor = ConsoleColor.Green; break;
-                        case 1: ForegroundColor = ConsoleColor.Yellow; break;
+                        case 0: ForegroundColor = ConsoleColor.Magenta; break;
+                        case 1: ForegroundColor = ConsoleColor.Blue; break;
                         case 2: ForegroundColor = ConsoleColor.Magenta; break;
                         case 3: ForegroundColor = ConsoleColor.Red; break;
                         case 4: ForegroundColor = ConsoleColor.Blue; break;
@@ -101,13 +119,18 @@ Witam w TaskMasterze !
                     Write($"{about[i]}".PadLeft(2));
 
                 }
-                WriteLine();
+                
+                WriteLine(Environment.NewLine);
                 SetCursorCenter(infoMessage);
                 WriteLine(infoMessage);
+                WriteLine(Environment.NewLine);
+                SetBigTextCursorCenter(obrazek);                 
                 key = ReadKey(true);
                 Clear();
             }
             while (key.Key != ConsoleKey.Escape);
+            BackgroundColor = ConsoleColor.Black;
+            Clear();
             RunMainMenu();
         }
 
@@ -196,8 +219,13 @@ Witam w TaskMasterze !
             }
 
             int leftPadding = (WindowWidth - maxLength) / 2;
+            foreach (string line in lines)
+            {
+                SetCursorPosition(leftPadding, CursorTop);
+                Console.WriteLine(line);
+            }
+           
 
-            SetCursorPosition(leftPadding, CursorTop);
         }
     }
 }
