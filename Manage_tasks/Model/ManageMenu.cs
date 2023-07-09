@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Console;
 
-namespace Manage_tasks
+namespace Manage_tasks.Model
 {
     public class ManageMenu
     {
@@ -17,7 +17,7 @@ namespace Manage_tasks
         {
             Promt = prompt;
             Options = options;
-            SelectedIndex = 1;
+            SelectedIndex = 0;
         }
         public void DisplayOption()
         {
@@ -25,7 +25,7 @@ namespace Manage_tasks
             SetBigTextCursorCenter(Promt);
             ResetColor();
             WriteLine();
-           
+
             for (int i = 0; i < Options.Length; i++)
             {
                 string currentOption = Options[i];
@@ -44,8 +44,8 @@ namespace Manage_tasks
                     prefix = " ";
                     ForegroundColor = ConsoleColor.White;
                     BackgroundColor = ConsoleColor.Black;
-                }               
-                SetCursorCenter($"{currentOption}{prefix}"); 
+                }
+                SetCursorCenter($"{currentOption}{prefix}");
                 WriteLine($"{currentOption}{prefix}");
 
             }
@@ -111,7 +111,7 @@ namespace Manage_tasks
 
             foreach (string line in lines)
             {
-                SetCursorPosition(leftPadding,CursorTop);
+                SetCursorPosition(leftPadding, CursorTop);
                 WriteLine(line);
             }
         }

@@ -33,17 +33,17 @@ namespace Manage_tasks
         {
             Tasks.Add(task);
         }
-        public void AssignMember(Member member)
-        {
-            foreach (Task task in Tasks)
-            {
-                if (task.AssignedMember == null)
-                {
-                    task.AssignedMember = member;
-                    break;
-                }
-            }
-        }
+        //public void AssignMember(Member member)
+        //{
+        //    foreach (Task task in Tasks)
+        //    {
+        //        if (task.AssignedMember == null)
+        //        {
+        //            task.AssignedMember = member;
+        //            break;
+        //        }
+        //    }
+        //}
 
         public void DisplayProjectDetails()
         {
@@ -51,15 +51,15 @@ namespace Manage_tasks
             Console.WriteLine($"Opis Projektu: {ProjectDescription}");
         }
 
-        public void DisplayTasks()
-        {
-            Console.WriteLine($"===== Zadania projektu: {ProjectName} =====");
-            foreach (Task task in Tasks)
-            {
-                Console.WriteLine($"- {task.TaskName}");
-                Console.WriteLine($"  Opis: {task.TaskDescription}");
-                Console.WriteLine($"  Przypisany członek: {task.AssignedMember?.Name ?? "Brak"}");
-            }
-        }
+        //public void DisplayTasks()
+        //{
+        //    Console.WriteLine($"===== Zadania projektu: {ProjectName} =====");
+        //    foreach (Task task in Tasks)
+        //    {
+        //        Console.WriteLine($"- {task.TaskName}");
+        //        Console.WriteLine($"  Opis: {task.TaskDescription}");
+        //        Console.WriteLine($"  Przypisany członek: {task.AssignedMember?.Name ?? "Brak"}");
+        //    }
+        //}
     }
 }
