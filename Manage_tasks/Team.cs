@@ -4,9 +4,7 @@ namespace Manage_tasks;
 
 internal class Team
 {
-    private static readonly UserEqualityComparer _userEquality = new();
-
-    private readonly HashSet<User> _members = new(_userEquality);
+    private readonly List<User> _members = new();
     private User _leader;
 
     public int Id { get; private set; }
@@ -26,7 +24,10 @@ internal class Team
         set
         {
             // Lider powinien być w zespole.
-            _members.Add(value);
+            if (!_members.Contains(value))
+            {
+                _members.Add(value);
+            }
 
             _leader = value;
         }
@@ -37,7 +38,7 @@ internal class Team
         Name = name;
         Description = description;
 
-        _members.UnionWith(users);
+        _members.AddRange(users);
 
         Leader = leader;
     }
@@ -52,13 +53,21 @@ internal class Team
 
     public bool AddUser(User user)
     {
-        return _members.Add(user);
+        // Nie można dodawać takich samych użytkowników.
+        if (_members.Contains(user))
+        {
+            return false;
+        }
+
+        _members.Add(user);
+
+        return true;
     }
 
     public bool RemoveUser(User user)
     {
-        // Nie można usunąć lidera zespołu z listy.
-        if (_userEquality.Equals(user, Leader))
+        // Nie można usunąć lidera zespołu.
+        if (user == Leader)
         {
             return false;
         }
@@ -90,7 +99,7 @@ internal class Team
 
         foreach (User user in _members)
         {
-            if (_userEquality.Equals(user, Leader))
+            if (user == Leader)
             {
                 continue;
             }
@@ -99,28 +108,5 @@ internal class Team
         }
 
         return result;
-    }
-
-    // TODO: Jak będziemy mieć bazę danych to trzeba zamienić na sprawdzanie po Id.
-    private class UserEqualityComparer : IEqualityComparer<User>
-    {
-        public bool Equals(User? x, User? y)
-        {
-            if (x is null || y is null)
-            {
-                return false;
-            }
-
-            return x.FirstName.Equals(y.FirstName) && x.LastName.Equals(y.LastName);
-        }
-
-        public int GetHashCode([DisallowNull] User obj)
-        {
-            HashCode hashCode = new();
-            hashCode.Add(obj.FirstName);
-            hashCode.Add(obj.LastName);
-
-            return hashCode.ToHashCode();
-        }
     }
 }
