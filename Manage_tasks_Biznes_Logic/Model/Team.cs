@@ -7,11 +7,11 @@ public class Team
     private readonly List<User> _members = new();
     private User _leader;
 
-    public int Id { get; private set; }
+    public int Id { get; set; }
 
     public string Name { get; set; }
 
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
     public User Leader
     {
@@ -33,7 +33,7 @@ public class Team
         }
     }
 
-    public Team(IEnumerable<User> users, string name, User leader, string? description = null)
+    public Team(string name, string description, User leader, IEnumerable<User> users)
     {
         Name = name;
         Description = description;
@@ -43,7 +43,7 @@ public class Team
         Leader = leader;
     }
 
-    public Team(string name, User leader, string? description = null)
+    public Team(string name, string description, User leader)
     {
         Name = name;
         Description = description;

@@ -2,7 +2,9 @@
 
 public class User
 {
-    public int Id { get; private set; }
+    public int Id { get; set; }
+
+    public string Username { get; set; }
 
     public string FirstName { get; set; }
 
@@ -11,8 +13,9 @@ public class User
     // Czy stanowisko powinno być oddzielną klasą?
     public string Position { get; set; }
 
-    public User(string firstName, string lastName, string position)
+    public User(string username, string firstName, string lastName, string position)
     {
+        Username = username;
         FirstName = firstName;
         LastName = lastName;
         Position = position;
