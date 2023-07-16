@@ -1,6 +1,6 @@
-﻿namespace Manage_tasks;
+﻿namespace Manage_tasks_Biznes_Logic.Model;
 
-internal class User
+public class User
 {
     public int Id { get; private set; }
 

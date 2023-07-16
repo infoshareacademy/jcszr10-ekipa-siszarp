@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Manage_tasks;
+namespace Manage_tasks_Biznes_Logic.Model;
 
-internal class Team
+public class Team
 {
     private readonly List<User> _members = new();
     private User _leader;
