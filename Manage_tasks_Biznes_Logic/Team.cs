@@ -2,7 +2,7 @@
 
 namespace Manage_tasks;
 
-internal class Team
+public class Team
 {
     private readonly List<User> _members = new();
     private User _leader;

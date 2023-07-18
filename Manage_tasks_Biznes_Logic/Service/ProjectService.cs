@@ -8,7 +8,13 @@ using Manage_tasks_Biznes_Logic.Model;
 
 namespace Manage_tasks_Biznes_Logic.Service
 {
-    public class ProjectService
+    public interface IProjectService
+    {
+        int CreateProject(string name, string description); //niech zwraca stworzone id projektu.
+        Project GetProject(int projectId);
+    }
+
+    public class ProjectService: IProjectService
     // PROJEKT: WYŚWIETL LISTĘ ZADAŃ, PRZYPISZ ZESPÓŁ, LISTA SPRINTÓW PROJEKTU, USUŃ PROJEKT
     {
         private List <Project> Projects;
@@ -48,5 +54,22 @@ namespace Manage_tasks_Biznes_Logic.Service
         {
             new List<Project>().Remove(project);
         }
+
+        public int CreateProject(string name, string description)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Project GetProject(int projectId)
+        {
+            throw new NotImplementedException();
+        }
     }
+
+
+    //Project: nowe pole int Id {get;set;}
+
+    //ProjectService methods:
+    //CreateProject(string name, string description);
+    //Project GetProject(int projectId);
 }

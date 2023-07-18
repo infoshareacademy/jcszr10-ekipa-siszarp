@@ -13,7 +13,7 @@ namespace Manage_tasks_Biznes_Logic.Service
     {
         public Project PickProject(int indexOfProject)
         {
-            Project project = new List<Project>().[indexOfProject];
+            Project project = new List<Project>()[indexOfProject];
 
             return project;
         }

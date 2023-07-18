@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Manage_tasks.Model;
+using Manage_tasks.View;
 using static System.Console;
 
 
@@ -145,9 +146,11 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             {
                 case 0:
                     //Co sie dzieje gdy wybierzsz "Wybierz project"
+
                     break;
                 case 1:
-                    //metoda do stworzenia nowego projectu
+                    //metoda do stworzenia nowego projectu                   
+                    CreateProjectView.Display();
                     break;
                 case 2:
                     RunMainMenu();

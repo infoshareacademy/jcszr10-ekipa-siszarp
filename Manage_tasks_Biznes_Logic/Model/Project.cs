@@ -14,21 +14,22 @@ namespace Manage_tasks_Biznes_Logic.Model
     {
         public string ProjectName { get; set; }
         public string ProjectDescription { get; set; }
-
-         Team ProjectTeam { get; set; }
+        public Team ProjectTeam { get; set; }
 
         //public Sprint SprintNumber { get; set; } - do dodania po stworzeniu klasy Sprint
 
-         Project(string projectName, string projectDescription, Team projectTeam)
+        public Project(string projectName, string projectDescription, Team projectTeam)
         {
             ProjectName = projectName;
             ProjectDescription = projectDescription;
             ProjectTeam = projectTeam;
         }
+
         public Project(string projectName)
         {
             ProjectName = projectName;
         }
+
         public Project()
         {
 

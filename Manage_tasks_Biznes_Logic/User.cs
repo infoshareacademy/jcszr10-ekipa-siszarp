@@ -1,6 +1,6 @@
 ﻿namespace Manage_tasks;
 
-internal class User
+public class User
 {
     public int Id { get; private set; }
 
