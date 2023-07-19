@@ -151,6 +151,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                 case 1:
                     //metoda do stworzenia nowego projectu                   
                     CreateProjectView.Display();
+                    RunFirstListaProjectow();
                     break;
                 case 2:
                     RunMainMenu();
@@ -207,6 +208,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
         public void SetCursorCenter(string message)
         {
             SetCursorPosition((WindowWidth - message.Length) / 2, CursorTop);
+            WriteLine(message); 
         }
         private void SetBigTextCursorCenter(string prompt)
         {

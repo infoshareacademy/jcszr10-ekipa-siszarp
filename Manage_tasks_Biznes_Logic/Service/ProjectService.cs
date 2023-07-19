@@ -14,12 +14,12 @@ namespace Manage_tasks_Biznes_Logic.Service
         Project GetProject(int projectId);
     }
 
-    public class ProjectService: IProjectService
+    public class ProjectService  //: IProjectService
     // PROJEKT: WYŚWIETL LISTĘ ZADAŃ, PRZYPISZ ZESPÓŁ, LISTA SPRINTÓW PROJEKTU, USUŃ PROJEKT
     {
-        private List <Project> Projects;
+        private List <Project> Projects  = new List<Project>();
         private List <ProjectTask> CurrentTasks;//lista zadan przypisana do konkretnego projektu - nie wiem czy dobrze??
-
+        
         public void DisplayTasks()
         {
             Console.WriteLine($"===== Zadania projektu: {new Project().ProjectName} =====");
@@ -55,9 +55,9 @@ namespace Manage_tasks_Biznes_Logic.Service
             new List<Project>().Remove(project);
         }
 
-        public int CreateProject(string name, string description)
+        public void CreateProject(string name, string description)
         {
-            throw new NotImplementedException();
+            Projects.Add(new Project(name, description));
         }
 
         public Project GetProject(int projectId)
