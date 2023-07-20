@@ -10,49 +10,50 @@ namespace Manage_tasks_Biznes_Logic.Service
 {
     public interface IProjectService
     {
-        int CreateProject(string name, string description); //niech zwraca stworzone id projektu.
+        int CreateProject(string name, string description); //zwraca stworzone id projektu.
         Project GetProject(int projectId);
     }
 
     public class ProjectService  //: IProjectService
     // PROJEKT: WYŚWIETL LISTĘ ZADAŃ, PRZYPISZ ZESPÓŁ, LISTA SPRINTÓW PROJEKTU, USUŃ PROJEKT
     {
-        private List <Project> Projects  = new List<Project>();
-        private List <ProjectTask> CurrentTasks;//lista zadan przypisana do konkretnego projektu - nie wiem czy dobrze??
-        
-        public void DisplayTasks()
+        private List<Project> Projects = new List<Project>();
+        private List<ProjectTask> CurrentTasks = new List<ProjectTask>();//lista zadan przypisana do konkretnego projektu - nie wiem czy dobrze??
+        private List<User> TeamUsers = new List<User>();//lista członków zespołu przypisanego do projektu
+        public string DisplayTasks()
         {
-            Console.WriteLine($"===== Zadania projektu: {new Project().ProjectName} =====");
-            
             var taskEnumerator = CurrentTasks.GetEnumerator();
-            while (taskEnumerator.MoveNext())
+            if (taskEnumerator.MoveNext())
             {
-                Console.WriteLine($"- {taskEnumerator.Current.TaskName}");
-                Console.WriteLine($"  Opis: {taskEnumerator.Current.TaskDescription}");
-                Console.WriteLine($"  Status zadania: {taskEnumerator.Current.Status}");
+                return $"- {taskEnumerator.Current.TaskName} Opis: {taskEnumerator.Current.TaskDescription} Status zadania: {taskEnumerator.Current.Status}";
             }
+            else return "Brak utworzonych projektów.";
         }
-         void AssignTeam(User member)
+        public void AssignTeam(User member)
         {
             foreach (Project project in Projects)
             {
-               //przypisanie zespołu do projektu  - nie wiem do końca jak ??
+                TeamUsers.Add(member);
             }
         }
-        
-        public void AssignTaskToProject(Task task)
+
+        public void AssignTask(ProjectTask task)
         {
-            new List<Task>().Add(task);
+            CurrentTasks.Add(task);
         }
 
-        public void DisplayProjectDetails()
+        public string DisplayProjectDetails()
         {
-            Console.WriteLine($"Nazwa Projektu:{new Project().ProjectName}");
-            Console.WriteLine($"Opis Projektu: {new Project().ProjectDescription}");
+            var projectEnumerator = Projects.GetEnumerator();
+            if (projectEnumerator.MoveNext())
+            {
+                return $"Nazwa Projektu:{projectEnumerator.Current.Name} Opis Projektu: {projectEnumerator.Current.Description}";
+            }
+            else return "Brak utworzonych projektów.";
         }
         public void RemoveProject(Project project)
         {
-            new List<Project>().Remove(project);
+            Projects.Remove(project);
         }
 
         public void CreateProject(string name, string description)
