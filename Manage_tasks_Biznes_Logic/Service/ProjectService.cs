@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Manage_tasks;
@@ -17,13 +18,13 @@ namespace Manage_tasks_Biznes_Logic.Service
     public class ProjectService  //: IProjectService
     // PROJEKT: WYŚWIETL LISTĘ ZADAŃ, PRZYPISZ ZESPÓŁ, LISTA SPRINTÓW PROJEKTU, USUŃ PROJEKT
     {
-        private List <Project> Projects  = new List<Project>();
-        private List <ProjectTask> CurrentTasks;//lista zadan przypisana do konkretnego projektu - nie wiem czy dobrze??
-        
+        private List<Project> Projects = new List<Project>();
+        private List<ProjectTask> CurrentTasks;//lista zadan przypisana do konkretnego projektu - nie wiem czy dobrze??
+
         public void DisplayTasks()
         {
             Console.WriteLine($"===== Zadania projektu: {new Project().ProjectName} =====");
-            
+
             var taskEnumerator = CurrentTasks.GetEnumerator();
             while (taskEnumerator.MoveNext())
             {
@@ -32,27 +33,40 @@ namespace Manage_tasks_Biznes_Logic.Service
                 Console.WriteLine($"  Status zadania: {taskEnumerator.Current.Status}");
             }
         }
-         void AssignTeam(User member)
+        void AssignTeam(int index)
         {
-            foreach (Project project in Projects)
-            {
-               //przypisanie zespołu do projektu  - nie wiem do końca jak ??
-            }
+            //Projects[index].ProjectTeam.
         }
-        
+
+        public List<Project> GetAllProject()
+        {
+            return Projects;
+        }
         public void AssignTaskToProject(Task task)
         {
             new List<Task>().Add(task);
         }
 
-        public void DisplayProjectDetails()
+        public string DisplayProjectDetails(int index)
         {
-            Console.WriteLine($"Nazwa Projektu:{new Project().ProjectName}");
-            Console.WriteLine($"Opis Projektu: {new Project().ProjectDescription}");
+            
+            try
+            {
+                return $@"Nazwa Projektu
+{Projects[index].ProjectName} 
+Opis Projektu
+{Projects[index].ProjectDescription}";
+            }
+            catch (Exception ex)
+            {
+                return "Żaden projekt nie został wybrany lub stworzony";
+                
+            }
+           
         }
-        public void RemoveProject(Project project)
+        public void RemoveProject(int index)
         {
-            new List<Project>().Remove(project);
+            Projects.Remove(Projects[index]);
         }
 
         public void CreateProject(string name, string description)
@@ -67,9 +81,4 @@ namespace Manage_tasks_Biznes_Logic.Service
     }
 
 
-    //Project: nowe pole int Id {get;set;}
-
-    //ProjectService methods:
-    //CreateProject(string name, string description);
-    //Project GetProject(int projectId);
 }

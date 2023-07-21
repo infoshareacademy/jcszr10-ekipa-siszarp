@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Manage_tasks.Model;
 using Manage_tasks.View;
+using Manage_tasks_Biznes_Logic.Data;
 using static System.Console;
 
 
@@ -145,8 +147,10 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             switch (selectedIdex)
             {
                 case 0:
-                    //Co sie dzieje gdy wybierzsz "Wybierz project"
-
+                     //Wyswietlamy wszystkie projecty
+                   int projectIndex = ProjectListView.DisplayListProject();
+                    RunOpcjeProjectu(projectIndex);
+                    
                     break;
                 case 1:
                     //metoda do stworzenia nowego projectu                   
@@ -162,6 +166,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
         }
         private void RunUsersMenu()
         {
+            
             string prompt = "Użytkownik";
             string[] opcje = { "Pokaż wszytkich użytkowników ", "Pokaż Team", "Wróć" };
             ManageMenu UsersMenu = new ManageMenu(prompt, opcje);
@@ -180,12 +185,14 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
 
             }
         }
-        private void RunOpcjeProjectu()
+        private void RunOpcjeProjectu(int index)
         {
-            string promt = "Hello ";
+            
+            string promt = $"{Data.projectService.DisplayProjectDetails(index)}";
             string[] options = { "Listy zadań", "Przypisana Ekipa", "Usuń project", "Lista sprintów", "Wróć" };
+            
             ManageMenu FirstStepMenu = new ManageMenu(promt, options);
-            int selectedIdex = FirstStepMenu.Run();
+            int selectedIdex = FirstStepMenu.RunPoziom();
             switch (selectedIdex)
             {
                 case 0:
@@ -195,13 +202,14 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     //Przypisany Ekipa
                     break;
                 case 2:
-                    //Usun project
+                    Data.projectService.RemoveProject(index);
+                    RunFirstListaProjectow();
                     break;
                 case 3:
                     //Lista sprintów
                     break;
                 case 4:
-                    RunMainMenu();
+                    RunFirstListaProjectow();
                     break;
             }
         }

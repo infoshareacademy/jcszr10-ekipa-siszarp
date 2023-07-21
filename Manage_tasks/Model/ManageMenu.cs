@@ -17,7 +17,14 @@ namespace Manage_tasks.Model
         {
             Promt = prompt;
             Options = options;
-            SelectedIndex = 0;
+             
+        }
+
+        public ManageMenu(string prompt, string[] options , int index)
+        {
+            Promt = prompt;
+            Options = options;
+            SelectedIndex = index;
         }
         public void DisplayOption()
         {
@@ -51,7 +58,6 @@ namespace Manage_tasks.Model
             }
             ResetColor();
         }
-
         public int Run()
         {
             ConsoleKey keyPressed;
@@ -88,7 +94,74 @@ namespace Manage_tasks.Model
 
             return SelectedIndex;
         }
+        public void DisplayOptionPoziom()
+        {
+            ForegroundColor = ConsoleColor.DarkCyan;
+            SetBigTextCursorCenter(Promt);
+            ResetColor();
+            WriteLine();
 
+            for (int i = 0; i < Options.Length; i++)
+            {
+                string currentOption = Options[i];
+                string prefix;
+
+                if (i == SelectedIndex)
+                {
+
+                    prefix = "◁";
+
+                    ForegroundColor = ConsoleColor.Blue;
+
+                }
+                else
+                {
+                    prefix = " ";
+                    ForegroundColor = ConsoleColor.White;
+                    BackgroundColor = ConsoleColor.Black;
+                }
+                SetCursorPosition( i+5 ,CursorTop);
+                Write($"{currentOption}{prefix}  ");
+
+            }
+            ResetColor();
+        }
+        public int RunPoziom()
+        {
+            ConsoleKey keyPressed;
+
+            do
+            {
+                Clear();
+                DisplayOptionPoziom();
+
+                ConsoleKeyInfo keyInfo = ReadKey(true);
+                keyPressed = keyInfo.Key;
+
+                if (keyPressed == ConsoleKey.LeftArrow)
+                {
+                    SelectedIndex--;
+                    if (SelectedIndex == -1)
+                    {
+                        SelectedIndex = Options.Length - 1;
+                    }
+                }
+                else if (keyPressed == ConsoleKey.RightArrow)
+                {
+                    SelectedIndex++;
+                    if (SelectedIndex == Options.Length)
+                    {
+                        SelectedIndex = 0;
+                    }
+
+                }
+
+
+            }
+            while (keyPressed != ConsoleKey.Enter);
+
+            return SelectedIndex;
+        }
         private void SetCursorCenter(string currentOption)
         {
             SetCursorPosition((WindowWidth - $"{currentOption}".Length) / 2, CursorTop);

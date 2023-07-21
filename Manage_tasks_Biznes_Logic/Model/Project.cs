@@ -24,7 +24,7 @@ namespace Manage_tasks_Biznes_Logic.Model
         {
             ProjectName = projectName;
             ProjectDescription = projectDescription;
-             
+            
         }
 
         public Project(string projectName)
@@ -37,6 +37,11 @@ namespace Manage_tasks_Biznes_Logic.Model
 
         }
 
+        public void AddTeam(Team team)
+        {
+            ProjectTeam = team;
+        }
+        
         
     }
 }
