@@ -103,6 +103,7 @@ namespace Manage_tasks.Model
 
             for (int i = 0; i < Options.Length; i++)
             {
+                
                 string currentOption = Options[i];
                 string prefix;
 
@@ -120,7 +121,7 @@ namespace Manage_tasks.Model
                     ForegroundColor = ConsoleColor.White;
                     BackgroundColor = ConsoleColor.Black;
                 }
-                SetCursorPosition( i+5 ,CursorTop);
+               
                 Write($"{currentOption}{prefix}  ");
 
             }
