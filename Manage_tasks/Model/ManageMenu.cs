@@ -101,6 +101,8 @@ namespace Manage_tasks.Model
             ResetColor();
             WriteLine();
 
+            int consoleWidth = WindowWidth;
+
             for (int i = 0; i < Options.Length; i++)
             {
                 
@@ -121,7 +123,8 @@ namespace Manage_tasks.Model
                     ForegroundColor = ConsoleColor.White;
                     BackgroundColor = ConsoleColor.Black;
                 }
-               
+                int offset = 10 ;
+                Write(new string(' ', offset));
                 Write($"{currentOption}{prefix}  ");
 
             }
