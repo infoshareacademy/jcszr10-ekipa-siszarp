@@ -42,6 +42,20 @@ namespace Manage_tasks_Biznes_Logic.Service
         {
             return Projects;
         }
+
+        public Project GetProject(int projectId)
+        {
+            try
+            {
+                return Projects[projectId];
+            }
+            catch( Exception ex )
+            {
+                Project ExceptionProject = new Project();
+                ExceptionProject.ProjectName = "Project nie został wybrany";
+                return ExceptionProject;
+            }
+        }
         public void AssignTaskToProject(Task task)
         {
             new List<Task>().Add(task);
@@ -52,6 +66,16 @@ namespace Manage_tasks_Biznes_Logic.Service
             
             try
             {
+
+                if(Projects[index].ProjectTeam != null)
+                {
+                    return $@"Nazwa Projektu
+{Projects[index].ProjectName} 
+Opis Projektu
+{Projects[index].ProjectDescription}
+Ekipa: {Projects[index].ProjectTeam.Name} Lider: {Projects[index].ProjectTeam.Leader}
+";
+                }
                 return $@"Nazwa Projektu
 {Projects[index].ProjectName} 
 Opis Projektu
@@ -74,10 +98,7 @@ Opis Projektu
             Projects.Add(new Project(name, description));
         }
 
-        public Project GetProject(int projectId)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 
 
