@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Manage_tasks.View
 {
-    internal static class ProjectInformationView
+    public static class ProjectInformationView
     {
         public static void DisplayInfo(int index)
         {

@@ -72,7 +72,7 @@ Witam w TaskMasterze !
         {
             BackgroundColor = ConsoleColor.White;
             Clear();
-            
+
             ForegroundColor = ConsoleColor.Magenta;
             string aboutTitle = "== Ekipa - csharp ==";
             string about = @"
@@ -102,7 +102,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             do
             {
                 SetCursorCenter(aboutTitle);
-                WriteLine($"{aboutTitle}");
+
 
                 for (int i = 0; i < about.Length; i++)
                 {
@@ -122,12 +122,12 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     Write($"{about[i]}".PadLeft(2));
 
                 }
-                
+
                 WriteLine(Environment.NewLine);
                 SetCursorCenter(infoMessage);
-                WriteLine(infoMessage);
+
                 WriteLine(Environment.NewLine);
-                SetBigTextCursorCenter(obrazek);                 
+                SetBigTextCursorCenter(obrazek);
                 key = ReadKey(true);
                 Clear();
             }
@@ -147,10 +147,10 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             switch (selectedIdex)
             {
                 case 0:
-                     //Wyswietlamy wszystkie projecty
-                   int projectIndex = ProjectListView.DisplayListProject();
+                    //Wyswietlamy wszystkie projecty
+                    int projectIndex = ProjectListView.DisplayListProject();
                     RunOpcjeProjectu(projectIndex);
-                    
+
                     break;
                 case 1:
                     //metoda do stworzenia nowego projectu                   
@@ -166,7 +166,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
         }
         private void RunUsersMenu()
         {
-            
+
             string prompt = "Użytkownik";
             string[] opcje = { "Pokaż wszytkich użytkowników ", "Pokaż Team", "Wróć" };
             ManageMenu UsersMenu = new ManageMenu(prompt, opcje);
@@ -187,12 +187,14 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
         }
         private void RunOpcjeProjectu(int index)
         {
-            
+
+
             string promt = $"{Data.projectService.DisplayProjectDetails(index)}";
+
             string[] options = { "Listy zadań", "Przypisana Ekipa", "Usuń project", "Lista sprintów", "Wróć" };
-            
+
             ManageMenu FirstStepMenu = new ManageMenu(promt, options);
-            int selectedIdex = FirstStepMenu.RunPoziom();
+            int selectedIdex = FirstStepMenu.RunPoziom(10);
             switch (selectedIdex)
             {
                 case 0:
@@ -216,7 +218,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
         public void SetCursorCenter(string message)
         {
             SetCursorPosition((WindowWidth - message.Length) / 2, CursorTop);
-            WriteLine(message); 
+            WriteLine(message);
         }
         private void SetBigTextCursorCenter(string prompt)
         {
@@ -235,9 +237,9 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             foreach (string line in lines)
             {
                 SetCursorPosition(leftPadding, CursorTop);
-                Console.WriteLine(line);
+                WriteLine(line);
             }
-           
+
 
         }
     }

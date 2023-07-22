@@ -49,8 +49,9 @@ namespace Manage_tasks.View
             newobject.SetCursorCenter(name);
             int size = WindowWidth - name.Length;
             SetCursorPosition(30, CursorTop);
-            string projectName = ReadLine();
+            string projectName = ReadLine();   
             newobject.SetCursorCenter(descrition);
+            SetCursorPosition(30, CursorTop);
             string projectDescrition = ReadLine();
             WriteLine();
             Data.projectService.CreateProject(projectName, projectDescrition);

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Manage_tasks.View;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Console;
@@ -94,14 +96,15 @@ namespace Manage_tasks.Model
 
             return SelectedIndex;
         }
-        public void DisplayOptionPoziom()
+        
+        public void DisplayOptionPoziom(int Padding = 1)
         {
             ForegroundColor = ConsoleColor.DarkCyan;
             SetBigTextCursorCenter(Promt);
             ResetColor();
             WriteLine();
 
-            int consoleWidth = WindowWidth;
+            
 
             for (int i = 0; i < Options.Length; i++)
             {
@@ -123,21 +126,22 @@ namespace Manage_tasks.Model
                     ForegroundColor = ConsoleColor.White;
                     BackgroundColor = ConsoleColor.Black;
                 }
-                int offset = 10 ;
+                int offset = Padding;
                 Write(new string(' ', offset));
                 Write($"{currentOption}{prefix}  ");
 
             }
             ResetColor();
         }
-        public int RunPoziom()
+        public int RunPoziom(int Padding = 1)
         {
             ConsoleKey keyPressed;
 
             do
             {
                 Clear();
-                DisplayOptionPoziom();
+
+                DisplayOptionPoziom(Padding);
 
                 ConsoleKeyInfo keyInfo = ReadKey(true);
                 keyPressed = keyInfo.Key;
@@ -175,7 +179,7 @@ namespace Manage_tasks.Model
         {
             string[] lines = prompt.Split(Environment.NewLine);
 
-
+             
             int maxLength = 0;
             foreach (string line in lines)
             {
@@ -188,6 +192,7 @@ namespace Manage_tasks.Model
 
             foreach (string line in lines)
             {
+                
                 SetCursorPosition(leftPadding, CursorTop);
                 WriteLine(line);
             }
