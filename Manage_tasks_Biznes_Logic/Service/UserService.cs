@@ -2,7 +2,7 @@
 
 namespace Manage_tasks_Biznes_Logic.Service;
 
-public class UserService : IUserService
+public class UserService
 {
     public User? GetUserById(int id)
     {
