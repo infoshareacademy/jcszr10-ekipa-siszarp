@@ -155,7 +155,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                 case 1:
                     //metoda do stworzenia nowego projectu                   
                     CreateProjectView.Display();
-                    RunFirstListaProjectow();
+                    RunFirstListaProjectow(); 
                     break;
                 case 2:
                     RunMainMenu();
@@ -191,10 +191,11 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
 
             string promt = $"{Data.projectService.DisplayProjectDetails(index)}";
 
-            string[] options = { "Listy zadań", "Przypisana Ekipa", "Usuń project", "Lista sprintów", "Wróć" };
+            string[] options = { "Zadania", "Zespół", "Usuń project", "Wróć" };
 
             ManageMenu FirstStepMenu = new ManageMenu(promt, options);
-            int selectedIdex = FirstStepMenu.RunPoziom(10);
+            
+            int selectedIdex = FirstStepMenu.RunPoziom(15);
             switch (selectedIdex)
             {
                 case 0:

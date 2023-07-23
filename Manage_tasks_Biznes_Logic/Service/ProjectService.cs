@@ -9,33 +9,18 @@ using Manage_tasks_Biznes_Logic.Model;
 
 namespace Manage_tasks_Biznes_Logic.Service
 {
-    public interface IProjectService
+    
+
+    public class ProjectService   
+   
     {
-        int CreateProject(string name, string description); //niech zwraca stworzone id projektu.
-        Project GetProject(int projectId);
-    }
+        private List<Project> Projects = new List<Project>(); //Zapisywanie do jsone
+        
 
-    public class ProjectService  //: IProjectService
-    // PROJEKT: WYŚWIETL LISTĘ ZADAŃ, PRZYPISZ ZESPÓŁ, LISTA SPRINTÓW PROJEKTU, USUŃ PROJEKT
-    {
-        private List<Project> Projects = new List<Project>();
-        private List<ProjectTask> CurrentTasks;//lista zadan przypisana do konkretnego projektu - nie wiem czy dobrze??
-
-        public void DisplayTasks()
-        {
-            Console.WriteLine($"===== Zadania projektu: {new Project().ProjectName} =====");
-
-            var taskEnumerator = CurrentTasks.GetEnumerator();
-            while (taskEnumerator.MoveNext())
-            {
-                Console.WriteLine($"- {taskEnumerator.Current.TaskName}");
-                Console.WriteLine($"  Opis: {taskEnumerator.Current.TaskDescription}");
-                Console.WriteLine($"  Status zadania: {taskEnumerator.Current.Status}");
-            }
-        }
+       
         void AssignTeam(int index)
         {
-            //Projects[index].ProjectTeam.
+          // Projects[index].ProjectTeam.
         }
 
         public List<Project> GetAllProject()
@@ -43,8 +28,8 @@ namespace Manage_tasks_Biznes_Logic.Service
             return Projects;
         }
 
-        public Project GetProject(int projectId)
-        {
+        public Project GetProject(int projectId)  // pobieranie z jsone
+        {                               
             try
             {
                 return Projects[projectId];
@@ -52,13 +37,15 @@ namespace Manage_tasks_Biznes_Logic.Service
             catch( Exception ex )
             {
                 Project ExceptionProject = new Project();
-                ExceptionProject.ProjectName = "Project nie został wybrany";
+                ExceptionProject.Name = "Project nie został wybrany";
                 return ExceptionProject;
             }
         }
-        public void AssignTaskToProject(Task task)
+        public void AssignTaskToProject(int index)
         {
-            new List<Task>().Add(task);
+            //Console.WriteLine("Podan neme");
+            //string name = Console.ReadLine(); 
+            //Projects[index].Tasks.AddTask(new ProjectTask());        
         }
 
         public string DisplayProjectDetails(int index)
@@ -70,16 +57,16 @@ namespace Manage_tasks_Biznes_Logic.Service
                 if(Projects[index].ProjectTeam != null)
                 {
                     return $@"Nazwa Projektu
-{Projects[index].ProjectName} 
+{Projects[index].Name} 
 Opis Projektu
-{Projects[index].ProjectDescription}
+{Projects[index].Description}
 Ekipa: {Projects[index].ProjectTeam.Name} Lider: {Projects[index].ProjectTeam.Leader}
 ";
                 }
                 return $@"Nazwa Projektu
-{Projects[index].ProjectName} 
+{Projects[index].Name} 
 Opis Projektu
-{Projects[index].ProjectDescription}";
+{Projects[index].Description}";
             }
             catch (Exception ex)
             {
@@ -95,7 +82,7 @@ Opis Projektu
 
         public void CreateProject(string name, string description)
         {
-            Projects.Add(new Project(name, description));
+            Projects.Add(new Project(name, description)); // tu zapisujemy do jsone
         }
 
        

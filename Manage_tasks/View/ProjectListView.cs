@@ -16,7 +16,7 @@ namespace Manage_tasks.View
         {
             var projects = Data.projectService.GetAllProject();
             var title = "Wszystkie projekty";
-            string[] allNameOfProject = projects.Select(a=> a.ProjectName).ToArray();
+            string[] allNameOfProject = projects.Select(a=> a.Name).ToArray();
             ManageMenu AllProjects = new ManageMenu(title,allNameOfProject);
             int ChoiceIndex = AllProjects.Run();
             return ChoiceIndex;

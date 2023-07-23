@@ -17,10 +17,14 @@ namespace Manage_tasks.View
             Project currentProject = Data.projectService.GetProject(index);
             if (currentProject != null)
             {
+
                 WriteLine("Project name");
-                WriteLine($"{currentProject.ProjectName}");
+
+                WriteLine($"{currentProject.Name}");
+
                 WriteLine("Opis projectu");
-                WriteLine($"{currentProject.ProjectDescription}");
+
+                WriteLine($"{currentProject.Description}");
             }
             else if (currentProject.ProjectTeam != null) 
             {

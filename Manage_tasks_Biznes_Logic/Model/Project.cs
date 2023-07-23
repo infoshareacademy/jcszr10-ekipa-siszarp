@@ -10,38 +10,32 @@ using Manage_tasks_Biznes_Logic.Service;
 namespace Manage_tasks_Biznes_Logic.Model
 {
     public class Project
-    //NAZWA, OPIS, TEAM, SPRINT
+
     {
-        public string ProjectName { get; set; }
-        public string ProjectDescription { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public Team ProjectTeam { get; set; }
 
-        
+        public TasksList Tasks { get; set; }    
 
-        //public Sprint SprintNumber { get; set; } - do dodania po stworzeniu klasy Sprint
+
+
 
         public Project(string projectName, string projectDescription)
         {
-            ProjectName = projectName;
-            ProjectDescription = projectDescription;
-            
+            Name = projectName;
+            Description = projectDescription;
+
         }
-
-        public Project(string projectName)
-        {
-            ProjectName = projectName;
-        }
-
-        public Project()
-        {
-
+        public Project() 
+        { 
         }
 
         public void AddTeam(Team team)
         {
             ProjectTeam = team;
         }
-        
-        
+
+
     }
 }
