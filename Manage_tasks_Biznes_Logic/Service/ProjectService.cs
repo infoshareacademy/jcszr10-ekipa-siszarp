@@ -58,7 +58,7 @@ namespace Manage_tasks_Biznes_Logic.Service
                 {
                     return $@"Nazwa Projektu
 {Projects[index].Name} 
-Opis Projektu
+Opis Projektu 
 {Projects[index].Description}
 Ekipa: {Projects[index].ProjectTeam.Name} Lider: {Projects[index].ProjectTeam.Leader}
 ";
