@@ -2,9 +2,7 @@
 
 public class User
 {
-    public int Id { get; set; }
-
-    public string Username { get; set; }
+    public Guid Id { get; set; }
 
     public string FirstName { get; set; }
 
@@ -13,9 +11,10 @@ public class User
     // Czy stanowisko powinno być oddzielną klasą?
     public string Position { get; set; }
 
-    public User(string username, string firstName, string lastName, string position)
+    public User(string firstName, string lastName, string position)
     {
-        Username = username;
+        Id = Guid.NewGuid();
+
         FirstName = firstName;
         LastName = lastName;
         Position = position;

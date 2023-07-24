@@ -7,7 +7,7 @@ public class Team
     private readonly List<User> _members = new();
     private User _leader;
 
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     public string Name { get; set; }
 
@@ -35,6 +35,8 @@ public class Team
 
     public Team(string name, string description, User leader, IEnumerable<User> users)
     {
+        Id = Guid.NewGuid();
+
         Name = name;
         Description = description;
 
@@ -45,6 +47,8 @@ public class Team
 
     public Team(string name, string description, User leader)
     {
+        Id = Guid.NewGuid();
+
         Name = name;
         Description = description;
 

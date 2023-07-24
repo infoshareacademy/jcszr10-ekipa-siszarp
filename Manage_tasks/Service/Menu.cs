@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Manage_tasks.Model;
 using Manage_tasks.View;
+using Manage_tasks.View.TeamView;
+using Manage_tasks.View.UserView;
 using Manage_tasks_Biznes_Logic.Data;
 using static System.Console;
 
@@ -155,7 +157,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                 case 1:
                     //metoda do stworzenia nowego projectu                   
                     CreateProjectView.Display();
-                    RunFirstListaProjectow(); 
+                    RunFirstListaProjectow();
                     break;
                 case 2:
                     RunMainMenu();
@@ -168,16 +170,22 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
         {
 
             string prompt = "Użytkownik";
-            string[] opcje = { "Pokaż wszytkich użytkowników ", "Pokaż Team", "Wróć" };
+            string[] opcje = { "Pokaż wszytkich użytkowników ", "Pokaż zespoły", "Wróć" };
             ManageMenu UsersMenu = new ManageMenu(prompt, opcje);
             int index = UsersMenu.Run();
             switch (index)
             {
                 case 0:
                     //Metoda pokazuje wszystkich uzytkownikow
+                    var usersListView = new UsersListView();
+                    usersListView.Run();
+                    RunMainMenu();
                     break;
                 case 1:
                     //Metoda pokazuje teamsy
+                    var teamListView = new TeamsListView();
+                    teamListView.Run();
+                    RunMainMenu();
                     break;
                 case 2:
                     RunMainMenu();
@@ -194,7 +202,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             string[] options = { "Zadania", "Zespół", "Usuń project", "Wróć" };
 
             ManageMenu FirstStepMenu = new ManageMenu(promt, options);
-            
+
             int selectedIdex = FirstStepMenu.RunPoziom(15);
             switch (selectedIdex)
             {

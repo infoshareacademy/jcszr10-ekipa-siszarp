@@ -4,7 +4,9 @@ namespace Manage_tasks_Biznes_Logic.Service;
 
 public class TeamService
 {
-    public Team? GetTeamById(int id)
+    private readonly List<Team> _teams = new();
+
+    public Team? GetTeamById(Guid id)
     {
         throw new NotImplementedException();
     }
@@ -14,13 +16,30 @@ public class TeamService
         throw new NotImplementedException();
     }
 
-    public void SaveNewTeam(Team newTeam)
-    {
-        throw new NotImplementedException();
-    }
-
     public void UpdateTeam(Team team)
     {
-        throw new NotImplementedException();
+        var userInDatabase = _teams.Where(t => t.Id == team.Id).FirstOrDefault();
+
+        if (userInDatabase is null)
+        {
+            _teams.Add(team);
+            return;
+        }
+    }
+
+    public void DeleteTeam(Team team)
+    {
+        var userInDatabase = _teams.Where(t => t.Id == team.Id).FirstOrDefault();
+
+        if (userInDatabase is not null)
+        {
+            _teams.Remove(userInDatabase);
+            return;
+        }
+    }
+
+    public IEnumerable<Team> GetAllTeams()
+    {
+        return _teams;
     }
 }
