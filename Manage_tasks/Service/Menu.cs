@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Manage_tasks.Model;
 using Manage_tasks.View;
 using Manage_tasks_Biznes_Logic.Data;
+using Manage_tasks_Biznes_Logic.Service;
 using static System.Console;
 
 
@@ -19,6 +20,7 @@ namespace Manage_tasks.Service
         public void Start()
         {
 
+            Data.projectService.LoadProjectsFromJson();
             Title = "Manage - tasks";
             RunMainMenu();
 
@@ -209,11 +211,8 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     RunFirstListaProjectow();
                     break;
                 case 3:
-                    //Lista sprintów
-                    break;
-                case 4:
                     RunFirstListaProjectow();
-                    break;
+                    break; 
             }
         }
         public void SetCursorCenter(string message)

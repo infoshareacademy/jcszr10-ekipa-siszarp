@@ -16,8 +16,9 @@ namespace Manage_tasks_Biznes_Logic.Model
         public string Description { get; set; }
         public Team ProjectTeam { get; set; }
 
-        public TasksList Tasks { get; set; }    
+        public TasksList Tasks { get; set; }
 
+        public int OutID { get; set; }
 
 
 
