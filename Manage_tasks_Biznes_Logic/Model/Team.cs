@@ -33,6 +33,11 @@ public class Team
         }
     }
 
+    public Team()
+    {
+        // Potrzebne.
+    }
+
     public Team(string name, string description, User leader, IEnumerable<User> members)
     {
         Id = Guid.NewGuid();

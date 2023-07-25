@@ -46,7 +46,7 @@ public class ProjectTeamView
 
             case 1:
                 _project.AddTeam(null);
-                // TODO zaktualizować bazę danych.
+                Data.projectService.SaveProjectToJson();
                 break;
 
             default:
@@ -78,7 +78,7 @@ public class ProjectTeamView
 
         _project.AddTeam(availabeTeams[optionIndex]);
 
-        // TODO zaktualizować bazę danych.
+        Data.projectService.SaveProjectToJson();
     }
 
     private bool RunEmptyTeam()
@@ -105,6 +105,7 @@ public class ProjectTeamView
 
         if (availabeTeams.Count == 0)
         {
+            // TODO - Przejdź to Towrzenia teamu.
             return;
         }
 
@@ -113,6 +114,8 @@ public class ProjectTeamView
         var optionIndex = new ManageMenu(prompt, options).Run();
 
         _project.AddTeam(availabeTeams[optionIndex]);
+
+        Data.projectService.SaveProjectToJson();
     }
 
     private string GetTeamAssignedPrompt()
