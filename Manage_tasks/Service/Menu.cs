@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Manage_tasks.Model;
 using Manage_tasks.View;
 using Manage_tasks_Biznes_Logic.Data;
+using Manage_tasks_Biznes_Logic.Service;
 using static System.Console;
 
 
@@ -19,6 +20,7 @@ namespace Manage_tasks.Service
         public void Start()
         {
 
+            Data.projectService.LoadProjectsFromJson();
             Title = "Manage - tasks";
             RunMainMenu();
 
@@ -26,6 +28,7 @@ namespace Manage_tasks.Service
 
         private void RunMainMenu()
         {
+            
             OutputEncoding = Encoding.Unicode;
             string prompt = @"
 ████████╗ █████╗ ███████╗██╗  ██╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
@@ -139,23 +142,23 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
 
         private void RunFirstListaProjectow()
         {
+
             string promt = "Lista projektów";
-            string[] options = { "Wybierz project", "Nowy project", "Wróć" };
+            string[] options = { "Stwórz nowy project", "Wybierz project",  "Wróć" };
             ManageMenu FirstStepMenu = new ManageMenu(promt, options);
             int selectedIdex = FirstStepMenu.Run();
 
             switch (selectedIdex)
             {
                 case 0:
-                    //Wyswietlamy wszystkie projecty
-                    int projectIndex = ProjectListView.DisplayListProject();
-                    RunOpcjeProjectu(projectIndex);
-
-                    break;
-                case 1:
                     //metoda do stworzenia nowego projectu                   
                     CreateProjectView.Display();
-                    RunFirstListaProjectow(); 
+                    RunFirstListaProjectow();
+                    break;
+                case 1:
+                    //Wyswietlamy wszystkie projecty  Wybierz project
+                    int projectIndex = ProjectListView.DisplayListProject();
+                    RunOpcjeProjectu(projectIndex);
                     break;
                 case 2:
                     RunMainMenu();
@@ -187,16 +190,11 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
         }
         private void RunOpcjeProjectu(int index)
         {
-
-
-            string promt = $"{Data.projectService.DisplayProjectDetails(index)}";
-
+            string title = "Informacja o projekcie";
             string[] options = { "Zadania", "Zespół", "Usuń project", "Wróć" };
 
-            ManageMenu FirstStepMenu = new ManageMenu(promt, options);
-            
-            int selectedIdex = FirstStepMenu.RunPoziom(15);
-            switch (selectedIdex)
+            int selectedIndex = InfoAboutProject.RunPoziom(index, title, options, 0, 20);
+            switch (selectedIndex)
             {
                 case 0:
                     //Listy zadań
@@ -209,12 +207,11 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     RunFirstListaProjectow();
                     break;
                 case 3:
-                    //Lista sprintów
-                    break;
-                case 4:
                     RunFirstListaProjectow();
                     break;
             }
+
+
         }
         public void SetCursorCenter(string message)
         {
