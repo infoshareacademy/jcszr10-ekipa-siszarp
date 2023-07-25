@@ -210,7 +210,11 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     //Listy zadań
                     break;
                 case 1:
-                    //Przypisany Ekipa
+                    //Przypisana Ekipa
+                    var projectTeamView = new ProjectTeamView(Data.projectService.GetProject(index));
+                    projectTeamView.Run();
+
+                    RunOpcjeProjectu(index);
                     break;
                 case 2:
                     Data.projectService.RemoveProject(index);

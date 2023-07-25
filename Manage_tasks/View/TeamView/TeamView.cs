@@ -17,11 +17,11 @@ public class TeamView
     {
         var options = new string[] { "Edytuj nazwę", "Edytuj opis", "Zmień Lidera", "Dodaj członka", "Usuń członka", "Usuń zespół", "Wstecz" };
 
-        var _goBackIndex = options.Length - 1;
+        var goBackIndex = options.Length - 1;
 
         int optionIndex = int.MaxValue;
 
-        while (optionIndex != _goBackIndex)
+        while (optionIndex != goBackIndex)
         {
             optionIndex = new ManageMenu(GetMainPrompt(), options).Run();
 
@@ -49,7 +49,7 @@ public class TeamView
 
                 case 5:
                     Data.TeamService.DeleteTeam(_team);
-                    optionIndex = _goBackIndex;
+                    optionIndex = goBackIndex;
 
                     break;
 
