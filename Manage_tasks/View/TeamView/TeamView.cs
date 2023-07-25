@@ -127,7 +127,8 @@ public class TeamView
     {
         var prompt = "Dodaj nowego członka zespołu";
 
-        var availabeMembers = Data.UserService.GetAllUsers().Except(_team.GetMembers()).ToList();
+        //var availabeMembers = Data.UserService.GetAllUsers().Except(_team.GetMembers()).ToList();
+        var availabeMembers = Data.UserService.GetAllUsers().Where(u1 => _team.GetMembers().All(u2 => u2.Id != u1.Id)).ToList();
 
         if (availabeMembers.Count == 0)
         {
@@ -172,10 +173,10 @@ public class TeamView
     private string GetMainPrompt()
     {
         var prompt = string.Concat(
-             $"Zespół {_team.Name}", Environment.NewLine,
-             $"Opis {_team.Description}", Environment.NewLine,
-             $"Lider {_team.Leader}", Environment.NewLine,
-             "Członkowie zespołu:", Environment.NewLine,
+             $"Zespół {_team.Name}", Environment.NewLine, Environment.NewLine,
+             $"Opis {_team.Description}", Environment.NewLine, Environment.NewLine,
+             $"Lider {_team.Leader}", Environment.NewLine, Environment.NewLine,
+             "Członkowie zespołu:", Environment.NewLine, Environment.NewLine,
              GetMembersString());
 
         return prompt;

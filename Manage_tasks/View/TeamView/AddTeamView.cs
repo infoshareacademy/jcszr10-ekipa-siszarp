@@ -34,7 +34,7 @@ public class AddTeamView
     {
         var members = new List<User>();
 
-        var availableUsers = Data.UserService.GetAllUsers().ToList();
+        var availableUsers = Data.UserService.GetAllUsers();
 
         int optionIndex = int.MaxValue;
         int goBackIndex = int.MinValue;

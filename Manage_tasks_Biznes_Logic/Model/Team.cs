@@ -33,14 +33,14 @@ public class Team
         }
     }
 
-    public Team(string name, string description, User leader, IEnumerable<User> users)
+    public Team(string name, string description, User leader, IEnumerable<User> members)
     {
         Id = Guid.NewGuid();
 
         Name = name;
         Description = description;
 
-        _members.AddRange(users);
+        _members.AddRange(members);
 
         Leader = leader;
     }
