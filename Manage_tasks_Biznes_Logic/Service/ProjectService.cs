@@ -25,6 +25,12 @@ namespace Manage_tasks_Biznes_Logic.Service
 
         public void LoadProjectsFromJson()   
         {
+            if (!File.Exists(_nameJsonFile))
+            {
+                Projects = new List<Project>();//🤨
+                return;
+            }
+
             string objectJsonFie = File.ReadAllText(_nameJsonFile);
             Projects = JsonSerializer.Deserialize<List<Project>>(objectJsonFie);
         }
