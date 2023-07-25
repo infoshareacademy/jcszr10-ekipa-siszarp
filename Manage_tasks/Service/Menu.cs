@@ -20,7 +20,7 @@ namespace Manage_tasks.Service
         public void Start()
         {
 
-            //Data.projectService.LoadProjectsFromJson();
+            Data.projectService.LoadProjectsFromJson();
             Title = "Manage - tasks";
             RunMainMenu();
 
@@ -28,6 +28,7 @@ namespace Manage_tasks.Service
 
         private void RunMainMenu()
         {
+            
             OutputEncoding = Encoding.Unicode;
             string prompt = @"
 ████████╗ █████╗ ███████╗██╗  ██╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
