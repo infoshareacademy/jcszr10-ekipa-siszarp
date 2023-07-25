@@ -16,6 +16,12 @@ namespace Manage_tasks.View
         {
             
             var projects = Data.projectService.GetAllProject();
+
+            if(projects.Count == 0)
+            {
+                return -1;
+            }
+
             var title = "Wszystkie projekty";
             string[] allNameOfProject = projects.Select(a=> a.Name).ToArray();
             if (allNameOfProject.Length < 1)

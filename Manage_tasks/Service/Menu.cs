@@ -160,7 +160,16 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                 case 1:
                     //Wyswietlamy wszystkie projecty  Wybierz project
                     int projectIndex = ProjectListView.DisplayListProject();
-                    RunOpcjeProjectu(projectIndex);
+
+                    if(projectIndex < 0)
+                    {
+                        RunFirstListaProjectow();
+                    }
+                    else
+                    {
+                        RunOpcjeProjectu(projectIndex);
+                    }
+
                     break;
                 case 2:
                     RunMainMenu();

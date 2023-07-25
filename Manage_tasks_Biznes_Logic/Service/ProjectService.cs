@@ -72,39 +72,13 @@ namespace Manage_tasks_Biznes_Logic.Service
             //Projects[index].Tasks.AddTask(new ProjectTask());        
         }
 
-        public string DisplayProjectDetails(int index)
-        {
-
-            try
-            {
-
-                if (Projects[index].ProjectTeam != null)
-                {
-                    return $@"Nazwa Projektu
-{Projects[index].Name} 
-Opis Projektu 
-{Projects[index].Description}
-Ekipa: {Projects[index].ProjectTeam.Name} Lider: {Projects[index].ProjectTeam.Leader}
-";
-                }
-                return $@"Nazwa Projektu
-{Projects[index].Name} 
-Opis Projektu
-{Projects[index].Description}";
-            }
-            catch (Exception ex)
-            {
-                return "Żaden projekt nie został wybrany lub stworzony";
-
-            }
-
-        }
         public void RemoveProject(int index)
         { 
              
             try
             {
-                Projects.Remove(Projects[index]);
+                //Projects.Remove(Projects[index]);
+                Projects.RemoveAt(index);
                 SaveProjectToJson();
             }
             catch (ArgumentOutOfRangeException ex)
