@@ -9,6 +9,7 @@ using Manage_tasks_Biznes_Logic.Model;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+ 
 
 namespace Manage_tasks_Biznes_Logic.Service
 {
@@ -53,8 +54,9 @@ namespace Manage_tasks_Biznes_Logic.Service
             catch (Exception ex)
             {
                 Project ExceptionProject = new Project();
-                ExceptionProject.Name = "Project nie został wybrany";
+                ExceptionProject.Crash();
                 return ExceptionProject;
+
             }
         }
         public void AssignTaskToProject(int index)
@@ -92,9 +94,18 @@ Opis Projektu
 
         }
         public void RemoveProject(int index)
-        {
-            Projects.Remove(Projects[index]);
-            SaveProjectToJson();                            // Zapisujemy nowa info do jsone po usunieciu projectu
+        { 
+             
+            try
+            {
+                Projects.Remove(Projects[index]);
+                SaveProjectToJson();
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                 
+            }
+                                        // Zapisujemy nowa info do jsone po usunieciu projectu
         }
 
         public void CreateProject(string name, string description)

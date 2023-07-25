@@ -27,12 +27,13 @@ namespace Manage_tasks.View
             Menu newobject = new Menu();
             newobject.SetCursorCenter(title);
             newobject.SetCursorCenter(name);
-            
             SetCursorPosition(30, CursorTop);
             string projectName = ReadLine();  
+
             newobject.SetCursorCenter(descrition);
             SetCursorPosition(30, CursorTop);
             string projectDescrition = ReadLine();
+            
             WriteLine();
             Data.projectService.CreateProject(projectName, projectDescrition);
             

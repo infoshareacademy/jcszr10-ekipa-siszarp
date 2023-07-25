@@ -9,7 +9,8 @@ using Manage_tasks_Biznes_Logic.Service;
 
 namespace Manage_tasks_Biznes_Logic.Model
 {
-    public class Project
+   
+    public class Project 
 
     {
         public string Name { get; set; }
@@ -37,6 +38,10 @@ namespace Manage_tasks_Biznes_Logic.Model
             ProjectTeam = team;
         }
 
-
+        public void Crash()
+        {
+            Name = "Error";
+            Description ="Error";
+        }
     }
 }
