@@ -234,10 +234,12 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             switch(index)
             {
                 case 0:
+                    //nazwa
                     TasksView.ChangeTaskName(project.Tasks.Tasks[prevIndex], project.Tasks.Tasks[prevIndex].TaskDetails()[index]);
                     RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 1:
+                    //opis
                     TasksView.ChangeTaskDescription(project.Tasks.Tasks[prevIndex], project.Tasks.Tasks[prevIndex].TaskDetails()[index]);
                     RunTaskMenu(project, prevIndex, projectIndex);
                     break;
@@ -253,10 +255,12 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     //user
                     break;
                 case 5:
+                    //kasacja
                     TasksView.DeleteTask(project.Tasks, project.Tasks.Tasks[prevIndex]);
                     RunOpcjeProjectu(projectIndex);
                     break;
                 case 6:
+                    //powrot
                     RunOpcjeProjectu(projectIndex);
                     break;
 
