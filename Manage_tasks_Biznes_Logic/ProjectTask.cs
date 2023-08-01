@@ -31,6 +31,7 @@
             this.TaskDescription = TaskDescription;
             
             this.FinishDate = null;
+            this.AssignedUser = null;
         }
         public ProjectTask(string TaskName, string TaskDescription, Status Status, DateTime? FinishDate, User? AssignedUser)
         {
