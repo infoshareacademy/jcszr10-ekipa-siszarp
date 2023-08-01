@@ -21,17 +21,18 @@ namespace Manage_tasks_Biznes_Logic.Model
 
         public int OutID { get; set; }
 
+        public Project() 
+                {
+                    Tasks = new TasksList();
+                }
 
-
-        public Project(string projectName, string projectDescription)
+        public Project(string projectName, string projectDescription) :this()
         {
             Name = projectName;
             Description = projectDescription;
-            Tasks = new TasksList();
+            
         }
-        public Project() 
-        { 
-        }
+        
 
         public void AddTeam(Team team)
         {

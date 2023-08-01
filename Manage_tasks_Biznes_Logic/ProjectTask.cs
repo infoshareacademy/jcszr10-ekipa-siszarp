@@ -32,14 +32,16 @@
             
             this.FinishDate = null;
             this.AssignedUser = null;
+            
         }
-        public ProjectTask(string TaskName, string TaskDescription, Status Status, DateTime? FinishDate, User? AssignedUser)
+        public ProjectTask(int Id, string TaskName, string TaskDescription, Status Status, DateTime? FinishDate, User? AssignedUser)
         {
             this.TaskName= TaskName;
             this.TaskDescription= TaskDescription;
             this.Status.ChangeStatus(Status.StatusID());
             this.FinishDate= FinishDate;
             this.AssignedUser = AssignedUser;
+            this.Id = Id;
         }
         /// <summary>
         /// Metoda klasy zwracająca tablice z właściwościami.
