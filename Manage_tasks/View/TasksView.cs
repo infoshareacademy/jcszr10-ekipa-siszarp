@@ -11,7 +11,7 @@ namespace Manage_tasks.View
             var title = "Lista zadań";
             var optionsArray = new[] {"Nowe zadanie", "Wróć"};
 
-                var namesArray = TasksServices.TasksNames(project.Tasks);
+                var namesArray = TasksServices.TasksNames(project);
                 var menuArray = namesArray.Concat(optionsArray).ToArray();
                 ManageMenu TasksListMenu = new ManageMenu(title, menuArray);
                 int index = TasksListMenu.Run();
@@ -55,9 +55,9 @@ namespace Manage_tasks.View
             switch (TaskNameMenu.Run())
             {
                 case 0:
-                    Console.WriteLine("Wprowadź nową nazwę zadania");
+                    Console.WriteLine("Wprowadź nowy opis zadania");
                     var newTaskDescription = Console.ReadLine();
-                    SelectTaskName(task, newTaskDescription);
+                    SelectTaskDescription(task, newTaskDescription);
                     break;
                 case 1:
                     TasksList editTaskDescription = new TasksList(new EditTaskDescription());

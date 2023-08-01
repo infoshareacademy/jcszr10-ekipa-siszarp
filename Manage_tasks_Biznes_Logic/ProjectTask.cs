@@ -11,23 +11,34 @@
         internal string TaskName;
         internal string TaskDescription;
         public Status Status;
-        internal DateTime FinishDate;
-        internal User AssignedUser;
+        internal DateTime? FinishDate;
+        internal User? AssignedUser;
         
 
 
-        public ProjectTask() { }
+        public ProjectTask() 
+        {
+            Status = new Status();
+        }
         /// <summary>
         /// Podstawowy konstruktor do tworzenia nowego zadania.
         /// </summary>
         /// <param name="TaskName">Parametr przedstawiający nazwę zadania.</param>
         /// <param name="TaskDescription">Parametr przedstawiający opis zadania.</param>        
-        public ProjectTask(string TaskName, string TaskDescription)
+        public ProjectTask(string TaskName, string TaskDescription) :this()
         {
             this.TaskName = TaskName;
             this.TaskDescription = TaskDescription;
-            Status = new Status();
             
+            this.FinishDate = null;
+        }
+        public ProjectTask(string TaskName, string TaskDescription, Status Status, DateTime? FinishDate, User? AssignedUser)
+        {
+            this.TaskName= TaskName;
+            this.TaskDescription= TaskDescription;
+            this.Status.ChangeStatus(Status.StatusID());
+            this.FinishDate= FinishDate;
+            this.AssignedUser = AssignedUser;
         }
         /// <summary>
         /// Metoda klasy zwracająca tablice z właściwościami.
@@ -41,14 +52,14 @@
                     this.TaskName, this.TaskDescription, this.Status.ShowCurrentStatus(), string.Empty, string.Empty
                 };
             }
-            else if(this.AssignedUser == null)
+            else if(this.FinishDate == null)
             {
                 return new string[]
                 {
                     this.TaskName, this.TaskDescription, this.Status.ShowCurrentStatus(), string.Empty, this.AssignedUser.FirstName
                 };
             }
-            else if(this.FinishDate == null)
+            else if(this.AssignedUser == null)
             {
                 return new string[]
                 {

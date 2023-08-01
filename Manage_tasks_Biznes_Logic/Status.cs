@@ -28,6 +28,9 @@
         {
             CurrentStatus = StatusList[StatusAsNumber];
         }
-        
+        public int StatusID()
+        {
+            return Array.IndexOf(StatusList, CurrentStatus);
+        }
     }
 }

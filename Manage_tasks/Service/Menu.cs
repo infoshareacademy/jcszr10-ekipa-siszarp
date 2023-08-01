@@ -199,7 +199,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             {
                 case 0:
                     //Listy zadań
-                    RunTaskMenu(Data.projectService.GetProject(index), TasksView.ShowTasksList(Data.projectService.GetProject(index)));
+                    RunTaskMenu(Data.projectService.GetProject(index), TasksView.ShowTasksList(Data.projectService.GetProject(index)), index);
                     break;
                 case 1:
                     //Przypisany Ekipa
@@ -217,34 +217,35 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
 
         }
 
-        private void RunTaskMenu(Project project, int index)
+        private void RunTaskMenu(Project project, int index, int projectIndex)
         {
-            
-            if(index == 1)
+            int length = TasksServices.TasksNames(project).Length;
+            if(index == length + 1)
             {
-                RunOpcjeProjectu(0);//0 do zmiany na cokolwiek co odpowiada indexowi 
+                RunOpcjeProjectu(projectIndex);
             }
-            else if(index == 0) 
+            else if(index == length) 
             {
                 CreateTaskView.CreateNewTask(project);
+                RunOpcjeProjectu(projectIndex);
             }
             else
             {
-                RunTaskDetails(project, TasksView.ShowTaskDetails(project, index));
+                RunTaskDetails(project, TasksView.ShowTaskDetails(project, index), index, projectIndex);
             }
         }
 
-        private void RunTaskDetails(Project project, int index)
+        private void RunTaskDetails(Project project, int index, int prevIndex, int projectIndex)
         {
             switch(index)
             {
                 case 0:
-                    TasksView.SelectTaskName(project.Tasks.Tasks[index], project.Tasks.Tasks[index].TaskDetails()[0]);
-                    RunTaskDetails(project, index);
+                    TasksView.SelectTaskName(project.Tasks.Tasks[prevIndex], project.Tasks.Tasks[prevIndex].TaskDetails()[index]);
+                    RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 1:
-                    TasksView.SelectTaskDescription(project.Tasks.Tasks[index], project.Tasks.Tasks[index].TaskDetails()[1]);
-                    RunTaskDetails(project, index);
+                    TasksView.SelectTaskDescription(project.Tasks.Tasks[prevIndex], project.Tasks.Tasks[prevIndex].TaskDetails()[index]);
+                    RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 2:
                     //status
@@ -256,11 +257,11 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     //user
                     break;
                 case 5:
-                    TasksView.DeleteTask(project.Tasks, project.Tasks.Tasks[index]);
-                    RunTaskMenu(project, index);
+                    TasksView.DeleteTask(project.Tasks, project.Tasks.Tasks[prevIndex]);
+                    RunOpcjeProjectu(projectIndex);
                     break;
                 case 6:
-                    RunTaskMenu(project, index);
+                    RunOpcjeProjectu(projectIndex);
                     break;
 
             }
