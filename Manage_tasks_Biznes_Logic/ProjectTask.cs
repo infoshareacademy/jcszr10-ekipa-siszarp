@@ -5,15 +5,15 @@
     /// </summary>
     public class ProjectTask
     {
-        private int Id { get; } //do przyszłej obsługi bazy danych 
+        public int Id { get; set; } //do przyszłej obsługi bazy danych 
 
         //kolejne właściwości do dodania
-        internal string TaskName;
-        internal string TaskDescription;
-        public Status Status;
-        internal DateTime? FinishDate;
-        internal User? AssignedUser;
-        
+        public string TaskName { get; set; }
+        public string TaskDescription { get; set; }
+        public Status Status { get; set; }
+        public DateTime? FinishDate { get; set; }
+        public User? AssignedUser { get; set; }
+
 
 
         public ProjectTask() 

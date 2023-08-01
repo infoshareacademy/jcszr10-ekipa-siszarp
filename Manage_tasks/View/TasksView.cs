@@ -1,4 +1,5 @@
 ﻿using Manage_tasks.Model;
+using Manage_tasks_Biznes_Logic.Data;
 using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
 namespace Manage_tasks.View
@@ -27,7 +28,7 @@ namespace Manage_tasks.View
             return TaskMenu.Run();
 
         }
-        public static void SelectTaskName(ProjectTask task, string taskName)
+        public static void ChangeTaskName(ProjectTask task, string taskName)
         {
             string[] options = new string[] {taskName, "Zapisz", "Wróć" };
             ManageMenu TaskNameMenu = new ManageMenu("", options);
@@ -37,33 +38,56 @@ namespace Manage_tasks.View
                 case 0:
                     Console.WriteLine("Wprowadź nową nazwę zadania");
                     var newTaskName = Console.ReadLine();
-                    SelectTaskName(task, newTaskName);
+                    ChangeTaskName(task, newTaskName);
                     break;
                 case 1:
                     TasksList editTaskName = new TasksList(new EditTaskName());
                     editTaskName.EditTask(taskName, task);
+                    Data.projectService.SaveProjectToJson();
                     break;
                 default:
                     break;
             }
         }
-        public static void SelectTaskDescription(ProjectTask task, string taskDescription)
+        public static void ChangeTaskDescription(ProjectTask task, string taskDescription)
         {
             string[] options = new string[] { taskDescription, "Zapisz", "Wróć" };
-            ManageMenu TaskNameMenu = new ManageMenu("", options);
+            ManageMenu TaskDescriptionMenu = new ManageMenu("", options);
 
-            switch (TaskNameMenu.Run())
+            switch (TaskDescriptionMenu.Run())
             {
                 case 0:
                     Console.WriteLine("Wprowadź nowy opis zadania");
                     var newTaskDescription = Console.ReadLine();
-                    SelectTaskDescription(task, newTaskDescription);
+                    ChangeTaskDescription(task, newTaskDescription);
                     break;
                 case 1:
                     TasksList editTaskDescription = new TasksList(new EditTaskDescription());
                     editTaskDescription.EditTask(taskDescription, task);
+                    Data.projectService.SaveProjectToJson();
                     break;
                 default:
+                    break;
+            }
+        }
+        public static void ChangeTaskStatus(ProjectTask task)
+        {
+            string[] options = new string[] { "Do zrobienia", "W trakcie", "Zrobiony" };
+            ManageMenu TaskStatusMenu = new ManageMenu("", options);
+
+            switch (TaskStatusMenu.Run())
+            {
+                case 0:
+                    task.Status.ChangeStatus(0);
+                    Data.projectService.SaveProjectToJson();
+                    break;
+                case 1:
+                    task.Status.ChangeStatus(1);
+                    Data.projectService.SaveProjectToJson();
+                    break;
+                case 2:
+                    task.Status.ChangeStatus(2);
+                    Data.projectService.SaveProjectToJson();
                     break;
             }
         }
@@ -80,6 +104,7 @@ namespace Manage_tasks.View
             {
                 case 0:
                     taskList.RemoveTask(task);
+                    Data.projectService.SaveProjectToJson();
                     break;
                 default : break;   
             }

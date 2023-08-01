@@ -4,7 +4,7 @@
     {
         //Tablica ze zdefiniowaną listą statusów.
         private readonly string[] StatusList = { "ToDo", "InProgress", "Done" };
-        private string CurrentStatus;
+        public string CurrentStatus { get; set; }
         /// <summary>
         /// Konstruktor przypisujący status "ToDo".
         /// </summary>
@@ -12,6 +12,7 @@
         {
             CurrentStatus = StatusList[0];
         }
+        
         /// <summary>
         /// Metoda zwracająca aktualny status.
         /// </summary>

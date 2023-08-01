@@ -234,15 +234,17 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             switch(index)
             {
                 case 0:
-                    TasksView.SelectTaskName(project.Tasks.Tasks[prevIndex], project.Tasks.Tasks[prevIndex].TaskDetails()[index]);
+                    TasksView.ChangeTaskName(project.Tasks.Tasks[prevIndex], project.Tasks.Tasks[prevIndex].TaskDetails()[index]);
                     RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 1:
-                    TasksView.SelectTaskDescription(project.Tasks.Tasks[prevIndex], project.Tasks.Tasks[prevIndex].TaskDetails()[index]);
+                    TasksView.ChangeTaskDescription(project.Tasks.Tasks[prevIndex], project.Tasks.Tasks[prevIndex].TaskDetails()[index]);
                     RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 2:
                     //status
+                    TasksView.ChangeTaskStatus(project.Tasks.Tasks[prevIndex]);
+                    RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 3:
                     //data zakonczenia
