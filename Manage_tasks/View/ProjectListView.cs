@@ -14,9 +14,14 @@ namespace Manage_tasks.View
     {
         public static int DisplayListProject()
         {
+            
             var projects = Data.projectService.GetAllProject();
             var title = "Wszystkie projekty";
             string[] allNameOfProject = projects.Select(a=> a.Name).ToArray();
+            if (allNameOfProject.Length < 1)
+            {
+                title = "Nie ma żadnych projektów";
+            }
             ManageMenu AllProjects = new ManageMenu(title,allNameOfProject);
             int ChoiceIndex = AllProjects.Run();
             return ChoiceIndex;
