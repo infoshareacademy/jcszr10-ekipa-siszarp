@@ -12,16 +12,21 @@
         public List<ProjectTask> Tasks { get; set;}
         public string TasksListName { get; set; }
         //
+
+        public TasksList()
+        {
+            Tasks = new List<ProjectTask>();
+        }
         /// <summary>
         /// Podstawowy konstruktor do tworzenia listy zadań.
         /// </summary>
         /// <param name="TasksListName">Nazwa listy zadań.</param>
-        public TasksList(string TasksListName)
+        public TasksList(string TasksListName) : this()
         {
-            Tasks = new List<ProjectTask>();
+            
             this.TasksListName = TasksListName;
         }
-        public TasksList() { }
+        
         /// <summary>
         /// Metoda dodająca obiekt klasy Task do listy zadań.
         /// </summary>
@@ -43,10 +48,10 @@
         /// <summary>
         /// Metoda obsługująca usuwanie zadania.
         /// </summary>
-        /// <param name="NewTask"></param>
-        public void RemoveTask(ProjectTask NewTask)
+        /// <param name="Task"></param>
+        public void RemoveTask(ProjectTask Task)
         { 
-            Tasks.Remove(NewTask); 
+            Tasks.Remove(Task); 
         }
         /// <summary>
         /// Metoda do wybierania zadania z listy zadań.

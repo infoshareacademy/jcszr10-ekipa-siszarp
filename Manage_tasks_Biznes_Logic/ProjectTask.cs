@@ -12,28 +12,56 @@
         internal string TaskDescription;
         public Status Status;
         internal DateTime FinishDate;
-        //
+        internal User AssignedUser;
+        
 
+
+        public ProjectTask() { }
         /// <summary>
-        /// Podstawowy konstruktor do tworzenia zadania.
+        /// Podstawowy konstruktor do tworzenia nowego zadania.
         /// </summary>
         /// <param name="TaskName">Parametr przedstawiający nazwę zadania.</param>
-        /// <param name="TaskDescription">Parametr przedstawiający opis zadania.</param>
-        /// <param name="dueDate">Parametr wyrażający maksymalną date ukończenia.</param>
-        public ProjectTask(string TaskName, string TaskDescription, DateTime FinishDate)
+        /// <param name="TaskDescription">Parametr przedstawiający opis zadania.</param>        
+        public ProjectTask(string TaskName, string TaskDescription)
         {
             this.TaskName = TaskName;
             this.TaskDescription = TaskDescription;
             Status = new Status();
-            this.FinishDate = FinishDate;
+            
         }
         /// <summary>
-        /// Metoda klasy wypisująca szczegóły wybranego zadania.
+        /// Metoda klasy zwracająca tablice z właściwościami.
         /// </summary>
-        public virtual void TaskDetails()
+        public string[] TaskDetails()
         {
-            //opis pozostaje do zmiany po ustaleniu wyglądu
-            Console.WriteLine(TaskName + " " + TaskDescription + " " + Status.ShowCurrentStatus());
+            if(this.AssignedUser == null && FinishDate == null)
+            {
+                return new string[]
+                {
+                    this.TaskName, this.TaskDescription, this.Status.ShowCurrentStatus(), string.Empty, string.Empty
+                };
+            }
+            else if(this.AssignedUser == null)
+            {
+                return new string[]
+                {
+                    this.TaskName, this.TaskDescription, this.Status.ShowCurrentStatus(), string.Empty, this.AssignedUser.FirstName
+                };
+            }
+            else if(this.FinishDate == null)
+            {
+                return new string[]
+                {
+                    this.TaskName, this.TaskDescription, this.Status.ShowCurrentStatus(), this.FinishDate.ToString(), string.Empty
+                };
+            }
+            else
+            {
+                return new string[]
+                {
+                    this.TaskName, this.TaskDescription, this.Status.ShowCurrentStatus(), this.FinishDate.ToString(), this.AssignedUser.FirstName
+                };
+            }
         }
         
         

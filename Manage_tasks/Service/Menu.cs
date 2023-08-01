@@ -8,7 +8,8 @@ using Manage_tasks.Model;
 using Manage_tasks.View;
 using Manage_tasks_Biznes_Logic.Data;
 using static System.Console;
-
+using Manage_tasks_Biznes_Logic.Model;
+using Manage_tasks_Biznes_Logic.Service;
 
 namespace Manage_tasks.Service
 {
@@ -200,6 +201,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             {
                 case 0:
                     //Listy zadań
+                    RunTaskMenu(Data.projectService.GetProject(index), TasksView.ShowTasksList(Data.projectService.GetProject(index)));
                     break;
                 case 1:
                     //Przypisany Ekipa
@@ -208,14 +210,62 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     Data.projectService.RemoveProject(index);
                     RunFirstListaProjectow();
                     break;
+                
                 case 3:
-                    //Lista sprintów
-                    break;
-                case 4:
                     RunFirstListaProjectow();
                     break;
             }
         }
+
+        private void RunTaskMenu(Project project, int index)
+        {
+            
+            if(index == 1)
+            {
+                RunOpcjeProjectu(0);//0 do zmiany na cokolwiek co odpowiada indexowi 
+            }
+            else if(index == 0) 
+            {
+                CreateTaskView.CreateNewTask(project);
+            }
+            else
+            {
+                RunTaskDetails(project, TasksView.ShowTaskDetails(project, index));
+            }
+        }
+
+        private void RunTaskDetails(Project project, int index)
+        {
+            switch(index)
+            {
+                case 0:
+                    TasksView.SelectTaskName(project.Tasks.Tasks[index], project.Tasks.Tasks[index].TaskDetails()[0]);
+                    RunTaskDetails(project, index);
+                    break;
+                case 1:
+                    TasksView.SelectTaskDescription(project.Tasks.Tasks[index], project.Tasks.Tasks[index].TaskDetails()[1]);
+                    RunTaskDetails(project, index);
+                    break;
+                case 2:
+                    //status
+                    break;
+                case 3:
+                    //data zakonczenia
+                    break;
+                case 4:
+                    //user
+                    break;
+                case 5:
+                    TasksView.DeleteTask(project.Tasks, project.Tasks.Tasks[index]);
+                    RunTaskMenu(project, index);
+                    break;
+                case 6:
+                    RunTaskMenu(project, index);
+                    break;
+
+            }
+        }
+
         public void SetCursorCenter(string message)
         {
             SetCursorPosition((WindowWidth - message.Length) / 2, CursorTop);

@@ -25,7 +25,7 @@ namespace Manage_tasks_Biznes_Logic.Model
         {
             Name = projectName;
             Description = projectDescription;
-
+            Tasks = new TasksList();
         }
         public Project() 
         { 
