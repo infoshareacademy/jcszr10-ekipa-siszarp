@@ -118,6 +118,7 @@ namespace Manage_tasks.View
                     newDate[2] = Console.ReadLine();
                     TasksList editTaskFinishDate = new TasksList(new EditTaskFinishDate());
                     editTaskFinishDate.EditTask(String.Join(".", newDate), task);
+                    task.Status.ChangeStatus(2);
                     break;
                 default : 
                     break;
