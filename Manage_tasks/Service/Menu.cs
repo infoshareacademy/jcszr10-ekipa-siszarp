@@ -271,22 +271,22 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     break;
                 case 3:
                     //data zakonczenia
-
+                    TasksView.ChangeFinishDate();
                     RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 4:
                     //user
-                    TasksView.ChangeAssignedUser(project.Tasks.Tasks[prevIndex], project);
+                    TasksView.ChangeAssignedUser(prevIndex, project);
                     RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 5:
                     //kasacja
                     TasksView.DeleteTask(project.Tasks, project.Tasks.Tasks[prevIndex]);
-                    RunOpcjeProjectu(projectIndex);
+                    RunTaskMenu(project, TasksView.ShowTasksList(project), projectIndex);
                     break;
                 case 6:
                     //powrot
-                    RunOpcjeProjectu(projectIndex);
+                    RunTaskMenu(project, TasksView.ShowTasksList(project),projectIndex);
                     break;
 
             }

@@ -38,12 +38,7 @@ namespace Manage_tasks_Biznes_Logic.Service
         {
 
             string objectSerialized = JsonSerializer.Serialize(Projects);
-            File.WriteAllText("ListaProjectow.json", objectSerialized);
-        }
-
-        void AssignTeam(int index)
-        {
-            // Projects[index].ProjectTeam.
+            File.WriteAllText(_nameJsonFile, objectSerialized);
         }
 
         public List<Project> GetAllProject()
@@ -65,13 +60,7 @@ namespace Manage_tasks_Biznes_Logic.Service
 
             }
         }
-        public void AssignTaskToProject(int index)
-        {
-            //Console.WriteLine("Podan neme");
-            //string name = Console.ReadLine(); 
-            //Projects[index].Tasks.AddTask(new ProjectTask());        
-        }
-
+       
         public void RemoveProject(int index)
         { 
              

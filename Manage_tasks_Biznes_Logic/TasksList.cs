@@ -1,4 +1,6 @@
-﻿namespace Manage_tasks
+﻿using Manage_tasks_Biznes_Logic.Model;
+
+namespace Manage_tasks
 {
     /// <summary>
     /// Klasa obsługująca listę zadań.
@@ -35,16 +37,7 @@
         {           
             Tasks.Add(NewTask);
         }
-        /// <summary>
-        /// Metoda zwracająca szczegóły wszystkich zadań w liście zadań.
-        /// </summary>
-        public void DisplayTasksDetails()
-        {
-            foreach (var Task in Tasks) 
-            {
-                Task.TaskDetails();
-            }
-        }
+        
         /// <summary>
         /// Metoda obsługująca usuwanie zadania.
         /// </summary>
@@ -64,6 +57,12 @@
 
             return Task;
         }
+
+        public void AssignUser(User user, int taskIndex)
+        {
+            this.Tasks[taskIndex].AssignedUser = user;
+        }
+
 
         public TasksList(IEditTask edit)
         {

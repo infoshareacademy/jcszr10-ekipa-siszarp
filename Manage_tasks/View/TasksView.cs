@@ -1,7 +1,10 @@
 ﻿using Manage_tasks.Model;
+using Manage_tasks.View.TeamView;
 using Manage_tasks_Biznes_Logic.Data;
 using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
+using System;
+
 namespace Manage_tasks.View
 {
     public static class TasksView
@@ -22,7 +25,7 @@ namespace Manage_tasks.View
         {
             var task = project.Tasks.PickTask(index);
             var taskDetails = task.TaskDetails();
-            string[] options = new string[] { $"Nazwa zadania: {taskDetails[0]}", $"Opis zadania: {taskDetails[1]}", $"Status zadania: {taskDetails[2]}", $"Data zakończenia: {taskDetails[3]}", $"Użytkownik: {taskDetails[4]}", "Usuń zadanie", "Wróć" };
+            string[] options = new string[] { $"Nazwa zadania: {taskDetails[0]}", $"Opis zadania: {taskDetails[1]}", $"Status zadania: {taskDetails[2]}", $"Data zakończenia: {taskDetails[3]}", $"Przypisany użytkownik: {taskDetails[4]}", "Usuń zadanie", "Wróć" };
 
             ManageMenu TaskMenu = new ManageMenu(taskDetails[0], options);
             return TaskMenu.Run();
@@ -79,21 +82,27 @@ namespace Manage_tasks.View
             {
                 case 0:
                     task.Status.ChangeStatus(0);
-                    Data.projectService.SaveProjectToJson();
+                    
                     break;
                 case 1:
                     task.Status.ChangeStatus(1);
-                    Data.projectService.SaveProjectToJson();
+                    
                     break;
                 case 2:
                     task.Status.ChangeStatus(2);
-                    Data.projectService.SaveProjectToJson();
+                    
                     break;
             }
+            Data.projectService.SaveProjectToJson();
+        }
+
+        public static void ChangeFinishDate()
+        {
+
         }
 
 
-        public static void ChangeAssignedUser(ProjectTask task, Project project)
+        public static void ChangeAssignedUser(int taskIndex, Project project)
         {
             if(project.ProjectTeam.GetMembers() == null)
             {
@@ -103,10 +112,40 @@ namespace Manage_tasks.View
                 switch(changeAssignedUserMenu.Run())
                 {
                     case 0:
-
+                        //var projectTeamView = new ProjectTeamView(project);
+                        //projectTeamView.Run();
                         break;
                     default:
                         break;
+                }
+            }
+            else
+            {
+                var task = project.Tasks.PickTask(taskIndex);
+                List<User> projectTeam = project.ProjectTeam.GetMembers().ToList();
+                var projectTeamOptions = projectTeam.Select(x => x.FirstName).ToArray();
+                
+                var options = projectTeamOptions.Concat(new string[] {"Wróć"}).ToArray();
+                string AssignedUser;
+                if(task.AssignedUser != null)
+                {
+                    AssignedUser = task.AssignedUser.FirstName;
+                }
+                else
+                {
+                    AssignedUser = string.Empty;
+                }
+                ManageMenu changeAssignedUserMenu = new ManageMenu($"Przypisany użytkownik: {AssignedUser}", options);
+
+                int index = changeAssignedUserMenu.Run();
+                if(index == projectTeamOptions.Length)
+                {
+
+                }
+                else
+                {
+                    project.Tasks.AssignUser(projectTeam[index], taskIndex);
+                    Data.projectService.SaveProjectToJson();
                 }
             }
         }

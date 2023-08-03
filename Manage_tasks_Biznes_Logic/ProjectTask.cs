@@ -1,4 +1,5 @@
-﻿namespace Manage_tasks
+﻿using Manage_tasks_Biznes_Logic.Model;
+namespace Manage_tasks
 {
     /// <summary>
     /// Klasa obsługująca zadanie.

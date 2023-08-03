@@ -22,9 +22,10 @@ namespace Manage_tasks_Biznes_Logic.Model
         public int OutID { get; set; }
 
         public Project() 
-                {
-                    Tasks = new TasksList();
-                }
+        {
+            Tasks = new TasksList();
+            
+        }
 
         public Project(string projectName, string projectDescription) :this()
         {
