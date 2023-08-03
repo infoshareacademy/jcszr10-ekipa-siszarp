@@ -93,6 +93,25 @@ namespace Manage_tasks.View
         }
 
 
+        public static void ChangeAssignedUser(ProjectTask task, Project project)
+        {
+            if(project.ProjectTeam.GetMembers() == null)
+            {
+                string[] options = new string[] { "Przypisz zespół", "Wróć" };
+                ManageMenu changeAssignedUserMenu = new ManageMenu("Brak przypisanego zespołu", options);
+
+                switch(changeAssignedUserMenu.Run())
+                {
+                    case 0:
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+
 
 
         public static void DeleteTask(TasksList taskList, ProjectTask task)
@@ -106,7 +125,8 @@ namespace Manage_tasks.View
                     taskList.RemoveTask(task);
                     Data.projectService.SaveProjectToJson();
                     break;
-                default : break;   
+                default : 
+                    break;   
             }
         }
     }

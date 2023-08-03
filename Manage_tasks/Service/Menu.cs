@@ -250,9 +250,12 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     break;
                 case 3:
                     //data zakonczenia
+                    RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 4:
                     //user
+                    TasksView.ChangeAssignedUser(project.Tasks.Tasks[prevIndex], project);
+                    RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 5:
                     //kasacja
