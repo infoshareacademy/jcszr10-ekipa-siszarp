@@ -271,7 +271,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     break;
                 case 3:
                     //data zakonczenia
-                    TasksView.ChangeFinishDate();
+                    TasksView.ChangeFinishDate(project.Tasks.Tasks[prevIndex]);
                     RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 4:

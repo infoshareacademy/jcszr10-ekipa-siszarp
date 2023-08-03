@@ -1,4 +1,6 @@
-﻿namespace Manage_tasks
+﻿using System.Globalization;
+
+namespace Manage_tasks
 {
     public interface IEditTask
     {
@@ -23,7 +25,9 @@
     {
         public void EditTask(string newTaskFinishDate, ProjectTask task)
         {
-            task.FinishDate = DateTime.Parse(newTaskFinishDate);
+            var cultureInfo = new CultureInfo("pl-PL");
+           
+            task.FinishDate = DateTime.Parse(newTaskFinishDate, cultureInfo);
         }
     }
 }

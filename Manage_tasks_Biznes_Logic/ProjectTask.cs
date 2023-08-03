@@ -43,6 +43,18 @@ namespace Manage_tasks
             this.FinishDate= FinishDate;
             this.AssignedUser = AssignedUser;
             this.Id = Id;
+            CheckIfFinished();
+        }
+        public void CheckIfFinished()
+        {
+            if(this.Status.StatusID() == 2)
+            {
+                this.FinishDate = DateTime.Now;
+            }
+            else 
+            {
+                this.FinishDate = null; 
+            }
         }
         /// <summary>
         /// Metoda klasy zwracająca tablice z właściwościami.
