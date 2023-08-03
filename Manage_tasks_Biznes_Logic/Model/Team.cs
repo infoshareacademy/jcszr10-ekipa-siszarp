@@ -1,17 +1,17 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Manage_tasks;
+namespace Manage_tasks_Biznes_Logic.Model;
 
 public class Team
 {
     private readonly List<User> _members = new();
     private User _leader;
 
-    public int Id { get; private set; }
+    public Guid Id { get; set; }
 
     public string Name { get; set; }
 
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
     public User Leader
     {
@@ -33,18 +33,27 @@ public class Team
         }
     }
 
-    public Team(IEnumerable<User> users, string name, User leader, string? description = null)
+    public Team()
     {
+        // Potrzebne.
+    }
+
+    public Team(string name, string description, User leader, IEnumerable<User> members)
+    {
+        Id = Guid.NewGuid();
+
         Name = name;
         Description = description;
 
-        _members.AddRange(users);
+        _members.AddRange(members);
 
         Leader = leader;
     }
 
-    public Team(string name, User leader, string? description = null)
+    public Team(string name, string description, User leader)
     {
+        Id = Guid.NewGuid();
+
         Name = name;
         Description = description;
 

@@ -1,5 +1,7 @@
 ﻿using Manage_tasks.Model;
 using Manage_tasks.View;
+using Manage_tasks.View.TeamView;
+using Manage_tasks.View.UserView;
 using Manage_tasks_Biznes_Logic.Data;
 using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
@@ -153,7 +155,16 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                 case 1:
                     //Wyswietlamy wszystkie projecty  Wybierz project
                     int projectIndex = ProjectListView.DisplayListProject();
-                    RunOpcjeProjectu(projectIndex);
+
+                    if(projectIndex < 0)
+                    {
+                        RunFirstListaProjectow();
+                    }
+                    else
+                    {
+                        RunOpcjeProjectu(projectIndex);
+                    }
+
                     break;
                 case 2:
                     RunMainMenu();
@@ -166,16 +177,22 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
         {
 
             string prompt = "Użytkownik";
-            string[] opcje = { "Pokaż wszytkich użytkowników ", "Pokaż Team", "Wróć" };
+            string[] opcje = { "Pokaż wszytkich użytkowników ", "Pokaż zespoły", "Wróć" };
             ManageMenu UsersMenu = new ManageMenu(prompt, opcje);
             int index = UsersMenu.Run();
             switch (index)
             {
                 case 0:
                     //Metoda pokazuje wszystkich uzytkownikow
+                    var usersListView = new UsersListView();
+                    usersListView.Run();
+                    RunMainMenu();
                     break;
                 case 1:
-                    //Metoda pokazuje teamsy
+                    //Metoda pokazuje zespoly
+                    var teamListView = new TeamsListView();
+                    teamListView.Run();
+                    RunMainMenu();
                     break;
                 case 2:
                     RunMainMenu();
@@ -196,7 +213,11 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     RunTaskMenu(Data.projectService.GetProject(index), TasksView.ShowTasksList(Data.projectService.GetProject(index)), index);
                     break;
                 case 1:
-                    //Przypisany Ekipa
+                    //Przypisana Ekipa
+                    var projectTeamView = new ProjectTeamView(Data.projectService.GetProject(index));
+                    projectTeamView.Run();
+
+                    RunOpcjeProjectu(index);
                     break;
                 case 2:
                     Data.projectService.RemoveProject(index);

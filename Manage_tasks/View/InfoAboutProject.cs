@@ -32,7 +32,7 @@ namespace Manage_tasks.View
                 ForegroundColor = ConsoleColor.Yellow;
                 SetCursorCenter($"{currentProject.Description}");
 
-                SetCursorCenter($"\u001b[91mZespół: \u001b[93m{currentProject.ProjectTeam.Name}  \u001b[91mLeader: \u001b[93m{currentProject.ProjectTeam.Leader}\u001b[0m");
+                SetCursorCenter($"\t\t\u001b[91mZespół: \u001b[93m{currentProject.ProjectTeam.Name}  \u001b[91mLeader: \u001b[93m{currentProject.ProjectTeam.Leader}\u001b[0m");
                 ForegroundColor = ConsoleColor.Blue;
                 SetCursorCenter("O zespole");
                 ForegroundColor = ConsoleColor.Yellow;

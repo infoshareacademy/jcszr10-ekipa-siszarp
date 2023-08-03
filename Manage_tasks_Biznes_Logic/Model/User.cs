@@ -1,8 +1,8 @@
-﻿namespace Manage_tasks;
+﻿namespace Manage_tasks_Biznes_Logic.Model;
 
 public class User
 {
-    public int Id { get; private set; }
+    public Guid Id { get; set; }
 
     public string FirstName { get; set; }
 
@@ -13,6 +13,8 @@ public class User
 
     public User(string firstName, string lastName, string position)
     {
+        Id = Guid.NewGuid();
+
         FirstName = firstName;
         LastName = lastName;
         Position = position;
