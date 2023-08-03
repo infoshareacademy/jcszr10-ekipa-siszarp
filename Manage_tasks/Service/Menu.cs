@@ -271,6 +271,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
                     break;
                 case 3:
                     //data zakonczenia
+
                     RunTaskMenu(project, prevIndex, projectIndex);
                     break;
                 case 4:
