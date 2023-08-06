@@ -1,14 +1,5 @@
-﻿using Manage_tasks.Model;
-using Manage_tasks_Biznes_Logic.Data;
+﻿using Manage_tasks_Biznes_Logic.Data;
 using Manage_tasks_Biznes_Logic.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Console;
 
 namespace Manage_tasks.View.ProjectView

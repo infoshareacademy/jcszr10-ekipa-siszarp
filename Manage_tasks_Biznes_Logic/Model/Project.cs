@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Manage_tasks;
-using Manage_tasks_Biznes_Logic.Service;
+﻿using Manage_tasks;
 
 namespace Manage_tasks_Biznes_Logic.Model
 {

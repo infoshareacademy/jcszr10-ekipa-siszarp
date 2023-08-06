@@ -1,12 +1,8 @@
 ﻿using Manage_tasks_Biznes_Logic.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using static System.Console;
 using Manage_tasks.Service;
-using Manage_tasks_Biznes_Logic.Model;
+ 
 
 namespace Manage_tasks.View.ProjectView
 {

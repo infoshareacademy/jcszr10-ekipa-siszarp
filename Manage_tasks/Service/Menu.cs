@@ -64,7 +64,7 @@ Witam w TaskMasterze !
 
         private void Exit()
         {
-            WriteLine("\n wcisnij jaki kolwiek klawisz by wyjsc");
+            WriteLine("\n wciśnij jakikolwiek klawisz by wyjść");
             ReadKey(true);
             Environment.Exit(0);
         }

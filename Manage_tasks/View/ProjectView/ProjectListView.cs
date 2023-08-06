@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Manage_tasks.Model;
-using Manage_tasks.Service;
+﻿using Manage_tasks.Model;
 using Manage_tasks_Biznes_Logic.Data;
 
 
