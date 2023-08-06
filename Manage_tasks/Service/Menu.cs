@@ -1,5 +1,6 @@
 ﻿using Manage_tasks.Model;
-using Manage_tasks.View;
+using Manage_tasks.View.ProjectView;
+using Manage_tasks.View.TaskView;
 using Manage_tasks.View.TeamView;
 using Manage_tasks.View.UserView;
 using Manage_tasks_Biznes_Logic.Data;
@@ -243,6 +244,7 @@ ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo";
             {
                 CreateTaskView.CreateNewTask(project);
                 RunOpcjeProjectu(projectIndex);
+
             }
             else
             {

@@ -1,12 +1,4 @@
-﻿using Manage_tasks.View;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Console;
+﻿using static System.Console;
 
 namespace Manage_tasks.Model
 {

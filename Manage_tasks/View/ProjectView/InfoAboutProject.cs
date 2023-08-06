@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Console;
 
-namespace Manage_tasks.View
+namespace Manage_tasks.View.ProjectView
 {
     public static class InfoAboutProject
     {
@@ -19,8 +19,41 @@ namespace Manage_tasks.View
         {
             Project currentProject = Data.projectService.GetProject(index);
 
-            
-             if (currentProject.ProjectTeam != null)
+            if (currentProject.ProjectTeam != null && currentProject.Tasks != null)
+            {
+                ForegroundColor = ConsoleColor.Blue;
+                SetCursorCenter("Project name");
+                ForegroundColor = ConsoleColor.Yellow;
+                SetCursorCenter($"{currentProject.Name}");
+                ForegroundColor = ConsoleColor.Blue;
+                SetCursorCenter("Opis projectu");
+                ForegroundColor = ConsoleColor.Yellow;
+                SetCursorCenter($"{currentProject.Description}");
+
+                SetCursorCenter($"\t\t\u001b[91mZespół: \u001b[93m{currentProject.ProjectTeam.Name}  \u001b[91mLeader: \u001b[93m{currentProject.ProjectTeam.Leader}\u001b[0m");
+                ForegroundColor = ConsoleColor.Blue;
+                SetCursorCenter("O zespole");
+                ForegroundColor = ConsoleColor.Yellow;
+                SetCursorCenter($"{currentProject.ProjectTeam.Description}");
+                ForegroundColor = ConsoleColor.Blue;
+                SetCursorCenter("Zadania");
+                ForegroundColor = ConsoleColor.Yellow;
+                foreach (var task in currentProject.Tasks.Tasks.Take(4))
+                {
+                    if (task.Status.CurrentStatus == "ToDo" || task.Status.CurrentStatus == "InProgress")
+                    {
+                        ForegroundColor = ConsoleColor.Red;
+                        SetCursorCenter($"[{task.TaskName}]");
+                        ForegroundColor = ConsoleColor.DarkYellow;
+                        SetCursorCenter($" - {(task.Status.CurrentStatus == "ToDo" ? "Do zrobienia" : "W trakcie")}");
+                        ForegroundColor = ConsoleColor.Yellow;
+                        SetCursorCenter($"Wykonuje: {(task.AssignedUser == null ? "nikt" : task.AssignedUser.FirstName)}");
+                    }
+
+
+                }
+            }
+            else if (currentProject.ProjectTeam != null)
             {
 
                 ForegroundColor = ConsoleColor.Blue;
@@ -38,26 +71,27 @@ namespace Manage_tasks.View
                 ForegroundColor = ConsoleColor.Yellow;
                 SetCursorCenter($"{currentProject.ProjectTeam.Description}");
             }
-            else if(currentProject != null)
+            else if (currentProject != null)
             {
                 ForegroundColor = ConsoleColor.Blue;
                 SetCursorCenter("Project name");
                 ForegroundColor = ConsoleColor.Yellow;
                 SetCursorCenter($"{currentProject.Name}");
-                
+
                 ForegroundColor = ConsoleColor.Blue;
                 SetCursorCenter("Opis projectu");
                 ForegroundColor = ConsoleColor.Yellow;
                 SetCursorCenter($"{currentProject.Description}");
                 ResetColor();
             }
-             
+
+
         }
         public static void DisplayOptionPoziom(int index, string title, int SelectedIndex, string[] Options, int Padding = 1)
         {
             ForegroundColor = ConsoleColor.DarkCyan;
             SetCursorCenter(title);
-            
+
             ResetColor();
             WriteLine();
 
@@ -131,7 +165,7 @@ namespace Manage_tasks.View
         private static void SetCursorCenter(string currentOption)
         {
             SetCursorPosition((WindowWidth - currentOption.Length) / 2, CursorTop);
-             WriteLine(currentOption);
+            WriteLine(currentOption);
         }
 
     }

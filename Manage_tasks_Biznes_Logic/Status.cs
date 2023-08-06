@@ -34,5 +34,7 @@
         {
             return Array.IndexOf(StatusList, CurrentStatus);
         }
+
+         
     }
 }

@@ -5,21 +5,21 @@ using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
 using System;
 
-namespace Manage_tasks.View
+namespace Manage_tasks.View.TaskView
 {
     public static class TasksView
     {
         public static int ShowTasksList(Project project)
         {
 
-            
-            var optionsArray = new[] {"Nowe zadanie", "Wróć"};
 
-                var namesArray = TasksServices.TasksNames(project);
-                var menuArray = namesArray.Concat(optionsArray).ToArray();
-                ManageMenu TasksListMenu = new ManageMenu("Lista zadań", menuArray);
-                int index = TasksListMenu.Run();
-                return index;
+            var optionsArray = new[] { "Nowe zadanie", "Wróć" };
+
+            var namesArray = TasksServices.TasksNames(project);
+            var menuArray = namesArray.Concat(optionsArray).ToArray();
+            ManageMenu TasksListMenu = new ManageMenu("Lista zadań", menuArray);
+            int index = TasksListMenu.Run();
+            return index;
         }
         public static int ShowTaskDetails(Project project, int index)
         {
@@ -33,10 +33,10 @@ namespace Manage_tasks.View
         }
         public static void ChangeTaskName(ProjectTask task, string taskName)
         {
-            string[] options = new string[] {taskName, "Zapisz", "Wróć" };
+            string[] options = new string[] { taskName, "Zapisz", "Wróć" };
             ManageMenu TaskNameMenu = new ManageMenu("Nazwa zadania", options);
 
-            switch(TaskNameMenu.Run())
+            switch (TaskNameMenu.Run())
             {
                 case 0:
                     Console.WriteLine("Wprowadź nową nazwę zadania");
@@ -101,7 +101,7 @@ namespace Manage_tasks.View
             string[] options = new string[] { "Ustaw obacną date zakończenia", "Wybierz inną date zakończenia", "Wróć" };
             ManageMenu finishDateMenu = new ManageMenu("Wybierz date zakończenia", options);
 
-            switch(finishDateMenu.Run())
+            switch (finishDateMenu.Run())
             {
                 case 0:
                     task.Status.ChangeStatus(2);
@@ -117,10 +117,10 @@ namespace Manage_tasks.View
                     Console.WriteLine("Podaj dzień");
                     newDate[2] = Console.ReadLine();
                     TasksList editTaskFinishDate = new TasksList(new EditTaskFinishDate());
-                    editTaskFinishDate.EditTask(String.Join(".", newDate), task);
+                    editTaskFinishDate.EditTask(string.Join(".", newDate), task);
                     task.Status.ChangeStatus(2);
                     break;
-                default : 
+                default:
                     break;
             }
         }
@@ -143,37 +143,37 @@ namespace Manage_tasks.View
                         break;
                 }
             }
+            else
+            {
+                var task = project.Tasks.PickTask(taskIndex);
+                List<User> projectTeam = project.ProjectTeam.GetMembers().ToList();
+                var projectTeamOptions = projectTeam.Select(x => x.FirstName).ToArray();
+
+                var options = projectTeamOptions.Concat(new string[] { "Wróć" }).ToArray();
+                string AssignedUser;
+                if (task.AssignedUser != null)
+                {
+                    AssignedUser = task.AssignedUser.FirstName;
+                }
                 else
                 {
-                    var task = project.Tasks.PickTask(taskIndex);
-                    List<User> projectTeam = project.ProjectTeam.GetMembers().ToList();
-                    var projectTeamOptions = projectTeam.Select(x => x.FirstName).ToArray();
-
-                    var options = projectTeamOptions.Concat(new string[] { "Wróć" }).ToArray();
-                    string AssignedUser;
-                    if (task.AssignedUser != null)
-                    {
-                        AssignedUser = task.AssignedUser.FirstName;
-                    }
-                    else
-                    {
-                        AssignedUser = string.Empty;
-                    }
-                    ManageMenu changeAssignedUserMenu = new ManageMenu($"Przypisany użytkownik: {AssignedUser}", options);
-
-                    int index = changeAssignedUserMenu.Run();
-                    if (index == projectTeamOptions.Length)
-                    {
-
-                    }
-                    else
-                    {
-                        project.Tasks.AssignUser(projectTeam[index], taskIndex);
-                        Data.projectService.SaveProjectToJson();
-                    }
+                    AssignedUser = string.Empty;
                 }
-            
-            
+                ManageMenu changeAssignedUserMenu = new ManageMenu($"Przypisany użytkownik: {AssignedUser}", options);
+
+                int index = changeAssignedUserMenu.Run();
+                if (index == projectTeamOptions.Length)
+                {
+
+                }
+                else
+                {
+                    project.Tasks.AssignUser(projectTeam[index], taskIndex);
+                    Data.projectService.SaveProjectToJson();
+                }
+            }
+
+
         }
 
 
@@ -190,8 +190,8 @@ namespace Manage_tasks.View
                     taskList.RemoveTask(task);
                     Data.projectService.SaveProjectToJson();
                     break;
-                default : 
-                    break;   
+                default:
+                    break;
             }
         }
     }
