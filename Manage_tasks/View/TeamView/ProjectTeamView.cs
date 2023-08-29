@@ -72,7 +72,7 @@ public class ProjectTeamView
             return;
         }
 
-        var options = availabeTeams.Select(team => team.ToString()).ToArray();
+        var options = availabeTeams.Select(team => $"{team.Name} Lider: {team.Leader}").ToArray();
 
         var optionIndex = new ManageMenu(prompt, options).Run();
 
@@ -109,7 +109,7 @@ public class ProjectTeamView
             return;
         }
 
-        var options = availabeTeams.Select(team => team.ToString()).ToArray();
+        var options = availabeTeams.Select(team => $"{team.Name} Lider: {team.Leader}").ToArray();
 
         var optionIndex = new ManageMenu(prompt, options).Run();
 
@@ -134,7 +134,7 @@ public class ProjectTeamView
     {
         string result = string.Empty;
 
-        foreach (var user in _project.ProjectTeam.GetMembers())
+        foreach (var user in _project.ProjectTeam.Members)
         {
             result = string.Concat(result, user.ToString(), Environment.NewLine);
         }

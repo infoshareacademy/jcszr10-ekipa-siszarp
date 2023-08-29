@@ -1,0 +1,220 @@
+﻿@model WebTaskMaster.Models.Team.TeamDetailsModel
+
+@{
+    ViewData["Title"] = Model.NameModel.Name;
+    ViewData["teamId"] = Model.TeamId;
+}
+
+<div class="container text-center text-wrap text-break">
+    <div class="row justify-content-center px-2 py-2 mb-2 bg-primary bg-opacity-25">
+        <h1 class="col-12 col-sm-11 order-first">@Model.NameModel.Name</h1>
+
+        @if (!string.IsNullOrWhiteSpace(Model.NameModel.Description))
+        {
+            <p class="fs-4 col-12 order-sm-last">@Model.NameModel.Description</p>
+        }
+
+        @* Edit team name and description modal button *@
+        <button class="btn btn-primary col-12 order-last col-sm-1 order-sm-2"
+                data-bs-toggle="modal" data-bs-target="#editTeamModal"
+                data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="row justify-content-center px-2 py-2 mb-2 bg-primary bg-opacity-25">
+
+        @{
+            var leaderLinkClass = "btn btn-outline-secondary fs-4 col-12 col-sm-11 col-xl-1 order-first";
+        }
+
+        @if (Model.Leader is not null)
+        {
+            <a class="@leaderLinkClass"
+               asp-controller="User" asp-action="Details" asp-route-userId="@Model.Leader.Id"
+               data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="User details">
+                <label asp-for="Leader"></label>
+            </a>
+
+            <p class=" fs-4 col-12 order-sm-last col-md-6 col-xl-5">@Model.Leader.FirstName</p>
+            <p class=" fs-4 col-12 order-sm-last col-md-6 col-xl-5">@Model.Leader.LastName</p>
+        }
+        else
+        {
+            <button class="@leaderLinkClass" disabled="disabled"><label asp-for="Leader"></label></button>
+            <p class=" fs-4 col-12 order-sm-last col-xl-10">Not assigned</p>
+        }
+
+        @* Change Leader Modal button *@
+        @if ((Model.Leader is not null && Model.Members.Count > 1) || (Model.Leader is null && Model.Members.Count > 0))
+        {
+            <button id="changeLeaderModalBtn" class="btn btn-primary col-12 order-last col-sm-1 order-sm-2 col-xl-1 order-xl-last" type="button"
+                    data-bs-toggle="modal" data-bs-target="#changeLeaderModal"
+                    data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Change leader">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                </svg>
+            </button>
+        }
+    </div>
+
+    <div class="row justify-content-center px-2 py-2 mb-2 bg-primary bg-opacity-10">
+        @* <h5 class="col-12 col-sm-11 order-first">Członkowie</h5> *@
+        <label class="fs-5 col-12 col-sm-11 order-first" asp-for="Members"></label>
+
+        @* Add Members Modal button *@
+        <button id="addMembersModalBtn" class="btn btn-primary col-12 col-sm-1 order-sm-1" type="button"
+                data-bs-toggle="modal" data-bs-target="#addMembersModal"
+                data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Add member">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+            </svg>
+        </button>
+
+        @for (var index = 0; index < Model.Members.Count; index++)
+        {
+            var member = Model.Members[index];
+
+            <div class="col-md-6 mt-2 order-last">
+                <div class="row justify-content-center px-2 py-2 mx-1 mb-2 bg-info bg-opacity-25">
+                    <a class="btn btn-outline-secondary fs-5 col-12 col-sm-10 col-xl-1 order-first"
+                       asp-controller="User" asp-action="Details" asp-route-userId="@member.Id"
+                       data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="User details">
+                        @(index + 1)
+                    </a>
+
+                    <p class="fs-5 col-12 order-sm-last col-lg-6 col-xl-5">@member.FirstName</p>
+                    <p class="fs-5 col-12 order-sm-last col-lg-6 col-xl-5">@member.LastName</p>
+
+                    @* Delete Team Member Modal button *@
+                    <button class="btn btn-danger col-12 order-last col-sm-2 order-sm-2 col-xl-1 order-xl-last" type="button"
+                            data-bs-toggle="modal" data-bs-target="#deleteTeamMemberModal" data-bs-link-id="link@(index)"
+                            data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete member">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                        </svg>
+                    </button>
+
+                    @* hidden link for modal *@
+                    <a id="link@(index)" hidden asp-action="DeleteMember" asp-route-teamId="@Model.TeamId" asp-route-memberId="@member.Id"></a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="row justify-content-end">
+        @* Delete Team Modal button  *@
+        <button type="button" class="btn btn-danger col-12 col-sm-2"
+                data-bs-toggle="modal" data-bs-target="#deleteTeamModal"
+                data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+@* Edit team name and description modal *@
+<partial name="_EditPartial" model="Model.NameModel" />
+
+@* Change Leader Modal *@
+<partial name="_ChangeLeaderPartial" model="Model.ChangeLeaderModel" />
+
+@* Add Members Modal *@
+<partial name="_AddMembersPartial" model="Model.AddMembersModel" />
+
+@* Delete Team Member Modal *@
+<div id="deleteTeamMemberModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Delete team member</h1>
+                <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you sure you want to remove a team member?</span>
+            </div>
+            <div class="modal-footer">
+                @* Href will be set on modal activation. *@
+                <a id="confirmTeamMemberDeleteBtn" class="btn btn-danger px-5 mx-5">Yes</a>
+
+                <button class="btn btn-primary px-5 mx-5" type="button" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Delete Team Modal *@
+<div id="deleteTeamModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Delete team</h1>
+                <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you sure you want to delete the team?</span>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger px-5 mx-5" asp-action="Delete" asp-route-teamId="@Model.TeamId">Yes</a>
+                <button class="btn btn-primary px-5 mx-5" type="button" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_ToastPartial" />
+
+@section Scripts
+    {
+    @{
+        var modalBtnId = ViewData["ActivateModal"] switch
+        {
+            "AddMembers" => "addMembersModalBtn",
+            "ChangeLeader" => "changeLeaderModalBtn",
+            "Edit" => "editTeamModal",
+            _ => null
+        };
+
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    @* Activate modal on page load. Needed to display server side validation result. *@
+    @if (modalBtnId is not null)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                document.getElementById("@modalBtnId").click();
+            });
+        </script>
+    }
+
+    @* Set hidden link for delete team member modal. *@
+    <script type="text/javascript">
+        document.getElementById('deleteTeamMemberModal').addEventListener('show.bs.modal', event => {
+            var btn = event.relatedTarget;
+
+            var linkId = $(btn).attr('data-bs-link-id');
+
+            $('#confirmTeamMemberDeleteBtn').attr('href', $('#' + linkId).attr('href'));
+        })
+    </script>
+
+    @* tooltips *@
+    <script type="text/javascript">
+        tooltipTriggerList = document.querySelectorAll('[data-bs-toggle-tooltip="tooltip"]');
+        tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    </script>
+
+    @* show toast for team edit response *@
+    @if (TempData["ToastMessage"] is not null)
+    {
+        <script type="text/javascript">
+            bootstrap.Toast.getOrCreateInstance(document.getElementById('teamEditToast')).show();
+        </script>
+    }
+}

@@ -2,6 +2,7 @@
 using Manage_tasks.View.UserView;
 using Manage_tasks_Biznes_Logic.Data;
 using Manage_tasks_Biznes_Logic.Model;
+using System.Xml.Linq;
 
 namespace Manage_tasks.View.TeamView;
 
@@ -51,7 +52,7 @@ public class TeamsListView
 
         if (_teams.Count > 0)
         {
-            options.AddRange(_teams.Select(team => team.ToString()));
+            options.AddRange(_teams.Select(team => $"{team.Name} Lider: {team.Leader}"));
         }
 
         options.AddRange(_staticOptions);

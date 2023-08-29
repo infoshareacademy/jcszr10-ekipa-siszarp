@@ -1,0 +1,35 @@
+﻿@model WebTaskMaster.Models.User.UserModel
+
+<div id="createUserModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Add user</h1>
+                <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create">
+                    <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+                    <label class="form-label col-12" asp-for="FirstName"></label>
+                    <input class="form-control col-12" asp-for="FirstName" />
+                    <span class="text-danger col-12" asp-validation-for="FirstName"></span>
+
+                    <label class="form-label col-12" asp-for="LastName"></label>
+                    <input class="form-control col-12" asp-for="LastName" />
+                    <span class="text-danger col-12" asp-validation-for="LastName"></span>
+
+                    <label class="form-label col-12" asp-for="Position"></label>
+                    <input class="form-control col-12" asp-for="Position" />
+                    <span class="text-danger col-12" asp-validation-for="Position"></span>
+
+
+                    <button class="btn btn-primary mt-2 col-12" type="submit">Add</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

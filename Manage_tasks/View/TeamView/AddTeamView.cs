@@ -25,9 +25,19 @@ public class AddTeamView
 
         var leader = GetLeader(teamMembers);
 
-        var newTeam = new Team(teamName, teamDescription, leader, teamMembers);
+        var newTeam = new Team
+        {
+            Name = teamName,
+            Description = teamDescription,
+            Leader = leader,
+            Members = teamMembers
+        };
 
-        Data.TeamService.UpdateTeam(newTeam);
+        var teamId = Data.TeamService.CreateTeam(newTeam.Name, newTeam.Description);
+
+        Data.TeamService.AddMembersToTeam(teamId, newTeam.Members.Select(m => m.Id));
+
+        Data.TeamService.ChangeTeamLeader(teamId, newTeam.Leader.Id);
     }
 
     private List<User> GetMembers()

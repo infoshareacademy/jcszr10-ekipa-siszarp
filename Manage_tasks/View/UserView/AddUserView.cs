@@ -25,7 +25,12 @@ public class AddUserView
 
         Console.ResetColor();
 
-        var newUser = new User(firstName, lastName, position);
+        var newUser = new User
+        {
+            FirstName = firstName,
+            LastName = lastName,
+            Position = position
+        };
 
         Data.UserService.UpdateUser(newUser);
     }

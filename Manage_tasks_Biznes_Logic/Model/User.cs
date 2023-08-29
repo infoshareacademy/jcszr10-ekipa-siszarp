@@ -8,17 +8,7 @@ public class User
 
     public string LastName { get; set; }
 
-    // Czy stanowisko powinno być oddzielną klasą?
     public string Position { get; set; }
-
-    public User(string firstName, string lastName, string position)
-    {
-        Id = Guid.NewGuid();
-
-        FirstName = firstName;
-        LastName = lastName;
-        Position = position;
-    }
 
     public override string ToString()
     {

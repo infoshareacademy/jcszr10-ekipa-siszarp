@@ -9,18 +9,22 @@ public class UserService
 
     public User? GetUserById(Guid id)
     {
-        return GetAllUsers().Where(user => user.Id == id).FirstOrDefault();
+        return GetAllUsers().FirstOrDefault(user => user.Id == id);
     }
 
     public void UpdateUser(User user)
     {
-        List<User> users = GetAllUsers();
+        var users = GetAllUsers();
 
-        var userInDatabase = users.Where(u => u.Id == user.Id).FirstOrDefault();
+        var userInDatabase = users.FirstOrDefault(u => u.Id == user.Id);
 
         if (userInDatabase is not null)
         {
             users.Remove(userInDatabase);
+        }
+        else
+        {
+            user.Id = Guid.NewGuid();
         }
 
         users.Add(user);
@@ -28,11 +32,11 @@ public class UserService
         SaveUsers(users);
     }
 
-    public void DeleteUser(User user)
+    public void DeleteUser(Guid id)
     {
-        List<User> users = GetAllUsers();
+        var users = GetAllUsers();
 
-        var userInDatabase = users.Where(u => u.Id == user.Id).FirstOrDefault();
+        var userInDatabase = users.FirstOrDefault(u => u.Id == id);
 
         if (userInDatabase is null)
         {
@@ -53,12 +57,7 @@ public class UserService
             users = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(UsersFileName));
         }
 
-        if (users is null)
-        {
-            users = new ();
-        }
-
-        return users;
+        return users ?? new List<User>();
     }
 
     private void SaveUsers(List<User> users)

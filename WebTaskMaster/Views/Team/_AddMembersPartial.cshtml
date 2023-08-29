@@ -1,0 +1,36 @@
+﻿@model WebTaskMaster.Models.Team.TeamAddMembersModel
+
+<div id="addMembersModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Add members</h1>
+                <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddMembers" asp-route-teamId="@ViewData["teamId"]">
+                    <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+                    <label class="form-label col-12" asp-for="AvailableMembers"></label>
+                    <select class="form-select col-12" asp-for="MembersIdsToAdd">
+                        @foreach (var member in Model.AvailableMembers!)
+                        {
+                            <option value="@member.Id">@member.FirstName @member.LastName</option>
+                        }
+                    </select>
+                    <div class="form-text col-12">
+                        <span class="text-warning">Ctr + click</span>
+                        <span class="text-info">- select multiple members.</span>
+                    </div>
+                    <span class="col-12 text-danger" asp-validation-for="MembersIdsToAdd"></span>
+
+                    <button class="btn btn-primary col-12 my-2" type="submit">Add</button>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

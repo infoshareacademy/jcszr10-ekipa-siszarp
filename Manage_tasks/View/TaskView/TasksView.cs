@@ -146,7 +146,7 @@ namespace Manage_tasks.View.TaskView
             else
             {
                 var task = project.Tasks.PickTask(taskIndex);
-                List<User> projectTeam = project.ProjectTeam.GetMembers().ToList();
+                List<User> projectTeam = project.ProjectTeam.Members;
                 var projectTeamOptions = projectTeam.Select(x => x.FirstName).ToArray();
 
                 var options = projectTeamOptions.Concat(new string[] { "Wróć" }).ToArray();

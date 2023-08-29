@@ -1,0 +1,79 @@
+﻿@model WebTaskMaster.Models.User.UserModel
+
+@{
+    ViewData["Title"] = "User details";
+}
+
+<div class="container">
+
+    <form class="row justify-content-start needs-validation" asp-action="Edit">
+        <input hidden="true" asp-for="UserId" />
+
+        <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+        <div class="col-12 col-lg-4 my-2">
+            <label class="form-label" asp-for="FirstName"></label>
+            <input class="form-control" asp-for="FirstName" />
+            <span class="text-danger" asp-validation-for="FirstName"></span>
+        </div>
+
+        <div class="col-12 col-lg-4 my-2">
+            <label class="form-label" asp-for="LastName"></label>
+            <input class="form-control" asp-for="LastName" />
+            <span class="text-danger" asp-validation-for="LastName"></span>
+        </div>
+
+        <div class="col-12 col-lg-4 my-2">
+            <label class="form-label" asp-for="Position"></label>
+            <input class="form-control" asp-for="Position" />
+            <span class="text-danger" asp-validation-for="Position"></span>
+        </div>
+
+
+        <button class="btn btn-primary col-12 col-md-3 my-2" type="submit">Save changes</button>
+    </form>
+
+    <div class="row justify-content-end">
+        @* Delete Team Modal button  *@
+        <button type="button" class="btn btn-danger col-12 col-sm-2"
+                data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+            Delete
+        </button>
+    </div>
+</div>
+
+@* Delete User Modal *@
+<div id="deleteUserModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Delete user</h1>
+                <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you sure you want to delete the user?</span>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger px-5 mx-5" asp-action="Delete" asp-route-teamUserId="@Model.UserId">Yes</a>
+                <button class="btn btn-primary px-5 mx-5" type="button" data-bs-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_ToastPartial" />
+
+@section Scripts
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    @* show toast for team edit response *@
+    @if (TempData["ToastMessage"] is not null)
+    {
+        <script type="text/javascript">
+            bootstrap.Toast.getOrCreateInstance(document.getElementById('teamEditToast')).show();
+        </script>
+    }
+}

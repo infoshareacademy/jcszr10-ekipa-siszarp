@@ -42,7 +42,7 @@ public class UserView
                     break;
 
                 case 3:
-                    Data.UserService.DeleteUser(_user);
+                    Data.UserService.DeleteUser(_user.Id);
                     optionIndex = _goBackIndex;
 
                     break;

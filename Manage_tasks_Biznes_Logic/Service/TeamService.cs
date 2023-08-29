@@ -11,30 +11,28 @@ public class TeamService
 
     public Team? GetTeamById(Guid id)
     {
-        return GetAllTeams().Where(team => team.Id == id).FirstOrDefault();
+        return GetAllTeams().FirstOrDefault(team => team.Id == id);
     }
 
-    public void UpdateTeam(Team team)
+    public Guid CreateTeam(string name, string description)
     {
-        List<Team> teams = GetAllTeams();
-
-        var userInDatabase = teams.Where(t => t.Id == team.Id).FirstOrDefault();
-
-        if (userInDatabase is not null)
+        var newTeam = new Team
         {
-            teams.Remove(userInDatabase);
-        }
+            Id = Guid.NewGuid(),
+            Name = name,
+            Description = description
+        };
 
-        teams.Add(team);
+        UpdateTeam(newTeam);
 
-        SaveTeams(teams);
+        return newTeam.Id;
     }
 
-    public void DeleteTeam(Team team)
+    public void DeleteTeam(Guid id)
     {
-        List<Team> teams = GetAllTeams();
+        var teams = GetAllTeams();
 
-        var teamInDatabase = teams.Where(t => t.Id == team.Id).FirstOrDefault();
+        var teamInDatabase = teams.FirstOrDefault(t => t.Id == id);
 
         if (teamInDatabase is null)
         {
@@ -60,19 +58,105 @@ public class TeamService
             return new List<Team>();
         }
 
-        var teams = new List<Team>();
+        return teamsObjects.Select(FromJsonObject).ToList();
+    }
 
-        foreach (var teamObject in teamsObjects)
+    public void AddMembersToTeam(Guid teamId, IEnumerable<Guid> newMembersIds)
+    {
+        var teamInDataBase = GetTeamById(teamId);
+
+        if (teamInDataBase is null)
         {
-            teams.Add(FromJsonObject(teamObject));
+            return;
         }
 
-        return teams;
+        var teamAsJsonObj = ToJsonObject(teamInDataBase);
+
+        var membersIdsUnion = teamAsJsonObj.MembersIds.Union(newMembersIds).ToArray();
+
+        teamAsJsonObj = teamAsJsonObj with { MembersIds = membersIdsUnion };
+
+        UpdateTeam(FromJsonObject(teamAsJsonObj));
+    }
+
+    public void DeleteMemberFromTeam(Guid teamId, Guid memberIdToDelete)
+    {
+        var teamInDataBase = GetTeamById(teamId);
+
+        if (teamInDataBase is null)
+        {
+            return;
+        }
+
+        var teamAsJsonObj = ToJsonObject(teamInDataBase);
+
+        var notDeletedMembersIds = teamAsJsonObj.MembersIds.Where(id => id != memberIdToDelete).ToArray();
+
+        teamAsJsonObj = teamAsJsonObj with { MembersIds = notDeletedMembersIds };
+
+        if (teamAsJsonObj.LeaderId == memberIdToDelete)
+        {
+            teamAsJsonObj = teamAsJsonObj with { LeaderId = null };
+        }
+
+        UpdateTeam(FromJsonObject(teamAsJsonObj));
+    }
+
+    public void EditNameAndDescription(Guid teamId, string newName, string newDescription)
+    {
+        var teamInDataBase = GetTeamById(teamId);
+
+        if (teamInDataBase is null)
+        {
+            return;
+        }
+
+        var teamAsJsonObj = ToJsonObject(teamInDataBase);
+
+        teamAsJsonObj = teamAsJsonObj with { Name = newName, Description = newDescription };
+
+        UpdateTeam(FromJsonObject(teamAsJsonObj));
+    }
+
+    public void ChangeTeamLeader(Guid teamId, Guid newLeaderId)
+    {
+        var teamInDataBase = GetTeamById(teamId);
+
+        if (teamInDataBase is null)
+        {
+            return;
+        }
+
+        var teamAsJsonObj = ToJsonObject(teamInDataBase);
+
+        teamAsJsonObj = teamAsJsonObj with { LeaderId = newLeaderId };
+
+        UpdateTeam(FromJsonObject(teamAsJsonObj));
+    }
+
+    private void UpdateTeam(Team team)
+    {
+        var teams = GetAllTeams();
+
+        var teamInDatabase = teams.FirstOrDefault(t => t.Id == team.Id);
+
+        if (teamInDatabase is not null)
+        {
+            teams.Remove(teamInDatabase);
+        }
+        else
+        {
+            team.Id = Guid.NewGuid();
+        }
+
+        teams.Add(team);
+
+        SaveTeams(teams);
     }
 
     private void SaveTeams(List<Team> teams)
     {
-        var serializerOptions = new JsonSerializerOptions() { WriteIndented = true };
+        var serializerOptions = new JsonSerializerOptions { WriteIndented = true };
 
         var teamsObjects = new List<TeamAsJsonObject>();
 
@@ -86,36 +170,30 @@ public class TeamService
 
     private TeamAsJsonObject ToJsonObject(Team team)
     {
-        var membersIds = team.GetMembers().Select(member => member.Id).ToArray();
+        var membersIds = team.Members.Count > 0 ? team.Members.Select(member => member.Id).ToArray() : Array.Empty<Guid>();
 
-        return new TeamAsJsonObject(team.Id, team.Name, team.Description, team.Leader.Id, membersIds);
+        return new TeamAsJsonObject(team.Id, team.Name, team.Description, team.Leader?.Id, membersIds);
     }
 
     private Team FromJsonObject(TeamAsJsonObject teamObject)
     {
         var allUsers = Data.Data.UserService.GetAllUsers();
 
-        var leader = allUsers.Where(user => user.Id == teamObject.LeaderId).FirstOrDefault();
+        var leader = allUsers.FirstOrDefault(user => user.Id == teamObject.LeaderId);
 
-        if (leader is null)
+        var members = allUsers.Join(teamObject.MembersIds, user => user.Id, memberId => memberId, (user, memberId) => user).ToList();
+
+        var team = new Team
         {
-            throw new Exception();
-        }
-
-        var members = allUsers.Join(teamObject.MembersIds, user => user.Id, memberId => memberId, (user, memberId) => user);
-
-        if (!members.Any())
-        {
-            throw new Exception();
-        }
-
-        var team = new Team(teamObject.Name, teamObject.Description, leader, members)
-        {
-            Id = teamObject.ID
+            Id = teamObject.Id,
+            Name = teamObject.Name,
+            Description = teamObject.Description,
+            Leader = leader,
+            Members = members
         };
 
         return team;
     }
 
-    private record TeamAsJsonObject(Guid ID, string Name, string Description, Guid LeaderId, Guid[] MembersIds);
+    private record TeamAsJsonObject(Guid Id, string Name, string Description, Guid? LeaderId, Guid[] MembersIds);
 }

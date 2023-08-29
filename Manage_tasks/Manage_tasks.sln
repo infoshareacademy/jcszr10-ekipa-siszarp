@@ -7,7 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manage_tasks", "Manage_task
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manage_tasks_Biznes_Logic", "..\Manage_tasks_Biznes_Logic\Manage_tasks_Biznes_Logic.csproj", "{00D7A8C7-E604-46B9-A128-69889E817F19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTaskMaster", "..\WebTaskMaster\WebTaskMaster.csproj", "{C460BE93-F41A-4700-BE93-FCC7BBDEF5EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTaskMaster", "..\WebTaskMaster\WebTaskMaster.csproj", "{C460BE93-F41A-4700-BE93-FCC7BBDEF5EF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{00D7A8C7-E604-46B9-A128-69889E817F19} = {00D7A8C7-E604-46B9-A128-69889E817F19}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
