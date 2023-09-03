@@ -16,7 +16,7 @@ internal class Task
 
     public DateTime? FinishDate { get; set; }
 
-    public int StatusId { get; set; }
+    public TaskStatus StatusId { get; set; }
 
     public Guid? TaskListId { get; set; }
 
