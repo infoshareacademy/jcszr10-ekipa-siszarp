@@ -15,4 +15,8 @@
 		<ProjectReference Include="..\Manage_tasks_Biznes_Logic\Manage_tasks_Biznes_Logic.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Servises\" />
+	</ItemGroup>
+
 </Project>

@@ -41,7 +41,7 @@ namespace Manage_tasks_Biznes_Logic.Service
             File.WriteAllText(_nameJsonFile, objectSerialized);
         }
 
-        public List<Project> GetAllProject()
+        public List<Project> GetAllProjects()
         {
             return Projects;
         }
@@ -80,6 +80,26 @@ namespace Manage_tasks_Biznes_Logic.Service
         public void CreateProject(string name, string description)
         {
             Projects.Add(new Project(name, description)); // tu zapisujemy do jsone
+            SaveProjectToJson();
+        }
+
+        public void UpdateProject(Project project)
+        {
+            var projects = GetAllProjects();
+
+            var projectInDatabase = projects.FirstOrDefault(u => u.Id == project.Id);
+
+            if (projectInDatabase is not null)
+            {
+                projects.Remove(projectInDatabase);
+            }
+            else
+            {
+                project.Id = Guid.NewGuid();
+            }
+
+            projects.Add(project);
+
             SaveProjectToJson();
         }
 

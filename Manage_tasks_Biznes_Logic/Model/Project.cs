@@ -13,6 +13,7 @@ namespace Manage_tasks_Biznes_Logic.Model
         public TasksList Tasks { get; set; }
 
         public int OutID { get; set; }
+        public Guid Id { get; set; }
 
         public Project() 
         {
