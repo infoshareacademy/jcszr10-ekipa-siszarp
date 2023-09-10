@@ -14,7 +14,7 @@
         <h1 class="col-12 col-sm-9 col-lg-10">Teams</h1>
 
         @* Create Team Modal button  *@
-        <button class="btn btn-primary col-12 col-sm-3 col-lg-2" type="button"
+        <button id="createTeamModalBtn" class="btn btn-primary col-12 col-sm-3 col-lg-2" type="button"
                 data-bs-toggle="modal" data-bs-target="#createTeamModal">
             Add team
         </button>
@@ -81,7 +81,7 @@
     @{
         var modalBtnId = ViewData["ActivateModal"] switch
         {
-            "Create" => "createTeamModal",
+            "Create" => "createTeamModalBtn",
             _ => null
         };
 
