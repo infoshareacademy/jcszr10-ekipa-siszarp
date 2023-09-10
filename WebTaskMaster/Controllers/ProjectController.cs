@@ -11,11 +11,11 @@ namespace WebTaskMaster.Controllers
 {
     public class ProjectController : Controller
     {
-        private readonly ProjectService _projectService;
+        private readonly IProjectService _projectService;
         
-        public ProjectController()
+        public ProjectController(IProjectService projectService)
         {
-            _projectService = new ProjectService();
+            _projectService = projectService;
         }
 
         // GET: ProjectController

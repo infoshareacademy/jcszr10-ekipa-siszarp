@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Manage_tasks_Database\Manage_tasks_Database.csproj" />
   </ItemGroup>
 
 </Project>
