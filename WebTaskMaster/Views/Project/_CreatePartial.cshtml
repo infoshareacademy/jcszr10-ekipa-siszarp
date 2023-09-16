@@ -21,15 +21,15 @@
                     <input class="form-control col-12" asp-for="Description" />
                     <span class="text-danger col-12" asp-validation-for="Description"></span>
 
-                    <label class="form-label col-12" asp-for="ProjectTeam"></label>
+                 @*    <label class="form-label col-12" asp-for="ProjectTeam"></label>
                     <input class="form-control col-12" asp-for="ProjectTeam" />
                     <span class="text-danger col-12" asp-validation-for="ProjectTeam"></span>
                     
-                    @Html.DropDownList("ProjectTeam", new SelectList(Model.teams.Select(x => new SelectListItem { Text = $"{x.Name}"})), htmlAttributes: new { @class = "form-control" })
-                    
+@*                     @Html.DropDownList("ProjectTeam", new SelectList(Model.teams.Select(x => new SelectListItem { Text = $"{x.Name}"})), htmlAttributes: new { @class = "form-control" })
+                     
                     <label class="form-label col-12" asp-for="Tasks"></label>
                     <input class="form-control col-12" asp-for="Tasks" />
-                    <span class="text-danger col-12" asp-validation-for="Tasks"></span>
+                    <span class="text-danger col-12" asp-validation-for="Tasks"></span> *@
 
                     <button class="btn btn-primary mt-2 col-12" type="submit">Add</button>
                 </form>

@@ -26,23 +26,23 @@
             <div class="row justify-content-start my-2 px-2 py-2 bg-primary bg-opacity-25">
                 <a class="btn btn-outline-secondary col-12 col-sm-1 offset-md-1"
                    asp-action="Details" asp-route-userId="@project.Id"
-                   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="User details">
+                   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Project details">
                     @projectNum
                 </a>
 
                 <p class="col-12 col-sm-10 col-md-4 col-xl-3">@project.Name</p>
                 <p class="col-12 col-md-3 col-md-4 col-xl-3">@project.Description</p>
-                <p class="col-12 col-md-3 col-md-4 col-xl-3"> @project.ProjectTeam</p>
-                <p class="col-12 col-md-3 col-md-4 col-xl-3"> @project.Tasks</p>
+              @*  <p class="col-12 col-md-3 col-md-4 col-xl-3"> @project.ProjectTeam</p>
+                <p class="col-12 col-md-3 col-md-4 col-xl-3"> @project.Tasks</p> *@
             </div>
         }
     }
 </div>
 
-@* Create Project Modal *@
+@*  Create Project Modal *@
 <partial name="_CreatePartial" model="new ProjectModel()" />
 
-<partial name="_ToastPartial" />
+<partial name="_ToastPartial" /> 
 
 @section Scripts
     {

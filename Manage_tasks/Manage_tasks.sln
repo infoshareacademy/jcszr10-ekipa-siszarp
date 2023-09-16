@@ -12,7 +12,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTaskMaster", "..\WebTask
 		{00D7A8C7-E604-46B9-A128-69889E817F19} = {00D7A8C7-E604-46B9-A128-69889E817F19}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manage_tasks_Database", "..\Manage_tasks_Database\Manage_tasks_Database.csproj", "{500CB956-97C1-449F-A4F0-0794FF3AE34D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manage_tasks_Database", "..\Manage_tasks_Database\Manage_tasks_Database.csproj", "{500CB956-97C1-449F-A4F0-0794FF3AE34D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{90E0FB75-4956-45BE-A10F-813B19248917}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

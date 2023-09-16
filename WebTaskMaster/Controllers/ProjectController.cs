@@ -1,21 +1,19 @@
 ﻿using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebTaskMaster.Models.Project;
-using WebTaskMaster.Models.Team;
-using WebTaskMaster.Models.User;
-using Manage_tasks_Biznes_Logic.Service;
 
 namespace WebTaskMaster.Controllers
 {
     public class ProjectController : Controller
     {
         private readonly IProjectService _projectService;
-        
-        public ProjectController(IProjectService projectService)
+        private readonly ITeamService _teamService;
+
+        public ProjectController(IProjectService projectService, ITeamService teamService)
         {
             _projectService = projectService;
+            _teamService = teamService;
         }
 
         // GET: ProjectController
@@ -45,15 +43,7 @@ namespace WebTaskMaster.Controllers
                 return View("Index", models);
             }
 
-            var newProject = new Project
-            {
-                Name = model.Name,
-                Description = model.Description,
-                ProjectTeam = model.ProjectTeam,
-                Tasks = model.Tasks
-            };
-
-            _projectService.SaveProjectToJson();
+            _projectService.CreateProject(model.Name, model.Description);
 
             TempData["ToastMessage"] = "Project added.";
 
@@ -72,12 +62,35 @@ namespace WebTaskMaster.Controllers
         }
 
         // GET: ProjectController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(Guid Id)
         {
-            return View();
+            var project = _projectService.GetProjectById(Id);
+
+            if (project is null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var projectModel = CreateDetailsModel(project);
+
+            return View(projectModel);
         }
 
-       
+        private object CreateDetailsModel(Project project)
+        {
+            var projectModel = new ProjectDetailsModel
+            {
+                Id = project.Id,
+                Name = project.Name,
+                Description = project.Description,
+                ProjectTeam = project.ProjectTeam,
+                Tasks = project.Tasks
+            };
+
+            return projectModel;
+        }
+
+
         // GET: ProjectController/Edit/5
         public ActionResult Edit(int id)
         {

@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Manage_tasks;
-using Manage_tasks_Biznes_Logic.Model;
-using System.IO;
+﻿using Manage_tasks_Biznes_Logic.Model;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 
 namespace Manage_tasks_Biznes_Logic.Service
@@ -17,46 +8,46 @@ namespace Manage_tasks_Biznes_Logic.Service
     public interface IProjectService
     {
         List<Project> GetAllProjects();
-        void LoadProjectsFromJson();
-        void SaveProjectToJson();
+        Project GetProjectById(Guid projectId);
+        List<Project> LoadProjectsFromJson();
+        void CreateProject(string name, string description);
     }
 
     public class ProjectService : IProjectService
 
     {
-
-        private List<Project> Projects = new List<Project>(); //Zapisywanie do jsone
+        private static List<Project> Projects = new(); 
 
         const string _nameJsonFile = "ListaProjectow.json";
-
-        public void LoadProjectsFromJson()
-        {
-            if (!File.Exists(_nameJsonFile))
-            {
-                Projects = new List<Project>();//🤨
-                return;
-            }
-
-            string objectJsonFie = File.ReadAllText(_nameJsonFile);
-            Projects = JsonSerializer.Deserialize<List<Project>>(objectJsonFie);
-        }
-        public void SaveProjectToJson()  // именить название  - записиь файла json.
+        public void SaveProjectToJson()
         {
 
             string objectSerialized = JsonSerializer.Serialize(Projects);
             File.WriteAllText(_nameJsonFile, objectSerialized);
         }
 
+        public List<Project> LoadProjectsFromJson()
+        {
+            if (!File.Exists(_nameJsonFile))
+            {
+                Projects = new List<Project>();
+            }
+
+            Projects = JsonSerializer.Deserialize<List<Project>>(File.ReadAllText(_nameJsonFile));
+           
+            return Projects;
+        }
+        
         public List<Project> GetAllProjects()
         {
             return Projects;
         }
 
-        public Project GetProject(int projectId)
+        public Project GetProjectById(Guid projectId)
         {
             try
             {
-                return Projects[projectId];
+                return GetAllProjects().FirstOrDefault(p => p.Id == projectId);
             }
             catch (Exception ex)
             {
@@ -72,7 +63,6 @@ namespace Manage_tasks_Biznes_Logic.Service
 
             try
             {
-                //Projects.Remove(Projects[index]);
                 Projects.RemoveAt(index);
                 SaveProjectToJson();
             }
@@ -80,12 +70,11 @@ namespace Manage_tasks_Biznes_Logic.Service
             {
 
             }
-            // Zapisujemy nowa info do jsone po usunieciu projectu
         }
 
         public void CreateProject(string name, string description)
         {
-            Projects.Add(new Project(name, description)); // tu zapisujemy do jsone
+            Projects.Add(new Project(name, description)); 
             SaveProjectToJson();
         }
 
