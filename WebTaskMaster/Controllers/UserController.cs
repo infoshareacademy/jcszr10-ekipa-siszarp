@@ -107,6 +107,8 @@ namespace WebTaskMaster.Controllers
         {
             _userService.DeleteUser(userId);
 
+            TempData["ToastMessage"] = "User deleted.";
+
             return RedirectToAction("Index");
         }
     }
