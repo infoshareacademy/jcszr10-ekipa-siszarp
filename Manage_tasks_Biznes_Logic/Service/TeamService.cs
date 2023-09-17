@@ -1,11 +1,9 @@
-﻿using Manage_tasks_Biznes_Logic.Data;
-using Manage_tasks_Biznes_Logic.Model;
+﻿using Manage_tasks_Biznes_Logic.Model;
 using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
 
 namespace Manage_tasks_Biznes_Logic.Service;
 
-public class TeamService
+public class TeamService : ITeamService
 {
     private const string TeamsFileName = "Teams.json";
 

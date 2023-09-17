@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace Manage_tasks_Biznes_Logic.Service;
 
-public class UserService
+public class UserService : IUserService
 {
     private const string UsersFileName = "Users.json";
 

@@ -1,21 +1,19 @@
 ﻿using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 using WebTaskMaster.Models.Team;
-using WebTaskMaster.Models.User;
 
 namespace WebTaskMaster.Controllers
 {
     public class TeamController : Controller
     {
-        private readonly TeamService _teamService;
-        private readonly UserService _userService;
+        private readonly ITeamService _teamService;
+        private readonly IUserService _userService;
 
-        public TeamController()
+        public TeamController(ITeamService teamService, IUserService userService)
         {
-            _teamService = new TeamService();
-            _userService = new UserService();
+            _teamService = teamService;
+            _userService = userService;
         }
 
         public IActionResult Index()

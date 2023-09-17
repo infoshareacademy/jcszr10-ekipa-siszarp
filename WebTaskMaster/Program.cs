@@ -1,9 +1,15 @@
+using Manage_tasks_Biznes_Logic.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services
     .AddControllersWithViews()
     .AddRazorRuntimeCompilation();
+
+builder.Services
+    .AddScoped<IUserService, UserService>()
+    .AddScoped<ITeamService, TeamService>();
 
 var app = builder.Build();
 
