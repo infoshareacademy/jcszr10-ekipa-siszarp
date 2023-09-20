@@ -1,0 +1,32 @@
+﻿@model Manage_tasks_Database.Entities.User;
+
+<div id="LoginUser" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Login</h1>
+                <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="Home" asp-action="Login">
+                    <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+                    <label class="form-label col-12" asp-for="Email"></label>
+                    <input class="form-control col-12" asp-for="Email" />
+                    <span class="text-danger col-12" asp-validation-for="Email"></span>
+
+                    <label class="form-label col-12" asp-for="Password"></label>
+                    <input class="form-control col-12" asp-for="Password" />
+                    <span class="text-danger col-12" asp-validation-for="Password"></span>
+
+              
+                    <button class="btn btn-primary mt-2 col-12" type="submit">Login</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" asp-area=""  asp-controller="Registration" asp-action="Index">Rejestracja</a>
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

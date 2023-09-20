@@ -13,6 +13,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Manage_tasks_Biznes_Logic\Manage_tasks_Biznes_Logic.csproj" />
+		<ProjectReference Include="..\Manage_tasks_Database\Manage_tasks_Database.csproj" />
 	</ItemGroup>
 
 </Project>
