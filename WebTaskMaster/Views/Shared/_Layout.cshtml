@@ -1,4 +1,4 @@
-﻿@using Manage_tasks_Database.Entities;
+﻿ @using WebTaskMaster.Models.User;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,16 +36,8 @@
 					</ul>
 
 				</div>
-
-				<div class="container text-center text-wrap text-break">
-					<div class="row  justify-content-end ">
-
-						<button class="btn btn-sm btn-warning  col-12 col-sm-3 col-lg-1 offset-lg-1" type="button"
-								data-bs-toggle="modal" data-bs-target="#LoginUser"> 
-							Login
-						</button>
-					</div>
-				</div>
+				<partial name="/Views/Login/_LoginPartial.cshtml" model=" new UserRegistrationModel() " />
+				
 		</nav>
 
 		
@@ -66,7 +58,7 @@
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 
-	<partial name="/Views/Login/_LoginPartial.cshtml" model=" new User() " />
+	
 	<partial name="_ToastPartial" />
 
 

@@ -6,18 +6,18 @@
 <div>
 
 
-	<h1>Registration</h1>
+    <h1>Register for your company</h1>
 
-	<p>Let's go!</p>
+    <p>Complete the form below!</p>
 
 
     <div class="input-group has-validation">
         <form asp-controller="Registration" asp-action="Index">
             <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
             
-            <label class="form-label col-12" asp-for="FirstName"></label>
-            <input  class="form-control col-12" asp-for="FirstName" />
-            <span class="text-danger col-12" asp-validation-for="FirstName"></span>
+            <label class="form-label col-12" asp-for="UserName"></label>   
+            <input class="form-control col-12" asp-for="UserName" />
+            <span class="text-danger col-12" asp-validation-for="UserName"></span>
 
             <label class="form-label col-12" asp-for="Email"></label>
             <input class="form-control col-12" asp-for="Email" />
@@ -27,8 +27,21 @@
             <input class="form-control col-12" asp-for="Password" />
             <span class="text-danger col-12" asp-validation-for="Password"></span>
 
+            <label class="form-label col-12" asp-for="Country"></label>
+            <input class="form-control col-12" asp-for="Country" />
+            <span class="text-danger col-12" asp-validation-for="Country"></span>
 
-            <button class="btn btn-primary mt-2 col-12" type="submit">Login</button>
+            <label class="form-label col-12" asp-for="PhoneNumber"></label>
+            <input class="form-control col-12" asp-for="PhoneNumber" />
+            <span class="text-danger col-12" asp-validation-for="PhoneNumber"></span>
+
+            <label class="form-label col-12" asp-for="CompanyName"></label>
+            <input class="form-control col-12" asp-for="CompanyName" />
+            <span class="text-danger col-12" asp-validation-for="CompanyName"></span>
+
+
+
+            <button class="btn btn-primary mt-2 col-12" type="submit">Create account</button>
         </form>
     </div>
 
