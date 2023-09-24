@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Manage_tasks_Database.Entities;
 
-public class User /*: IdentityUser<Guid>*/
+public class User  
 {
 	public Guid Id { get; set; }
 	public string FirstName { get; set; }

@@ -1,19 +1,19 @@
 ﻿using Manage_tasks_Database.Entities;
+using Manage_tasks_Database.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebTaskMaster.Data;
 using WebTaskMaster.Models.User;
 
 namespace WebTaskMaster.Controllers
 {
     public class RegistrationController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationIdentityDbContext _context;
 
-        public RegistrationController(ApplicationDbContext context)
+        public RegistrationController(ApplicationIdentityDbContext context)
         {
             _context = context;
         }

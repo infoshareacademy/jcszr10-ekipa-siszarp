@@ -1,40 +1,50 @@
-using Manage_tasks_Database.Entities;
+using Manage_tasks_Database.Identity;
+using Manage_tasks_Database.Identity.IdentityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WebTaskMaster.Data;
- 
+using System.Net;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+
+builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
 options.UseSqlServer(connectionString));
 
-builder.Services.AddIdentity<Company, IdentityRole>(options =>
-{
-    // Obowiazkowe potwierdzenie poczty na razie = false;
-    options.SignIn.RequireConfirmedAccount = false;
-    //Haslo powinno zawierac cyfry 
-    options.Password.RequireDigit = true;
-    //Haslo powinno zawierac minimum 8 symboli 
-    options.Password.RequiredLength = 8;
-    //Haslo powinno zawierac przynajmniej 1 wielka litere
-    options.Password.RequireUppercase = true;
-    //Ilosc prob wejsca do konta  (po 5 probach konto bedzie zablokowane)
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    // Mowimy ze konto bedzie zablokowane w ciagu 5 minut
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    //Email kazdego usera powinien byc unikatowy
-    options.User.RequireUniqueEmail = true;
 
 
-})
-    // dodajemy entity schowek (mowimy "wykorzystaj baze danych dla identity)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
     .AddDefaultTokenProviders()
-    // mowimy identity ze checmy wykorzystywac role 
-    .AddRoles<IdentityRole>();
-     
+    .AddRoles<IdentityRole>()
+    .AddDefaultUI();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+
+    // Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = false;
+
+});
+
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -43,7 +53,7 @@ builder.Services.AddRazorPages();
 builder.Services
     .AddControllersWithViews()
     .AddRazorRuntimeCompilation();
- 
+
 
 
 
@@ -56,28 +66,27 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
- 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
-// podwlaczamy autentyfikacje i autoryzacje
+// poвlaczamy autentyfikacje i autoryzacje
 app.UseAuthentication();
 app.UseAuthorization();
 
 using (var scope = app.Services.CreateScope())
 {
-    var applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var pendingMigrations = applicationDbContext.Database.GetPendingMigrations().ToList();
-    if (pendingMigrations.Any())
-    {
-        applicationDbContext.Database.Migrate();
-    }
+    var autorizationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationIdentityDbContext>();
+    autorizationDbContext.Database.Migrate();
 }
+
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages();
 app.Run();
