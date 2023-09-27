@@ -84,7 +84,7 @@ namespace WebTaskMaster.Controllers
                 Name = project.Name,
                 Description = project.Description,
                 ProjectTeam = project.ProjectTeam,
-                Tasks = project.Tasks
+                //Tasks = project.Tasks
             };
 
             return projectModel;

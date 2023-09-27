@@ -2,12 +2,12 @@
 @model IEnumerable<WebTaskMaster.Models.Project.ProjectModel>
 
 @{
-    ViewData["Title"] = "Projects";
+    ViewData["Title"] = "Projects List:";
 }
 
 <div class="container text-center text-wrap text-break">
     <div class="row justify-content-center">
-        <h1 class="col-12 col-sm-6 col-lg-8 offset-lg-1">Projects</h1>
+        <h1 class="col-12 col-sm-6 col-lg-8 offset-lg-1">Projects List:</h1>
 
         @* Create Project Modal button  *@
         <button class="btn btn-primary col-12 col-sm-3 col-lg-2 offset-lg-1" type="button"
@@ -25,13 +25,13 @@
 
             <div class="row justify-content-start my-2 px-2 py-2 bg-primary bg-opacity-25">
                 <a class="btn btn-outline-secondary col-12 col-sm-1 offset-md-1"
-                   asp-action="Details" asp-route-userId="@project.Id"
+                   asp-action="Details" asp-route-projectId="@project.Id"
                    data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Project details">
                     @projectNum
                 </a>
 
                 <p class="col-12 col-sm-10 col-md-4 col-xl-3">@project.Name</p>
-                <p class="col-12 col-md-3 col-md-4 col-xl-3">@project.Description</p>
+                <p class="col-12 col-sm-3 col-md-4 col-xl-6">@project.Description</p>
               @*  <p class="col-12 col-md-3 col-md-4 col-xl-3"> @project.ProjectTeam</p>
                 <p class="col-12 col-md-3 col-md-4 col-xl-3"> @project.Tasks</p> *@
             </div>
@@ -42,7 +42,7 @@
 @*  Create Project Modal *@
 <partial name="_CreatePartial" model="new ProjectModel()" />
 
-<partial name="_ToastPartial" /> 
+<partial name="_ToastPartial" />
 
 @section Scripts
     {
@@ -71,13 +71,7 @@
         tooltipTriggerList = document.querySelectorAll('[data-bs-toggle-tooltip="tooltip"]');
         tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     </script>
+    }
 
-    @* show toast for team edit response *@
-    @if (TempData["ToastMessage"] is not null)
-    {
-        <script type="text/javascript">
-            bootstrap.Toast.getOrCreateInstance(document.getElementById('teamEditToast')).show();
-        </script>
-    }
-    }
+
 
