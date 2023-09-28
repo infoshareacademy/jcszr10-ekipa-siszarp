@@ -132,5 +132,15 @@ namespace WebTaskMaster.Controllers
                 return View();
             }
         }
+        //private IEnumerable<ProjectTeamModel> ChangeTeamModel()
+        //{
+        //    var teams = _teamService.GetAllTeams().Select(u => new ProjectTeamModel
+        //    {
+        //        Id = u.Id,
+        //        TeamName = u.Name
+        //    });
+
+        //    return teams;
+        //}
     }
 }

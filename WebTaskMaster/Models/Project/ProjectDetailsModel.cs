@@ -8,5 +8,6 @@ namespace WebTaskMaster.Models.Project
 
         public List<Manage_tasks_Biznes_Logic.Model.Team> Teams { get; set; } = new List<Manage_tasks_Biznes_Logic.Model.Team>();
         public List<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
+        public ProjectChangeTeamModel? ProjectChangeTeamModel { get; set; }
     }
 }

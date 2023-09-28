@@ -1,0 +1,30 @@
+﻿@model WebTaskMaster.Models.Project.ProjectChangeTeamModel
+
+<div id="changeTeamModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Change Team</h1>
+                <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="ChangeTeam" asp-route-projectId="@ViewData["projectId"]">
+
+                    <label class="form-label col-12" asp-for="AvailableTeams"></label>
+                    <select class="form-select col-12" asp-for="NewTeamId">
+                        @foreach (var team in Model.AvailableTeams!)
+                        {
+                            <option value="@team.Id">@team.TeamName</option>
+                        }
+                    </select>
+                    <span class="col-12 text-danger" asp-validation-for="NewTeamId"></span>
+
+                    <button class="btn btn-primary col-12 my-2" type="submit">Change</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
