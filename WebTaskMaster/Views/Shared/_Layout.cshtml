@@ -1,4 +1,4 @@
-﻿ @using WebTaskMaster.Models.User;
+﻿@using WebTaskMaster.Models.User;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +40,7 @@
 				<partial name="_LoginPartial" />
 		</nav>
 
-		
+
 	</header>
 	<div class="container">
 		<main role="main" class="pb-3">
@@ -53,23 +53,23 @@
 			&copy; 2023 -  TaskMaster - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 		</div>
 	</footer>
-	 
+
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 
-	
+
 	<partial name="_ToastPartial" />
 
 
 	@if (TempData["ToastMessage"] is not null)
-	{ 
+	{
 		<script type="text/javascript">
 			bootstrap.Toast.getOrCreateInstance(document.getElementById('TryLogin')).show();
 		</script>
 	}
 
 	@await RenderSectionAsync("Scripts", required: false)
- 
+
 </body>
 </html>

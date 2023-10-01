@@ -1,5 +1,4 @@
-﻿@model WebTaskMaster.Models.User.UserRegistrationModel;
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 
 
 
@@ -27,13 +26,13 @@
                 <form asp-controller="Home" asp-action="Login">
                     <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
 
-                    <label class="form-label col-12" asp-for="Email"></label>
+                   @* <label class="form-label col-12" asp-for="Email"></label>
                     <input class="form-control col-12" asp-for="Email" />
                     <span class="text-danger col-12" asp-validation-for="Email"></span>
 
                     <label class="form-label col-12" asp-for="Password"></label>
                     <input class="form-control col-12" asp-for="Password" />
-                    <span class="text-danger col-12" asp-validation-for="Password"></span>
+                    <span class="text-danger col-12" asp-validation-for="Password"></span>*@
 
               
                     <button class="btn btn-primary mt-2 col-12" type="submit">Login</button>

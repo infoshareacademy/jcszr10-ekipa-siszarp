@@ -1,7 +1,7 @@
-﻿@using Manage_tasks_Database.Identity.IdentityModels;
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+﻿@using Microsoft.AspNetCore.Identity
+@using WebTaskMaster.Areas.Identity.Data;
+@inject SignInManager<CompanyUser> SignInManager
+@inject UserManager<CompanyUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
@@ -18,10 +18,10 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="btn btn-warning mx-1" asp-area="Identity" asp-page="/Account/Register">Register</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="btn btn-warning" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
 }
 </ul>

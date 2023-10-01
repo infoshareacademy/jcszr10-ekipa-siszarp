@@ -1,8 +1,9 @@
-using Manage_tasks_Database.Identity;
-using Manage_tasks_Database.Identity.IdentityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using WebTaskMaster.Areas.Identity.Data;
+using WebTaskMaster.Areas.Identity.Pages;
+using WebTaskMaster.Data;
 
 
 
@@ -11,16 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
+builder.Services.AddDbContext<ApplicationUserDbContext>(options =>
 options.UseSqlServer(connectionString));
 
 
-
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
+builder.Services.AddIdentity<CompanyUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<ApplicationUserDbContext>()
     .AddDefaultTokenProviders()
     .AddRoles<IdentityRole>()
     .AddDefaultUI();
+
+    
+  
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.Configure<IdentityOptions>(options =>
@@ -28,20 +31,22 @@ builder.Services.Configure<IdentityOptions>(options =>
     // Password settings.
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
-    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = true;
     options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 1;
+    options.Password.RequiredUniqueChars = 0;
 
     // Lockout settings.
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.AllowedForNewUsers = false;
 
     // User settings.
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
+
+    options.SignIn.RequireConfirmedEmail = false;
 
 });
 
@@ -78,11 +83,11 @@ app.UseAuthorization();
 
 using (var scope = app.Services.CreateScope())
 {
-    var autorizationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationIdentityDbContext>();
+    var autorizationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationUserDbContext>();
     autorizationDbContext.Database.Migrate();
 }
 
-
+ 
 
 app.MapControllerRoute(
     name: "default",

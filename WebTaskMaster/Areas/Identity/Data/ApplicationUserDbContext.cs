@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebTaskMaster.Areas.Identity.Data;
 
-namespace Manage_tasks_Database.Identity;
+namespace WebTaskMaster.Data;
 
-public class ApplicationIdentityDbContext : IdentityDbContext<IdentityUser>
+public class ApplicationUserDbContext : IdentityDbContext<CompanyUser>
 {
-    public ApplicationIdentityDbContext(DbContextOptions<ApplicationIdentityDbContext> options)
+    public ApplicationUserDbContext(DbContextOptions<ApplicationUserDbContext> options)
         : base(options)
     {
     }
@@ -14,15 +15,17 @@ public class ApplicationIdentityDbContext : IdentityDbContext<IdentityUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
+
         RenameIdentityTables(builder);
     }
     protected void RenameIdentityTables(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         builder.HasDefaultSchema("CstUserMngt");
+        builder.Entity<CompanyUser>(entity =>
+        {
+            entity.ToTable(name: "CompanyUser");
+        });
         builder.Entity<IdentityUser>(entity =>
         {
             entity.ToTable(name: "Users");
