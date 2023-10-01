@@ -1,0 +1,14 @@
+﻿@using Manage_tasks_Database.Entities;
+ @model Manage_tasks_Database.Entities.User;
+
+@{
+	ViewData["Title"] = "Login";
+}
+
+
+@section Scripts{
+
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

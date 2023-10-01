@@ -1,4 +1,5 @@
 ﻿using Manage_tasks;
+using Manage_tasks_Biznes_Logic.Data;
 
 namespace Manage_tasks_Biznes_Logic.Model
 {
@@ -6,6 +7,7 @@ namespace Manage_tasks_Biznes_Logic.Model
     public class Project 
 
     {
+        
         public string Name { get; set; }
         public string Description { get; set; }
         public Team ProjectTeam { get; set; }
@@ -17,6 +19,7 @@ namespace Manage_tasks_Biznes_Logic.Model
         public Project() 
         {
             Tasks = new TasksList();
+            
             
         }
 
