@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Manage_tasks_Database.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebTaskMaster.Areas.Identity.Data;
@@ -7,6 +8,8 @@ namespace WebTaskMaster.Data;
 
 public class ApplicationUserDbContext : IdentityDbContext<CompanyUser>
 {
+
+     
     public ApplicationUserDbContext(DbContextOptions<ApplicationUserDbContext> options)
         : base(options)
     {

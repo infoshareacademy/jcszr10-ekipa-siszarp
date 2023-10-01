@@ -22,8 +22,9 @@ builder.Services.AddIdentity<CompanyUser, IdentityRole>(options => options.SignI
     .AddRoles<IdentityRole>()
     .AddDefaultUI();
 
-    
-  
+
+
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.Configure<IdentityOptions>(options =>
