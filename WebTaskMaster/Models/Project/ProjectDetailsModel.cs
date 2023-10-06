@@ -8,7 +8,7 @@ namespace WebTaskMaster.Models.Project
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ProjectTeamModel? ProjectTeam { get; set; }
+        public ProjectTeamModel ProjectTeam { get; set; } = new ProjectTeamModel();
 
         public List<ProjectTeamModel> Teams { get; set; } = new List<ProjectTeamModel>();
         public List<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();

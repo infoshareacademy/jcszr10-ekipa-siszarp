@@ -1,6 +1,8 @@
 ﻿using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Plugins;
+using System.Xml.Linq;
 using WebTaskMaster.Models.Project;
 using WebTaskMaster.Models.Team;
 
@@ -63,9 +65,9 @@ namespace WebTaskMaster.Controllers
         }
 
         // GET: ProjectController/Details/5
-        public ActionResult Details(Guid Id)
+        public ActionResult Details(Guid projectId)
         {
-            var project = _projectService.GetProjectById(Id);
+            var project = _projectService.GetProjectById(projectId);
 
             if (project is null)
             {
@@ -84,18 +86,21 @@ namespace WebTaskMaster.Controllers
                 Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
-                ProjectTeam = new ProjectTeamModel
-                {
-                    Id = _teamService.GetTeamById(project.ProjectTeamId).Id,
-                    Name = _teamService.GetTeamById(project.ProjectTeamId).Name,
-                    Leader =  _teamService.GetTeamById(project.ProjectTeamId).Leader.ToString(),
-                },
-            //Tasks = project.Tasks
-            ProjectChangeTeamModel = new ProjectChangeTeamModel
+                ProjectChangeTeamModel = new ProjectChangeTeamModel
                 {
                     AvailableTeams = _teamService.GetAllTeams().Select(t => new ProjectTeamModel() { Id = t.Id, Name = t.Name }).ToList()
                 }
             };
+            if (_teamService.GetTeamById(project.ProjectTeamId) is not null)
+            {
+                projectModel.ProjectTeam = new ProjectTeamModel
+                {
+                    Id = _teamService.GetTeamById(project.ProjectTeamId).Id,
+                    Name = _teamService.GetTeamById(project.ProjectTeamId).Name,
+                    Leader = _teamService.GetTeamById(project.ProjectTeamId).Leader.ToString(),
+                };
+            }
+            else projectModel.ProjectTeam = new ProjectTeamModel();
 
             return projectModel;
         }

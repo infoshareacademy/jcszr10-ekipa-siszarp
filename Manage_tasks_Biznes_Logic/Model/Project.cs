@@ -19,21 +19,21 @@ namespace Manage_tasks_Biznes_Logic.Model
         public Project()
         {
             Tasks = new TasksList();
-            Id = new Guid();
+
         }
 
         public Project(string projectName, string projectDescription) : this()
         {
             Name = projectName;
             Description = projectDescription;
-            Id = new Guid();
+            Id = Guid.NewGuid();
         }
 
 
         public void AddTeam(Team team)
         {
             ProjectTeam = team;
-            ProjectTeamId = Guid.Empty;
+            ProjectTeamId = Guid.NewGuid();
         }
 
         public void Crash()
