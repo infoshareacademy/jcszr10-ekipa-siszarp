@@ -7,7 +7,9 @@ namespace WebTaskMaster.Models.Project
         public Guid Id { get; set; }
 
         [Display(Name = "Team Name")]
-        public string TeamName { get; set; }
+        public string Name { get; set; }
+        [Display(Name = "Team Leader")]
+        public string Leader { get; set; }
     }
 }
 

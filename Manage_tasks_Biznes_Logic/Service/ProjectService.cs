@@ -11,12 +11,15 @@ namespace Manage_tasks_Biznes_Logic.Service
         Project GetProjectById(Guid projectId);
         List<Project> LoadProjectsFromJson();
         void CreateProject(string name, string description);
+        public void RemoveProject(Guid id);
+        void ChangeTeam(Guid projectId, Guid newProjectTeamId);
+        void EditNameAndDescription(Guid projectId, string newName, string newDescription);
     }
 
     public class ProjectService : IProjectService
 
     {
-        private static List<Project> Projects = new(); 
+        private static List<Project> Projects = new();
 
         const string _nameJsonFile = "ListaProjectow.json";
         public void SaveProjectToJson()
@@ -34,13 +37,13 @@ namespace Manage_tasks_Biznes_Logic.Service
             }
 
             Projects = JsonSerializer.Deserialize<List<Project>>(File.ReadAllText(_nameJsonFile));
-           
+
             return Projects;
         }
-        
+
         public List<Project> GetAllProjects()
         {
-            return Projects;
+            return LoadProjectsFromJson();
         }
 
         public Project GetProjectById(Guid projectId)
@@ -58,23 +61,25 @@ namespace Manage_tasks_Biznes_Logic.Service
             }
         }
 
-        public void RemoveProject(int index)
+        public void RemoveProject(Guid id)
         {
+            var projects = GetAllProjects();
 
-            try
-            {
-                Projects.RemoveAt(index);
-                SaveProjectToJson();
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
+            var projectInDatabase = projects.FirstOrDefault(p => p.Id == id);
 
+            if (projectInDatabase is null)
+            {
+                return;
             }
+
+            projects.Remove(projectInDatabase);
+
+            SaveProjectToJson();
         }
 
         public void CreateProject(string name, string description)
         {
-            Projects.Add(new Project(name, description)); 
+            Projects.Add(new Project(name, description));
             SaveProjectToJson();
         }
 
@@ -97,7 +102,39 @@ namespace Manage_tasks_Biznes_Logic.Service
 
             SaveProjectToJson();
         }
+        public void EditNameAndDescription(Guid projectId, string newName, string newDescription)
+        {
+            var projects = GetAllProjects();
+            var projectInDataBase = GetProjectById(projectId);
+
+            if (projectInDataBase is null)
+            {
+                return;
+            }
+            else
+            {
+                projectInDataBase.Name = newName;
+                projectInDataBase.Description = newDescription;
+            }
+
+            projects.Add(projectInDataBase);
+            SaveProjectToJson();
+        }
+        public void ChangeTeam(Guid projectId, Guid newProjectTeamId)
+        {
+            var projects = GetAllProjects();
+            var projectInDataBase = GetProjectById(projectId);
+            if (projectInDataBase is null)
+            {
+                projectInDataBase.Id = new Guid();
+                projectInDataBase.ProjectTeamId = newProjectTeamId;
+            }
+            else
+            {
+                projectInDataBase.ProjectTeamId = newProjectTeamId;
+            }
+            projects.Add(projectInDataBase);
+            SaveProjectToJson();
+        }
     }
-
-
 }

@@ -2,6 +2,7 @@
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Mvc;
 using WebTaskMaster.Models.Project;
+using WebTaskMaster.Models.Team;
 
 namespace WebTaskMaster.Controllers
 {
@@ -83,13 +84,47 @@ namespace WebTaskMaster.Controllers
                 Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
-                ProjectTeam = project.ProjectTeam,
-                //Tasks = project.Tasks
+                ProjectTeam = new ProjectTeamModel
+                {
+                    Id = _teamService.GetTeamById(project.ProjectTeamId).Id,
+                    Name = _teamService.GetTeamById(project.ProjectTeamId).Name,
+                    Leader =  _teamService.GetTeamById(project.ProjectTeamId).Leader.ToString(),
+                },
+            //Tasks = project.Tasks
+            ProjectChangeTeamModel = new ProjectChangeTeamModel
+                {
+                    AvailableTeams = _teamService.GetAllTeams().Select(t => new ProjectTeamModel() { Id = t.Id, Name = t.Name }).ToList()
+                }
             };
 
             return projectModel;
         }
 
+        [HttpPost]
+        public IActionResult ChangeTeam(ProjectChangeTeamModel model, Guid projectId)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["ActivateModal"] = nameof(ChangeTeam);
+
+                var project = _projectService.GetProjectById(projectId);
+
+                if (project is null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                var projectModel = CreateDetailsModel(project);
+
+                return View("Details", projectModel);
+            }
+
+            _projectService.ChangeTeam(projectId, model.NewTeamId);
+
+            TempData["ToastMessage"] = "Team changed.";
+
+            return RedirectToAction("Details", new { projectId });
+        }
 
         // GET: ProjectController/Edit/5
         public ActionResult Edit(int id)
@@ -98,49 +133,43 @@ namespace WebTaskMaster.Controllers
         }
 
         // POST: ProjectController/Edit/5
+
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(ProjectModel model, Guid projectId)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                ViewData["ActivateModal"] = nameof(Edit);
+
+                var project = _projectService.GetProjectById(projectId);
+
+                if (project is null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                var projectModel = CreateDetailsModel(project);
+
+                return View("Details", projectModel);
             }
-            catch
-            {
-                return View();
-            }
+
+            var newDescription = model.Description ?? string.Empty;
+
+            _projectService.EditNameAndDescription(projectId, model.Name, newDescription);
+
+            TempData["ToastMessage"] = "Changes saved.";
+
+            return RedirectToAction("Details", new { projectId });
         }
 
-        // GET: ProjectController/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(Guid projectId)
         {
-            return View();
-        }
+            _projectService.RemoveProject(projectId);
 
-        // POST: ProjectController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        //private IEnumerable<ProjectTeamModel> ChangeTeamModel()
-        //{
-        //    var teams = _teamService.GetAllTeams().Select(u => new ProjectTeamModel
-        //    {
-        //        Id = u.Id,
-        //        TeamName = u.Name
-        //    });
+            TempData["ToastMessage"] = "Project deleted.";
 
-        //    return teams;
-        //}
+            return RedirectToAction("Index");
+        }
     }
 }

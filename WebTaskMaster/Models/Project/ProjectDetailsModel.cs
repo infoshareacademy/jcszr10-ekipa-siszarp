@@ -1,13 +1,18 @@
 ﻿using Manage_tasks;
+using Microsoft.Build.Experimental.ProjectCache;
 
 namespace WebTaskMaster.Models.Project
 {
-    public class ProjectDetailsModel : ProjectModel
+    public class ProjectDetailsModel
     {
-        public Manage_tasks_Biznes_Logic.Model.Team? ProjectTeam { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public ProjectTeamModel? ProjectTeam { get; set; }
 
-        public List<Manage_tasks_Biznes_Logic.Model.Team> Teams { get; set; } = new List<Manage_tasks_Biznes_Logic.Model.Team>();
+        public List<ProjectTeamModel> Teams { get; set; } = new List<ProjectTeamModel>();
         public List<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
         public ProjectChangeTeamModel? ProjectChangeTeamModel { get; set; }
+        public ProjectModel? ProjectEditModel { get; set; }
     }
 }
