@@ -1,0 +1,60 @@
+﻿@model WebTaskMaster.Models.Task.WebTaskModel;
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+      <form asp-action="EditTask">
+          <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;"/>
+          <input asp-for="@Model.ProjectTask.FinishDate" readonly style="display: none;" />
+            <input asp-for="@Model.newValues[0]" value="@Model.ProjectTask.TaskName" class="card-title"/>
+            <input asp-for="@Model.newValues[1]" value="@Model.ProjectTask.TaskDescription" class="card-text" />
+            <div class="collapse" id="taskDetails-@Model.ProjectTask.Id">
+                <select asp-for="@Model.newValues[2]">
+                    @{
+                        var statusNumber = @Model.ProjectTask.Status.StatusID();
+                        string[] statusMsg = new string[]
+                        {
+                        "Do zrobienia",
+                        "W trakcie",
+                        "Zrobiony"
+                        };
+
+                        for(int i = 0; i < 3; i++)
+                        {
+                            if(i == statusNumber)
+                            {
+                                <option value="@statusNumber" selected>@statusMsg[statusNumber]</option>
+                            }
+                            else
+                            {
+                                <option value="@i">@statusMsg[i]</option>
+                            }
+                        }
+                    }
+                </select>
+                @{
+                    string finishDate;
+                    if (Model.ProjectTask.FinishDate.HasValue)
+                    {
+                        finishDate = $"{Model.ProjectTask.FinishDate.Value.Year}-{Model.ProjectTask.FinishDate.Value.Month}-{Model.ProjectTask.FinishDate.Value.Day}";
+                    }
+                    else
+                    {
+                        finishDate = null;
+                    }
+                    
+
+                }
+                <input asp-for="@Model.newValues[3]" value="@finishDate" type="date" />
+                <button type="submit">Zapisz</button>
+      </form>
+            
+        </div>
+        <p class="d-inline-flex gap-1">
+            <a data-bs-toggle="collapse" href="#taskDetails-@Model.ProjectTask.Id" role="button" aria-expanded="false" aria-controls="taskDetails-@Model.ProjectTask.Id">
+               more
+            </a>
+        </p>
+    
+  </div>
+</div>
+

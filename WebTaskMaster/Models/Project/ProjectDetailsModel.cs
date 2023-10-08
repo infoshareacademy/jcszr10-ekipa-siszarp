@@ -1,5 +1,4 @@
-﻿using Manage_tasks;
-using Microsoft.Build.Experimental.ProjectCache;
+﻿using Manage_tasks_Biznes_Logic.Model;
 
 namespace WebTaskMaster.Models.Project
 {

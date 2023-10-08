@@ -7,11 +7,11 @@ namespace WebTaskMaster.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController()
+        public UserController(IUserService userService)
         {
-            _userService = new UserService();
+            _userService = userService;
         }
 
         public IActionResult Index()
@@ -106,6 +106,8 @@ namespace WebTaskMaster.Controllers
         public IActionResult Delete(Guid userId)
         {
             _userService.DeleteUser(userId);
+
+            TempData["ToastMessage"] = "User deleted.";
 
             return RedirectToAction("Index");
         }

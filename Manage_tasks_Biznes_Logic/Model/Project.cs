@@ -1,11 +1,10 @@
-﻿using Manage_tasks;
-
-namespace Manage_tasks_Biznes_Logic.Model
+﻿namespace Manage_tasks_Biznes_Logic.Model
 {
 
-    public class Project
+    public class Project 
 
     {
+        
         public string Name { get; set; }
         public string Description { get; set; }
         public Team ProjectTeam { get; set; }
@@ -19,7 +18,8 @@ namespace Manage_tasks_Biznes_Logic.Model
         public Project()
         {
             Tasks = new TasksList();
-
+            
+            
         }
 
         public Project(string projectName, string projectDescription) : this()

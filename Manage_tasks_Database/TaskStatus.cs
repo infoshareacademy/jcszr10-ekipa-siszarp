@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Manage_tasks_Database;
 
-public enum TaskStatus
+public enum TaskStatus : byte
 {
-    ToDo,
-    InProgress,
-    Done
+    ToDo = 1,
+    InProgress = 2,
+    Done = 3,
 }
 

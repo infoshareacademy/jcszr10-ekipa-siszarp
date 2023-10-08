@@ -1,23 +1,22 @@
-﻿using Manage_tasks_Biznes_Logic.Model;
-namespace Manage_tasks
+﻿namespace Manage_tasks_Biznes_Logic.Model
 {
     /// <summary>
     /// Klasa obsługująca zadanie.
     /// </summary>
     public class ProjectTask
     {
-        public int Id { get; set; } //do przyszłej obsługi bazy danych 
+        public Guid Id { get; set; } //do przyszłej obsługi bazy danych 
 
         //kolejne właściwości do dodania
         public string TaskName { get; set; }
         public string TaskDescription { get; set; }
-        public Status Status { get; set; }
+        public Status? Status { get; set; }
         public DateTime? FinishDate { get; set; }
         public User? AssignedUser { get; set; }
 
 
 
-        public ProjectTask() 
+        public ProjectTask()
         {
             Status = new Status();
         }
@@ -26,34 +25,34 @@ namespace Manage_tasks
         /// </summary>
         /// <param name="TaskName">Parametr przedstawiający nazwę zadania.</param>
         /// <param name="TaskDescription">Parametr przedstawiający opis zadania.</param>        
-        public ProjectTask(string TaskName, string TaskDescription) :this()
+        public ProjectTask(string TaskName, string TaskDescription) : this()
         {
             this.TaskName = TaskName;
             this.TaskDescription = TaskDescription;
-            
-            this.FinishDate = null;
-            this.AssignedUser = null;
-            
+
+            FinishDate = null;
+            AssignedUser = null;
+            Id = Guid.NewGuid();
         }
-        public ProjectTask(int Id, string TaskName, string TaskDescription, Status Status, DateTime? FinishDate, User? AssignedUser)
+        public ProjectTask(Guid Id, string TaskName, string TaskDescription, Status Status, DateTime? FinishDate, User? AssignedUser)
         {
-            this.TaskName= TaskName;
-            this.TaskDescription= TaskDescription;
+            this.TaskName = TaskName;
+            this.TaskDescription = TaskDescription;
             this.Status.ChangeStatus(Status.StatusID());
-            this.FinishDate= FinishDate;
+            this.FinishDate = FinishDate;
             this.AssignedUser = AssignedUser;
             this.Id = Id;
             CheckIfFinished();
         }
         public void CheckIfFinished()
         {
-            if(this.Status.StatusID() == 2)
+            if (Status.StatusID() == 2)
             {
-                this.FinishDate = DateTime.Now;
+                FinishDate = DateTime.Now;
             }
-            else 
+            else
             {
-                this.FinishDate = null; 
+                FinishDate = null;
             }
         }
         /// <summary>
@@ -61,39 +60,39 @@ namespace Manage_tasks
         /// </summary>
         public string[] TaskDetails()
         {
-            if(this.AssignedUser == null && FinishDate == null)
+            if (AssignedUser == null && FinishDate == null)
             {
                 return new string[]
                 {
-                    this.TaskName, this.TaskDescription, this.Status.ShowCurrentStatus(), string.Empty, string.Empty
+                    TaskName, TaskDescription, Status.ShowCurrentStatus(), string.Empty, string.Empty
                 };
             }
-            else if(this.FinishDate == null)
+            else if (FinishDate == null)
             {
                 return new string[]
                 {
-                    this.TaskName, this.TaskDescription, this.Status.ShowCurrentStatus(), string.Empty, this.AssignedUser.FirstName
+                    TaskName, TaskDescription, Status.ShowCurrentStatus(), string.Empty, AssignedUser.FirstName
                 };
             }
-            else if(this.AssignedUser == null)
+            else if (AssignedUser == null)
             {
                 return new string[]
                 {
-                    this.TaskName, this.TaskDescription, this.Status.ShowCurrentStatus(), this.FinishDate.ToString(), string.Empty
+                    TaskName, TaskDescription, Status.ShowCurrentStatus(), FinishDate.ToString(), string.Empty
                 };
             }
             else
             {
                 return new string[]
                 {
-                    this.TaskName, this.TaskDescription, this.Status.ShowCurrentStatus(), this.FinishDate.ToString(), this.AssignedUser.FirstName
+                    TaskName, TaskDescription, Status.ShowCurrentStatus(), FinishDate.ToString(), AssignedUser.FirstName
                 };
             }
         }
-        
-        
-        
-        
-        
+
+
+
+
+
     }
 }
