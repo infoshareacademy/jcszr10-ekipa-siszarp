@@ -1,17 +1,17 @@
-﻿using Manage_tasks_Biznes_Logic.Model;
+﻿
 
-namespace Manage_tasks
+namespace Manage_tasks_Biznes_Logic.Model
 {
     /// <summary>
     /// Klasa obsługująca listę zadań.
     /// </summary>
     public class TasksList
     {
-        private int Id { get; } //do przyszłej obsługi bazy danych
+       
         private IEditTask _editTask;
-
+        public Guid Id { get; } //do przyszłej obsługi bazy danych
         //kolejne właściwości do dodania jeśli zajdzie taka potrzeba
-        public List<ProjectTask> Tasks { get; set;}
+        public List<ProjectTask>? Tasks { get; set; }
         public string TasksListName { get; set; }
         //
 
@@ -25,42 +25,41 @@ namespace Manage_tasks
         /// <param name="TasksListName">Nazwa listy zadań.</param>
         public TasksList(string TasksListName) : this()
         {
-            
             this.TasksListName = TasksListName;
         }
-        
+
         /// <summary>
         /// Metoda dodająca obiekt klasy Task do listy zadań.
         /// </summary>
         /// <param name="NewTask">Obiekt klasy Task</param>
         public void AddTask(ProjectTask NewTask)
-        {           
+        {
             Tasks.Add(NewTask);
         }
-        
+
         /// <summary>
         /// Metoda obsługująca usuwanie zadania.
         /// </summary>
         /// <param name="Task"></param>
         public void RemoveTask(ProjectTask Task)
-        { 
-            Tasks.Remove(Task); 
+        {
+            Tasks.Remove(Task);
         }
         /// <summary>
         /// Metoda do wybierania zadania z listy zadań.
         /// </summary>
         /// <param name="IndexOfTask">Indeks z listy Tasks</param>
         /// <returns>Zwraca zmienną klasy Task</returns>
-        public ProjectTask PickTask(int IndexOfTask)
+        public ProjectTask GetTaskByGuid(Guid taskGuid)
         {
-            ProjectTask Task = Tasks[IndexOfTask];
+            ProjectTask Task = Tasks.FirstOrDefault(x => x.Id == taskGuid);
 
             return Task;
         }
 
         public void AssignUser(User user, int taskIndex)
         {
-            this.Tasks[taskIndex].AssignedUser = user;
+            Tasks[taskIndex].AssignedUser = user;
         }
 
 
@@ -73,7 +72,7 @@ namespace Manage_tasks
             _editTask.EditTask(newValue, task);
         }
 
-            
-     
+
+
     }
 }

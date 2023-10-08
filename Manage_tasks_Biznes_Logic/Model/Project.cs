@@ -1,8 +1,6 @@
-﻿using Manage_tasks;
-
-namespace Manage_tasks_Biznes_Logic.Model
+﻿namespace Manage_tasks_Biznes_Logic.Model
 {
-   
+
     public class Project 
 
     {

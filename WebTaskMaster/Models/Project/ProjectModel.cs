@@ -1,5 +1,4 @@
-﻿using Manage_tasks;
-using Manage_tasks_Biznes_Logic.Model;
+﻿using Manage_tasks_Biznes_Logic.Model;
 using System.ComponentModel.DataAnnotations;
 
 
