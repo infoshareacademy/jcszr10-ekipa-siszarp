@@ -4,6 +4,7 @@
     public class Project 
 
     {
+        
         public string Name { get; set; }
         public string Description { get; set; }
         public Team ProjectTeam { get; set; }
@@ -16,6 +17,7 @@
         public Project() 
         {
             Tasks = new TasksList();
+            
             
         }
 

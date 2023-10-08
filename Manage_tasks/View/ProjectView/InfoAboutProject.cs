@@ -9,6 +9,7 @@ namespace Manage_tasks.View.ProjectView
         public static void Display(int index)
         {
             Project currentProject = Data.projectService.GetProject(index);
+            
 
             if (currentProject.ProjectTeam != null && currentProject.Tasks != null)
             {

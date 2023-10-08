@@ -1,21 +1,7 @@
-﻿using Manage_tasks_Biznes_Logic.Data;
-using Manage_tasks_Biznes_Logic.Model;
+﻿using Manage_tasks_Biznes_Logic.Model;
 using System.Text.Json;
-using System.Text.Json.Serialization.Metadata;
 
 namespace Manage_tasks_Biznes_Logic.Service;
-
-public interface ITeamService
-{
-    void AddMembersToTeam(Guid teamId, IEnumerable<Guid> newMembersIds);
-    void ChangeTeamLeader(Guid teamId, Guid newLeaderId);
-    Guid CreateTeam(string name, string description);
-    void DeleteMemberFromTeam(Guid teamId, Guid memberIdToDelete);
-    void DeleteTeam(Guid id);
-    void EditNameAndDescription(Guid teamId, string newName, string newDescription);
-    List<Team> GetAllTeams();
-    Team? GetTeamById(Guid id);
-}
 
 public class TeamService : ITeamService
 {
