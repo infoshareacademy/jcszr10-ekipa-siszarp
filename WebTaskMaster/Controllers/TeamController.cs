@@ -1,5 +1,6 @@
 ﻿using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebTaskMaster.Models.Team;
 
@@ -23,7 +24,7 @@ namespace WebTaskMaster.Controllers
             return View(models);
         }
 
-
+        
         [HttpPost]
         public IActionResult Create(TeamNameModel model)
         {

@@ -2,12 +2,12 @@
 @model IEnumerable<WebTaskMaster.Models.User.UserModel>
 
 @{
-    ViewData["Title"] = "Users";
+	ViewData["Title"] = "Users";
 }
 
 <div class="container text-center text-wrap text-break">
-    <div class="row justify-content-center">
-        <h1 class="col-12 col-sm-6 col-lg-8 offset-lg-1">Users</h1>
+	<div class="row justify-content-center">
+		<h1 class="col-12 col-sm-6 col-lg-8 offset-lg-1">Users</h1>
 
         @* Create Team Modal button  *@
         <button id="createUserModalBtn" class="btn btn-primary col-12 col-sm-3 col-lg-2 offset-lg-1" type="button"
@@ -16,26 +16,26 @@
         </button>
     </div>
 
-    @{
-        var userNum = 0;
+	@{
+		var userNum = 0;
 
-        foreach (var user in Model)
-        {
-            userNum++;
+		foreach (var user in Model)
+		{
+			userNum++;
 
-            <div class="row justify-content-start my-2 px-2 py-2 bg-primary bg-opacity-25">
-                <a class="btn btn-outline-secondary col-12 col-sm-1 offset-md-1"
-                   asp-action="Details" asp-route-userId="@user.UserId"
-                   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="User details">
-                    @userNum
-                </a>
+			<div class="row justify-content-start my-2 px-2 py-2 bg-primary bg-opacity-25">
+				<a class="btn btn-outline-secondary col-12 col-sm-1 offset-md-1"
+				   asp-action="Details" asp-route-userId="@user.UserId"
+				   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="User details">
+					@userNum
+				</a>
 
-                <p class="col-12 col-sm-10 col-md-4 col-xl-3">@user.FirstName</p>
-                <p class="col-12 col-md-3 col-md-4 col-xl-3">@user.LastName</p>
-                <p class="col-12 col-xl-3"><label asp-for="@user.Position"></label>: @user.Position</p>
-            </div>
-        }
-    }
+				<p class="col-12 col-sm-10 col-md-4 col-xl-3">@user.FirstName</p>
+				<p class="col-12 col-md-3 col-md-4 col-xl-3">@user.LastName</p>
+				<p class="col-12 col-xl-3"><label asp-for="@user.Position"></label>: @user.Position</p>
+			</div>
+		}
+	}
 </div>
 
 @* Create User Modal *@
@@ -52,30 +52,30 @@
             _ => null
         };
 
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 
-    @* Activate modal on page load. Needed to display server side validation result. *@
-    @if (modalBtnId is not null)
-    {
-        <script type="text/javascript">
-            $(document).ready(function () {
-                document.getElementById("@modalBtnId").click();
-            });
-        </script>
-    }
+	@* Activate modal on page load. Needed to display server side validation result. *@
+	@if (modalBtnId is not null)
+	{
+		<script type="text/javascript">
+			$(document).ready(function () {
+				document.getElementById("@modalBtnId").click();
+			});
+		</script>
+	}
 
-    @* tooltips *@
-    <script type="text/javascript">
-        tooltipTriggerList = document.querySelectorAll('[data-bs-toggle-tooltip="tooltip"]');
-        tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-    </script>
+	@* tooltips *@
+	<script type="text/javascript">
+		tooltipTriggerList = document.querySelectorAll('[data-bs-toggle-tooltip="tooltip"]');
+		tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+	</script>
 
-    @* show toast for team edit response *@
-    @if (TempData["ToastMessage"] is not null)
-    {
-        <script type="text/javascript">
-            bootstrap.Toast.getOrCreateInstance(document.getElementById('teamEditToast')).show();
-        </script>
-    }
+	@* show toast for team edit response *@
+	@if (TempData["ToastMessage"] is not null)
+	{
+		<script type="text/javascript">
+			bootstrap.Toast.getOrCreateInstance(document.getElementById('teamEditToast')).show();
+		</script>
+	}
     }
