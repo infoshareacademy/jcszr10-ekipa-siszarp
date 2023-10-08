@@ -58,17 +58,6 @@
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 
-
-	<partial name="_ToastPartial" />
-
-
-	@if (TempData["ToastMessage"] is not null)
-	{
-		<script type="text/javascript">
-			bootstrap.Toast.getOrCreateInstance(document.getElementById('TryLogin')).show();
-		</script>
-	}
-
 	@await RenderSectionAsync("Scripts", required: false)
 
 </body>
