@@ -1,0 +1,11 @@
+﻿@model WebTaskMaster.Models.Task.TaskModel;
+
+@{
+    ViewData["Title"] = "CreateNewTask";
+}
+
+<form asp-action="CreateNewTask">
+    <input asp-for="Name" />
+    <input asp-for="Description" />
+    <button type="submit">dodaj</button>
+</form>

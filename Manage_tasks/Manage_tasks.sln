@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTaskMaster", "..\WebTask
 		{00D7A8C7-E604-46B9-A128-69889E817F19} = {00D7A8C7-E604-46B9-A128-69889E817F19}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manage_tasks_Database", "..\Manage_tasks_Database\Manage_tasks_Database.csproj", "{500CB956-97C1-449F-A4F0-0794FF3AE34D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manage_tasks_Database", "..\Manage_tasks_Database\Manage_tasks_Database.csproj", "{500CB956-97C1-449F-A4F0-0794FF3AE34D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -29,4 +29,8 @@
 		<ProjectReference Include="..\Manage_tasks_Database\Manage_tasks_Database.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Servises\" />
+	</ItemGroup>
+
 </Project>

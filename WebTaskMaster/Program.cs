@@ -61,6 +61,9 @@ builder.Services.AddRazorPages();
 builder.Services
     .AddControllersWithViews()
     .AddRazorRuntimeCompilation();
+builder.Services.AddTransient<ITaskService, TaskService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 
 builder.Services
     .AddScoped<IUserService, UserService>()

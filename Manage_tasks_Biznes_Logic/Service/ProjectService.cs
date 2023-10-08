@@ -4,18 +4,23 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Manage_tasks;
 using Manage_tasks_Biznes_Logic.Model;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
- 
+
 
 namespace Manage_tasks_Biznes_Logic.Service
 {
 
+    public interface IProjectService
+    {
+        List<Project> GetAllProjects();
+        void LoadProjectsFromJson();
+        void SaveProjectToJson();
+    }
 
-    public class ProjectService
+    public class ProjectService : IProjectService
 
     {
 
@@ -23,7 +28,7 @@ namespace Manage_tasks_Biznes_Logic.Service
 
         const string _nameJsonFile = "ListaProjectow.json";
 
-        public void LoadProjectsFromJson()   
+        public void LoadProjectsFromJson()
         {
             if (!File.Exists(_nameJsonFile))
             {
@@ -41,12 +46,12 @@ namespace Manage_tasks_Biznes_Logic.Service
             File.WriteAllText(_nameJsonFile, objectSerialized);
         }
 
-        public List<Project> GetAllProject()
+        public List<Project> GetAllProjects()
         {
             return Projects;
         }
 
-        public Project GetProject(int projectId)  
+        public Project GetProject(int projectId)
         {
             try
             {
@@ -60,10 +65,10 @@ namespace Manage_tasks_Biznes_Logic.Service
 
             }
         }
-       
+
         public void RemoveProject(int index)
-        { 
-             
+        {
+
             try
             {
                 //Projects.Remove(Projects[index]);
@@ -72,9 +77,9 @@ namespace Manage_tasks_Biznes_Logic.Service
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                 
+
             }
-                                        // Zapisujemy nowa info do jsone po usunieciu projectu
+            // Zapisujemy nowa info do jsone po usunieciu projectu
         }
 
         public void CreateProject(string name, string description)
@@ -83,7 +88,25 @@ namespace Manage_tasks_Biznes_Logic.Service
             SaveProjectToJson();
         }
 
+        public void UpdateProject(Project project)
+        {
+            var projects = GetAllProjects();
 
+            var projectInDatabase = projects.FirstOrDefault(u => u.Id == project.Id);
+
+            if (projectInDatabase is not null)
+            {
+                projects.Remove(projectInDatabase);
+            }
+            else
+            {
+                project.Id = Guid.NewGuid();
+            }
+
+            projects.Add(project);
+
+            SaveProjectToJson();
+        }
     }
 
 

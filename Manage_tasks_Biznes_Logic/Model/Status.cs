@@ -1,4 +1,4 @@
-﻿namespace Manage_tasks
+﻿namespace Manage_tasks_Biznes_Logic.Model
 {
     public class Status
     {
@@ -8,18 +8,18 @@
         /// <summary>
         /// Konstruktor przypisujący status "ToDo".
         /// </summary>
-        public Status() 
+        public Status()
         {
             CurrentStatus = StatusList[0];
         }
-        
+
         /// <summary>
         /// Metoda zwracająca aktualny status.
         /// </summary>
         /// <returns>Zwraca obecny status jako String.</returns>
-        public string ShowCurrentStatus() 
-        { 
-            return CurrentStatus; 
+        public string ShowCurrentStatus()
+        {
+            return CurrentStatus;
         }
         /// <summary>
         /// Metoda zmianiająca obecny status.
@@ -28,13 +28,13 @@
         public void ChangeStatus(int StatusAsNumber)
         {
             CurrentStatus = StatusList[StatusAsNumber];
-            
+
         }
         public int StatusID()
         {
             return Array.IndexOf(StatusList, CurrentStatus);
         }
 
-         
+
     }
 }
