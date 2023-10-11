@@ -3,6 +3,7 @@ using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Authorization;
 using WebTaskMaster.Models.Project;
 using WebTaskMaster.Models.Team;
 
@@ -20,8 +21,11 @@ namespace WebTaskMaster.Controllers
         }
 
         // GET: ProjectController
+        [Authorize(Roles="User")]
         public ActionResult Index()
         {
+	        var user = User.Claims; 
+
             var model = CreateProjectModels();
             return View(model);
         }

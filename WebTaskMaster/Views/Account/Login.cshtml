@@ -1,0 +1,50 @@
+﻿@using Manage_tasks_Biznes_Logic.Dtos
+@model LoginDto
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <section>
+            <form id="account" method="post">
+                <h2>Use a local account to login.</h2>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-floating">
+                    <input asp-for="@Model.Email" class="form-control" autocomplete="username" aria-required="true" />
+                    <label asp-for="@Model.Email" class="form-label"></label>
+                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="@Model.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                    <label asp-for="@Model.Password" class="form-label"></label>
+                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                </div>
+                <div>
+                    <div class="checkbox">
+                        <label asp-for="@Model.RememberMe" class="form-label">
+                            <input class="form-check-input" asp-for="@Model.RememberMe" />
+                            @Html.DisplayNameFor(Model => Model.RememberMe)
+                        </label>
+                    </div>
+                </div>
+                <div>
+	                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-warning">Login</button>
+                </div>
+                <div>
+                    <p>
+                        <a  asp-action="Register">Register as a new user</a>
+                    </p>
+                  
+                </div>
+            </form>
+        </section>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
