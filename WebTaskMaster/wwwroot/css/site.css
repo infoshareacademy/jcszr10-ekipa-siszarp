@@ -3,19 +3,35 @@ html {
 }
 
 @media (min-width: 768px) {
-  html {
+  .html {
     font-size: 16px;
   }
 }
 
-html {
+.html {
   position: relative;
   min-height: 100%;
 }
 
-body {
+.body {
   margin-bottom: 60px;
 }
 .colorMenu {
     background-color: rgb(123, 104, 238);
+}
+.nav-item {
+    font-family: "Work Sans",sans-serif;
+    font-size: 14px;
+    line-height: 1.285714285714286em;
+    font-weight: 100;
+    letter-spacing: .08em;
+}
+.nav-item:hover {
+    transform: scale(1.25);
+    opacity: 0.9;
+    font-weight: 500;
+    letter-spacing: .01em;
+}
+.navbar-brand:hover {
+    transform: scale(1.15)
 }
