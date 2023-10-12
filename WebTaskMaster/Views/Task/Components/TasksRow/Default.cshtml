@@ -1,0 +1,16 @@
+﻿@model Manage_tasks_Biznes_Logic.Model.TasksList;
+@{
+    if (Model == null)
+    {
+        <a>pusto</a>
+    }
+    else
+    {
+        foreach (var task in Model.Tasks)
+        {
+            @await Component.InvokeAsync("SingleTask", task.Id)
+        }
+    }
+}
+
+

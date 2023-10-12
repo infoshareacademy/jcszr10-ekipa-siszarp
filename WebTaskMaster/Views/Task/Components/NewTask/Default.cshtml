@@ -1,0 +1,12 @@
+﻿@model WebTaskMaster.Models.Task.NewTaskModel
+@*
+    newtask
+*@
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+    <form asp-action="CreateNewTask">
+        <input asp-for="Name" />
+        <input asp-for="Description" />
+        <button type="submit">Stwórz</button>
+    </form>
+    </div></div>

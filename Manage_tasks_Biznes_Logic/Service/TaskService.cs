@@ -22,9 +22,14 @@ namespace Manage_tasks_Biznes_Logic.Service
 
 
 
-    public class TaskService :ITaskService
+    public class TaskService : ITaskService
     {
-        public static TasksList tempTasks = new TasksList();
+        public static TasksList tempTasks = new TasksList
+        { 
+            Tasks = new List<ProjectTask> {
+            new ProjectTask {Id = Guid.NewGuid(), TaskName = "Testowy", TaskDescription = "predefiniowany"},
+            }
+        };
         
         public string[] TasksNames(Project project)
         {
@@ -67,12 +72,13 @@ namespace Manage_tasks_Biznes_Logic.Service
             editTaskDescription.EditTask(newValues[1], task);
             TasksList editTaskStatus = new TasksList(new EditTaskStatus());
             editTaskStatus.EditTask(newValues[2], task);
-            if (newValues[2] == "0" || newValues[2] == "1")
+
+            if (Int32.Parse(newValues[2]) == 2)
             {
-                newValues[3] = null;
                 TasksList editTaskFinishDate = new TasksList(new EditTaskFinishDate());
-                editTaskFinishDate.EditTask(newValues[3], task);
+                 editTaskFinishDate.EditTask(newValues[3], task);
             }
+            
             
             
         }

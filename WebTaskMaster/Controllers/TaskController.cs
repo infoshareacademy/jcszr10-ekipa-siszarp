@@ -9,6 +9,7 @@ namespace WebTaskMaster.Controllers
     public class TaskController : Controller
     {
         private readonly IProjectService _projectService;
+        
         private readonly ITaskService _taskService;
         public TaskController(ITaskService taskService)
         {
@@ -22,10 +23,7 @@ namespace WebTaskMaster.Controllers
         }
 
         
-        public IActionResult CreateNewTask() 
-        {
-            return View();
-        }
+       
 
         [HttpPost]
         public IActionResult CreateNewTask(NewTaskModel model)
@@ -35,14 +33,15 @@ namespace WebTaskMaster.Controllers
         }       
         [HttpPost]
         public IActionResult EditTask(WebTaskModel model)
-        {
-            
+        {           
             _taskService.EditTask(model.newValues, _taskService.GetTaskByGuid(model.ProjectTask.Id));
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public IActionResult DeleteTask(ProjectTask model)
+        public IActionResult DeleteTask(WebTaskModel model)
         {
+            var task = _taskService.GetTaskByGuid(model.ProjectTask.Id);
+            _taskService.RemoveTask(task);
             return RedirectToAction("Index");
         }
     }

@@ -1,14 +1,33 @@
 ﻿@model WebTaskMaster.Models.Task.WebTaskModel;
 
+<script>
+    function edit(element)
+    {
+        document.getElementById("reset-" + element).style.display = "initial";
+        document.getElementById(element).style.display = "initial";
+        document.getElementById("edit-" + element).style.display = "none";
+    }
+    function reset(element) 
+    { 
+        document.getElementById("reset-" + element).style.display = "none";
+        document.getElementById(element).style.display = "none";
+        document.getElementById("edit-" + element).style.display = "initial";
+    }
+    
+   
+</script>
 <div class="card" style="width: 18rem;">
   <div class="card-body">
+        <form asp-action="DeleteTask">
+            <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;" />
+            <button type="submit" class="btn-close" aria-label="Close" style="float: right"></button></form>
       <form asp-action="EditTask">
           <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;"/>
           <input asp-for="@Model.ProjectTask.FinishDate" readonly style="display: none;" />
             <input asp-for="@Model.newValues[0]" value="@Model.ProjectTask.TaskName" class="card-title"/>
             <input asp-for="@Model.newValues[1]" value="@Model.ProjectTask.TaskDescription" class="card-text" />
             <div class="collapse" id="taskDetails-@Model.ProjectTask.Id">
-                <select asp-for="@Model.newValues[2]">
+                <select asp-for="@Model.newValues[2]" class="form-select">
                     @{
                         var statusNumber = @Model.ProjectTask.Status.StatusID();
                         string[] statusMsg = new string[]
@@ -22,11 +41,11 @@
                         {
                             if(i == statusNumber)
                             {
-                                <option value="@statusNumber" selected>@statusMsg[statusNumber]</option>
+                                            <option value="@statusNumber" selected>@statusMsg[statusNumber]</option>
                             }
                             else
                             {
-                                <option value="@i">@statusMsg[i]</option>
+                                            <option value="@i">@statusMsg[i]</option>
                             }
                         }
                     }
@@ -35,7 +54,7 @@
                     string finishDate;
                     if (Model.ProjectTask.FinishDate.HasValue)
                     {
-                        finishDate = $"{Model.ProjectTask.FinishDate.Value.Year}-{Model.ProjectTask.FinishDate.Value.Month}-{Model.ProjectTask.FinishDate.Value.Day}";
+                        finishDate = Model.ProjectTask.FinishDate.Value.ToString("yyyy-MM-dd");
                     }
                     else
                     {
@@ -45,7 +64,12 @@
 
                 }
                 <input asp-for="@Model.newValues[3]" value="@finishDate" type="date" />
-                <button type="submit">Zapisz</button>
+                <br />
+                
+                <button type="button" id="edit-@Model.ProjectTask.Id">Edytuj</button>
+                    
+                <button type="reset" id="reset-@Model.ProjectTask.Id" style="display: none">Anuluj</button>
+                <button type="submit" id="@Model.ProjectTask.Id" style="display: none">Zapisz</button>
       </form>
             
         </div>
@@ -58,3 +82,15 @@
   </div>
 </div>
 
+<script>
+    
+    var editButton = document.getElementById("edit-@Model.ProjectTask.Id");
+    editButton.onclick = function () {
+        edit("@Model.ProjectTask.Id");
+    }
+
+    var resetButton = document.getElementById("reset-@Model.ProjectTask.Id");
+    resetButton.onclick = function () {
+        reset("@Model.ProjectTask.Id");
+    }
+</script>
