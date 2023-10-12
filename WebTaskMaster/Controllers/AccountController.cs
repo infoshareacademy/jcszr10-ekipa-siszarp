@@ -1,106 +1,208 @@
-﻿using Manage_tasks_Biznes_Logic.Dtos;
+﻿using System.Security.Claims;
+using Manage_tasks_Biznes_Logic.Dtos.Account;
+using Manage_tasks_Biznes_Logic.Dtos.User;
 using Manage_tasks_Biznes_Logic.Service;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebTaskMaster.Controllers
 {
     public class AccountController : Controller
     {
-	    private readonly IAcoountService _accServ;
+        private readonly IAccountService _accServ;
 
-        public AccountController(IAcoountService AccServ)
+        public AccountController(IAccountService AccServ)
         {
             _accServ = AccServ;
         }
-        // GET: AccountController
+
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Login(LoginDto model)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
 
-            return View();
+            await _accServ.LoginUser(dto);
+
+            if (!dto.LoginWasSuccessful)
+            {
+                return View(dto);
+            }
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(dto.ClaimsIdentity),
+                dto.AuthProp);
+
+            return RedirectToAction("index", "Home");
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
+
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterDto model)
+        public async Task<IActionResult> Register(RegisterDto dto)
         {
-	        await _accServ.RegisterUser(model); 
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
+            await _accServ.RegisterUser(dto);
+
+            if (dto.RegistrationFailed)
+            {
+                return View(dto);
+            }
 
             return RedirectToAction("Login");
         }
 
-        // GET: AccountController/Create
-        public ActionResult Create()
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("index", "Home");
         }
 
-        // POST: AccountController/Create
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> EditEmail()
+        {
+            var userIdText = HttpContext.User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(c => c.Value)
+                .FirstOrDefault();
+
+            if (!Guid.TryParse(userIdText, out var userId))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var dto = await _accServ.GetEditEmail(userId);
+
+            if (dto is null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(dto);
+        }
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> EditEmail(EditEmailDto dto)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                return View(dto);
             }
-            catch
+
+            await _accServ.EditEmail(dto);
+
+            if (dto.EditEmailFailed)
             {
-                return View();
+                return View(dto);
             }
+
+            return RedirectToAction("Details", "User");
         }
 
-        // GET: AccountController/Edit/5
-        public ActionResult Edit(int id)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> EditPassword()
         {
-            return View();
+            var userIdText = HttpContext.User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(c => c.Value)
+                .FirstOrDefault();
+
+            if (!Guid.TryParse(userIdText, out var userId))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var dto = new EditPasswordDto
+            {
+                UserId = userId
+            };
+
+            return View(dto);
         }
 
-        // POST: AccountController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> EditPassword(EditPasswordDto dto)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                return View(dto);
             }
-            catch
+
+            await _accServ.EditPassword(dto);
+
+            if (dto.EditPasswordFailed)
             {
-                return View();
+                return View(dto);
             }
+
+            return RedirectToAction("Details", "User");
         }
 
-        // GET: AccountController/Delete/5
-        public ActionResult Delete(int id)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> DeleteAccount()
         {
-            return View();
+            var userIdText = HttpContext.User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(c => c.Value)
+                .FirstOrDefault();
+
+            if (!Guid.TryParse(userIdText, out var userId))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var dto = new DeleteAccountDto()
+            {
+                UserId = userId
+            };
+
+            return View(dto);
         }
 
-        // POST: AccountController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> DeleteAccount(DeleteAccountDto dto)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                return View(dto);
             }
-            catch
+
+            await _accServ.DeleteAccount(dto);
+
+            if (dto.DeleteAccountFailed)
             {
-                return View();
+                return View(dto);
             }
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

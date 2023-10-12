@@ -1,5 +1,4 @@
-﻿@using Manage_tasks_Biznes_Logic.Dtos
-@model LoginDto
+﻿@model Manage_tasks_Biznes_Logic.Dtos.Account.LoginDto
 @{
     ViewData["Title"] = "Login";
 }
@@ -26,23 +25,29 @@
                     <div class="checkbox">
                         <label asp-for="@Model.RememberMe" class="form-label">
                             <input class="form-check-input" asp-for="@Model.RememberMe" />
-                            @Html.DisplayNameFor(Model => Model.RememberMe)
+                            <label asp-for="@Model.RememberMe" class="form-label"></label>
                         </label>
                     </div>
                 </div>
+
+                @if (Model is not null && !Model.LoginWasSuccessful)
+                {
+                    <div>
+                        <p class="text-danger">Invalid email or password.</p>
+                    </div>
+                }
+
                 <div>
-	                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-warning">Login</button>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-warning">Login</button>
                 </div>
                 <div>
                     <p>
-                        <a  asp-action="Register">Register as a new user</a>
+                        <a asp-action="Register">Register as a new user</a>
                     </p>
-                  
                 </div>
             </form>
         </section>
     </div>
-
 </div>
 
 @section Scripts {

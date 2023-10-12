@@ -1,51 +1,37 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
-using WebTaskMaster.Areas.Identity.Data;
-using WebTaskMaster.Areas.Identity.Pages;
-using WebTaskMaster.Data;
-
-
-
-
 using Manage_tasks_Biznes_Logic.Service;
+using Manage_tasks_Database.Context;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<DataBaseContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
-//builder.Services.AddDbContext<ApplicationUserDbContext>(options =>
-//options.UseSqlServer(connectionString));
-
-
-builder.Services.AddAuthentication("MyCookieAuth")  
-	.AddCookie(options =>
-	{
-		options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-		options.SlidingExpiration = true;
-		options.AccessDeniedPath = "/Account/Forbidden/";
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.SlidingExpiration = true;
+        options.AccessDeniedPath = "/Account/Forbidden/";
         options.LoginPath = "/Account/Login";
-        
-	});
+    });
 
 
-
-
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Add services to the container.
 builder.Services
     .AddControllersWithViews()
     .AddRazorRuntimeCompilation();
+
 builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
-
-builder.Services
-    .AddScoped<IUserService, UserService>()
-    .AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 
@@ -62,15 +48,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-using (var scope = app.Services.CreateScope())
-{
-    var autorizationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationUserDbContext>();
-    autorizationDbContext.Database.Migrate();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var autorizationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationUserDbContext>();
+//    autorizationDbContext.Database.Migrate();
+//}
 
 app.MapControllerRoute(
     name: "default",

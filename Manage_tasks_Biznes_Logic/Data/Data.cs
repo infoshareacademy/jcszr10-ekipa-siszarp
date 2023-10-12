@@ -5,7 +5,7 @@ namespace Manage_tasks_Biznes_Logic.Data
     {
         public static ProjectService projectService = new ProjectService();
 
-        public static readonly UserService UserService = new();
+        public static readonly UserService UserService = new(null);
          
         public static readonly TeamService TeamService = new();
     }

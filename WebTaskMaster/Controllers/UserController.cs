@@ -1,7 +1,9 @@
-﻿using Manage_tasks_Biznes_Logic.Model;
+﻿using Manage_tasks_Biznes_Logic.Dtos.User;
+using Manage_tasks_Biznes_Logic.Model;
 using Microsoft.AspNetCore.Mvc;
 using Manage_tasks_Biznes_Logic.Service;
 using WebTaskMaster.Models.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebTaskMaster.Controllers
 {
@@ -60,47 +62,41 @@ namespace WebTaskMaster.Controllers
             return users;
         }
 
-        public IActionResult Details(Guid userId)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Details()
         {
-            var user = _userService.GetUserById(userId);
+            var userIdText = HttpContext.User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(c => c.Value)
+                .FirstOrDefault();
 
-            if (user is null)
+            if (!Guid.TryParse(userIdText, out var userId))
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
 
-            var userModel = new UserModel
-            {
-                UserId = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Position = user.Position
-            };
+            var dto = await _userService.GetUserDetails(userId);
 
-            return View(userModel);
+            if (dto is null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(dto);
         }
 
         [HttpPost]
-        public IActionResult Edit(UserModel model)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Details(UserDetailsDto dto)
         {
             if (!ModelState.IsValid)
             {
-                return View("Details", model);
+                return View(dto);
             }
 
-            var editedUser = new User
-            {
-                Id = model.UserId,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Position = model.Position
-            };
+            await _userService.EditUserDetails(dto);
 
-            _userService.UpdateUser(editedUser);
-
-            TempData["ToastMessage"] = "Changes saved.";
-
-            return View("Details", model);
+            return View(dto);
         }
 
         public IActionResult Delete(Guid userId)

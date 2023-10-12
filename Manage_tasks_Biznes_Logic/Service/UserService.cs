@@ -1,11 +1,19 @@
 ﻿using Manage_tasks_Biznes_Logic.Model;
 using System.Text.Json;
+using Manage_tasks_Biznes_Logic.Dtos.User;
+using Manage_tasks_Database.Context;
 
 namespace Manage_tasks_Biznes_Logic.Service;
 
 public class UserService : IUserService
 {
-    private const string UsersFileName = "Users.json";
+    private const string UsersFileName = "UserEntities.json";
+    private readonly DataBaseContext _dbContext;
+
+    public UserService(DataBaseContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
 
     public User? GetUserById(Guid id)
     {
@@ -58,6 +66,47 @@ public class UserService : IUserService
         }
 
         return users ?? new List<User>();
+    }
+
+    public async Task<UserDetailsDto?> GetUserDetails(Guid userId)
+    {
+        var user = await _dbContext.UserEntities.FindAsync(userId);
+
+        if (user is null)
+        {
+            return null;
+        }
+
+        var dto = new UserDetailsDto
+        {
+            UserId = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Position = user.Position,
+            DateOfBirth = user.DateOfBirth
+        };
+
+        return dto;
+    }
+
+    public async Task EditUserDetails(UserDetailsDto dto)
+    {
+        var user = await _dbContext.UserEntities.FindAsync(dto.UserId);
+
+        if (user is null)
+        {
+            dto.ChangesSaved = false;
+            return;
+        }
+
+        user.FirstName = dto.FirstName;
+        user.LastName = dto.LastName;
+        user.Position = dto.Position;
+        user.DateOfBirth = dto.DateOfBirth;
+
+        await _dbContext.SaveChangesAsync();
+
+        dto.ChangesSaved = true;
     }
 
     private void SaveUsers(List<User> users)
