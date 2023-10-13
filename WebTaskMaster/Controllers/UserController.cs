@@ -13,8 +13,8 @@ namespace WebTaskMaster.Controllers
         {
             _userService = userService;
         }
-
-        public IActionResult Index()
+		[Route("user")]
+		public IActionResult Index()
         {
             var models = CreateUserModels();
 
@@ -59,8 +59,8 @@ namespace WebTaskMaster.Controllers
 
             return users;
         }
-
-        public IActionResult Details(Guid userId)
+		[Route("user/{userId:Guid}/details")]
+		public IActionResult Details(Guid userId)
         {
             var user = _userService.GetUserById(userId);
 

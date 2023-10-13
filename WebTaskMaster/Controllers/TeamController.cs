@@ -16,15 +16,15 @@ namespace WebTaskMaster.Controllers
             _teamService = teamService;
             _userService = userService;
         }
-
-        public IActionResult Index()
+		[Route("team")]
+		public IActionResult Index()
         {
             var models = CreateBasicModels();
 
             return View(models);
         }
 
-        
+
         [HttpPost]
         public IActionResult Create(TeamNameModel model)
         {
@@ -85,8 +85,8 @@ namespace WebTaskMaster.Controllers
 
             return teamsModels;
         }
-
-        public IActionResult Details(Guid teamId)
+		[Route("team/{teamId:Guid}/details")]
+		public IActionResult Details(Guid teamId)
         {
             var team = _teamService.GetTeamById(teamId);
 

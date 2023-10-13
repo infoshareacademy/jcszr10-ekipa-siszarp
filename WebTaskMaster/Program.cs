@@ -94,7 +94,7 @@ using (var scope = app.Services.CreateScope())
     autorizationDbContext.Database.Migrate();
 }
 
- 
+
 
 app.MapControllerRoute(
     name: "default",

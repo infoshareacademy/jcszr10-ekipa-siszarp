@@ -19,8 +19,9 @@ namespace WebTaskMaster.Controllers
             _teamService = teamService;
         }
 
-        // GET: ProjectController
-        public ActionResult Index()
+		// GET: ProjectController
+		[Route("project")]
+		public ActionResult Index()
         {
             var model = CreateProjectModels();
             return View(model);
@@ -65,6 +66,7 @@ namespace WebTaskMaster.Controllers
         }
 
         // GET: ProjectController/Details/5
+        [Route("project/{projectId:Guid}/details")]
         public ActionResult Details(Guid projectId)
         {
             var project = _projectService.GetProjectById(projectId);
