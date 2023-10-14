@@ -1,13 +1,13 @@
-﻿using Manage_tasks_Biznes_Logic.Model;
-using System.Text.Json;
-using Manage_tasks_Biznes_Logic.Dtos.User;
+﻿using Manage_tasks_Biznes_Logic.Dtos.User;
+using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Database.Context;
+using Manage_tasks_Database.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Manage_tasks_Biznes_Logic.Service;
 
 public class UserService : IUserService
 {
-    private const string UsersFileName = "UserEntities.json";
     private readonly DataBaseContext _dbContext;
 
     public UserService(DataBaseContext dbContext)
@@ -15,57 +15,39 @@ public class UserService : IUserService
         _dbContext = dbContext;
     }
 
-    public User? GetUserById(Guid id)
+    public async Task<User?> GetUserById(Guid id)
     {
-        return GetAllUsers().FirstOrDefault(user => user.Id == id);
+        var userEntity = await _dbContext.UserEntities.FindAsync(id);
+
+        if (userEntity is null)
+        {
+            return null;
+        }
+
+        var user = ConvertUserEntity(userEntity);
+
+        return user;
     }
 
-    public void UpdateUser(User user)
+    public async Task<List<User>> GetAllUsers()
     {
-        var users = GetAllUsers();
+        var userEntities = await _dbContext.UserEntities.ToListAsync();
 
-        var userInDatabase = users.FirstOrDefault(u => u.Id == user.Id);
+        var users = userEntities.Select(ConvertUserEntity).ToList();
 
-        if (userInDatabase is not null)
-        {
-            users.Remove(userInDatabase);
-        }
-        else
-        {
-            user.Id = Guid.NewGuid();
-        }
-
-        users.Add(user);
-
-        SaveUsers(users);
+        return users;
     }
 
-    public void DeleteUser(Guid id)
+    private static User ConvertUserEntity(UserEntity userEntity)
     {
-        var users = GetAllUsers();
-
-        var userInDatabase = users.FirstOrDefault(u => u.Id == id);
-
-        if (userInDatabase is null)
+        var user = new User
         {
-            return;
-        }
-
-        users.Remove(userInDatabase);
-
-        SaveUsers(users);
-    }
-
-    public List<User> GetAllUsers()
-    {
-        List<User>? users = null;
-
-        if (File.Exists(UsersFileName))
-        {
-            users = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(UsersFileName));
-        }
-
-        return users ?? new List<User>();
+            Id = userEntity.Id,
+            FirstName = userEntity.FirstName,
+            LastName = userEntity.LastName,
+            Position = userEntity.Position ?? string.Empty
+        };
+        return user;
     }
 
     public async Task<UserDetailsDto?> GetUserDetails(Guid userId)
@@ -107,12 +89,5 @@ public class UserService : IUserService
         await _dbContext.SaveChangesAsync();
 
         dto.ChangesSaved = true;
-    }
-
-    private void SaveUsers(List<User> users)
-    {
-        var serializerOptions = new JsonSerializerOptions() { WriteIndented = true };
-
-        File.WriteAllText(UsersFileName, JsonSerializer.Serialize(users, serializerOptions));
     }
 }

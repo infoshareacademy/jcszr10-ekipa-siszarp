@@ -55,12 +55,7 @@
                 {
                     <div class="col-12">
                         <div class="row justify-content-center my-2 mx-2 px-1 py-1 bg-info bg-opacity-25">
-                            <a class="btn btn-outline-secondary fs-5 col-12 col-md-2"
-                               asp-controller="User" asp-action="Details" asp-route-userId="@team.LeaderModel.Id"
-                               data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="User details">
-                                <label asp-for="@team.LeaderModel"></label>
-                            </a>
-
+                            <p class="fs-5 col-12 col-md-2">Leader</p>
                             <p class="fs-5 col-12 col-md-5">@team.LeaderModel.FirstName</p>
                             <p class="fs-5 col-12 col-md-5">@team.LeaderModel.LastName</p>
                         </div>

@@ -21,8 +21,8 @@ internal class TeamConfiguration : IEntityTypeConfiguration<TeamEntity>
         builder.HasMany(t => t.Members)
             .WithMany(u => u.Teams)
             .UsingEntity<TeamUserEntity>(
-                l => l.HasOne<UserEntity>().WithMany().HasForeignKey(tu => tu.TeamId).HasPrincipalKey(t => t.Id),
-                r => r.HasOne<TeamEntity>().WithMany().HasForeignKey(tu => tu.UserId).HasPrincipalKey(u => u.Id));
+                l => l.HasOne<UserEntity>().WithMany().HasForeignKey(tu => tu.UserId).HasPrincipalKey(t => t.Id),
+                r => r.HasOne<TeamEntity>().WithMany().HasForeignKey(tu => tu.TeamId).HasPrincipalKey(u => u.Id));
 
         builder.HasOne(t => t.Leader)
             .WithMany(u => u.TeamsLeader)

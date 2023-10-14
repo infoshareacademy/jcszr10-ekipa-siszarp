@@ -21,10 +21,10 @@ namespace WebTaskMaster.Controllers
         }
 
         // GET: ProjectController
-        [Authorize(Roles="User")]
+        [Authorize(Roles = "User")]
         public ActionResult Index()
         {
-	        var user = User.Claims; 
+            var user = User.Claims;
 
             var model = CreateProjectModels();
             return View(model);
@@ -83,7 +83,7 @@ namespace WebTaskMaster.Controllers
             return View(projectModel);
         }
 
-        private object CreateDetailsModel(Project project)
+        private async Task<object> CreateDetailsModel(Project project)
         {
             var projectModel = new ProjectDetailsModel
             {
@@ -92,16 +92,17 @@ namespace WebTaskMaster.Controllers
                 Description = project.Description,
                 ProjectChangeTeamModel = new ProjectChangeTeamModel
                 {
-                    AvailableTeams = _teamService.GetAllTeams().Select(t => new ProjectTeamModel() { Id = t.Id, Name = t.Name }).ToList()
+                    AvailableTeams = (await _teamService.GetAllTeams()).Select(t => new ProjectTeamModel() { Id = t.Id, Name = t.Name }).ToList()
                 }
             };
-            if (_teamService.GetTeamById(project.ProjectTeamId) is not null)
+
+            if (await _teamService.GetTeamById(project.ProjectTeamId) is not null)
             {
                 projectModel.ProjectTeam = new ProjectTeamModel
                 {
-                    Id = _teamService.GetTeamById(project.ProjectTeamId).Id,
-                    Name = _teamService.GetTeamById(project.ProjectTeamId).Name,
-                    Leader = _teamService.GetTeamById(project.ProjectTeamId).Leader.ToString(),
+                    Id = (await _teamService.GetTeamById(project.ProjectTeamId)).Id,
+                    Name = (await _teamService.GetTeamById(project.ProjectTeamId)).Name,
+                    Leader = (await _teamService.GetTeamById(project.ProjectTeamId)).Leader.ToString(),
                 };
             }
             else projectModel.ProjectTeam = new ProjectTeamModel();
@@ -110,7 +111,7 @@ namespace WebTaskMaster.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChangeTeam(ProjectChangeTeamModel model, Guid projectId)
+        public async Task<IActionResult> ChangeTeam(ProjectChangeTeamModel model, Guid projectId)
         {
             if (!ModelState.IsValid)
             {
@@ -123,7 +124,7 @@ namespace WebTaskMaster.Controllers
                     return RedirectToAction("Index");
                 }
 
-                var projectModel = CreateDetailsModel(project);
+                var projectModel = await CreateDetailsModel(project);
 
                 return View("Details", projectModel);
             }
@@ -145,7 +146,7 @@ namespace WebTaskMaster.Controllers
 
 
         [HttpPost]
-        public IActionResult Edit(ProjectModel model, Guid projectId)
+        public async Task<IActionResult> Edit(ProjectModel model, Guid projectId)
         {
             if (!ModelState.IsValid)
             {
@@ -158,7 +159,7 @@ namespace WebTaskMaster.Controllers
                     return RedirectToAction("Index");
                 }
 
-                var projectModel = CreateDetailsModel(project);
+                var projectModel = await CreateDetailsModel(project);
 
                 return View("Details", projectModel);
             }
