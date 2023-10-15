@@ -8,33 +8,33 @@ namespace Manage_tasks.View.ProjectView
 {
     public static class CreateProjectView
     {
-        public static void Display()
-        {
-            Clear();
+        //public static void Display()
+        //{
+        //    Clear();
 
-            OutputEncoding = Encoding.Unicode;
+        //    OutputEncoding = Encoding.Unicode;
 
-            ForegroundColor = ConsoleColor.Magenta;
+        //    ForegroundColor = ConsoleColor.Magenta;
 
-            string title = "Stwórz nowy project";
-            string descrition = "Podaj opis projektu";
-            string name = "Podaj nazwę";
+        //    string title = "Stwórz nowy project";
+        //    string descrition = "Podaj opis projektu";
+        //    string name = "Podaj nazwę";
 
-            Menu newobject = new Menu();
-            newobject.SetCursorCenter(title);
-            newobject.SetCursorCenter(name);
-            SetCursorPosition(30, CursorTop);
-            string projectName = ReadLine();
+        //    Menu newobject = new Menu();
+        //    newobject.SetCursorCenter(title);
+        //    newobject.SetCursorCenter(name);
+        //    SetCursorPosition(30, CursorTop);
+        //    string projectName = ReadLine();
 
-            newobject.SetCursorCenter(descrition);
-            SetCursorPosition(30, CursorTop);
-            string projectDescrition = ReadLine();
+        //    newobject.SetCursorCenter(descrition);
+        //    SetCursorPosition(30, CursorTop);
+        //    string projectDescrition = ReadLine();
 
-            WriteLine();
-            Data.projectService.CreateProject(projectName, projectDescrition);
+        //    WriteLine();
+        //    Data.projectService.CreateProject(projectName, projectDescrition);
 
 
-        }
+        //}
     }
 
 }

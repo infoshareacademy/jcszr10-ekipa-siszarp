@@ -1,31 +1,69 @@
 ﻿using Manage_tasks_Biznes_Logic.Dtos;
+using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Manage_tasks_Database.Context;
 
 namespace WebTaskMaster.Controllers
 {
     public class AccountController : Controller
     {
-	    private readonly IAcoountService _accServ;
+	    private readonly IAccountService _accServ;
+	    private readonly DataBaseContext _dbContex;
 
-        public AccountController(IAcoountService AccServ)
+		public AccountController(IAccountService AccServ)
         {
             _accServ = AccServ;
         }
-        // GET: AccountController
-        public IActionResult Login()
+		[AllowAnonymous]
+		public IActionResult Login()
         {
             return View();
-        }
 
-        [HttpPost]
-        public IActionResult Login(LoginDto model)
+		}
+
+		[AllowAnonymous]
+		[HttpPost]
+        public async Task<IActionResult> Login(LoginDto model)
         {
+			var claims = await _accServ.LoginUser(model);
+			 
 
-            return View();
-        }
+			var authProperties = new AuthenticationProperties
+				{
+					AllowRefresh = true,
+
+
+					ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
+
+
+					IsPersistent = true,
+
+
+					IssuedUtc = DateTimeOffset.Now,
+
+
+					RedirectUri = "Home/Index"
+					// The full path or absolute URI to be used as an http 
+					// redirect response value.
+				};
+
+				await HttpContext.SignInAsync(
+					CookieAuthenticationDefaults.AuthenticationScheme,
+					new ClaimsPrincipal(claims),
+					authProperties);
+				
+				return View();
+		}
+
+
+		
 
         public IActionResult Register()
         {

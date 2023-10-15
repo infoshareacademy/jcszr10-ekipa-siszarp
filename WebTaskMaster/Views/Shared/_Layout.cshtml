@@ -1,5 +1,4 @@
 ﻿@using WebTaskMaster.Models.User;
-@inject 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +22,7 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarScroll">
 				<ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-					@if (User.IsInRole("User"))
+						@if (User.IsInRole("Administrator"))
 					{
 						<li class="nav-item ">
 							<a class="nav-link text-warning " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
