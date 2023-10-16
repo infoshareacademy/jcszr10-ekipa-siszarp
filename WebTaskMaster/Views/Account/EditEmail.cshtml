@@ -1,0 +1,47 @@
+﻿@model Manage_tasks_Biznes_Logic.Dtos.Account.EditEmailDto
+@{
+    ViewData["Title"] = "Edit email";
+}
+
+<div class="container">
+    <form class="row justify-content-start needs-validation" asp-action="EditEmail">
+        <input hidden="true" asp-for="UserId" />
+        <input hidden="true" asp-for="CurrentEmail" />
+
+        <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+        <div class="form-floating my-2">
+            <input class="form-control" disabled="disabled" value="@Model.CurrentEmail" />
+            <label class="form-label ms-1" asp-for="CurrentEmail"></label>
+        </div>
+
+        <div class="form-floating my-2">
+            <input class="form-control" asp-for="NewEmail" />
+            <label class="form-label ms-1" asp-for="NewEmail"></label>
+            <span class="text-danger" asp-validation-for="NewEmail"></span>
+        </div>
+        
+        @if (Model is not null && Model.EditEmailFailed)
+        {
+            if (Model.NewEmailAlreadyInUse)
+            {
+                <div>
+                    <p class="text-danger">New email is already in use.</p>
+                </div>
+            }
+
+            if (Model.NewEmailIsCurrentEmail)
+            {
+                <div>
+                    <p class="text-danger">New email must be different than current email.</p>
+                </div>
+            }
+        }
+
+        <button class="btn btn-primary col-12 col-md-3 col-md-3 my-2" type="submit">Save</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
