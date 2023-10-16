@@ -1,33 +1,47 @@
 ﻿@model WebTaskMaster.Models.Task.WebTaskModel;
 
-<script>
+<script>    
     function edit(element)
     {
         document.getElementById("reset-" + element).style.display = "initial";
         document.getElementById(element).style.display = "initial";
         document.getElementById("edit-" + element).style.display = "none";
+        var disabledElements = document.getElementsByClassName("disabled-" + element);
+        for (var i = 0; i < disabledElements.length; i++)
+        {
+            disabledElements[i].removeAttribute("disabled");
+        }
     }
     function reset(element) 
     { 
         document.getElementById("reset-" + element).style.display = "none";
         document.getElementById(element).style.display = "none";
         document.getElementById("edit-" + element).style.display = "initial";
+        var disabledElements = document.getElementsByClassName("disabled-" + element);
+        for (var i = 0; i < disabledElements.length; i++) {
+            disabledElements[i].setAttribute("disabled", "true");
+        }
+    }
+    function deleteConfirmation() 
+    { 
+        return window.confirm("Chcesz usunąć to zadanie?");
     }
     
    
 </script>
 <div class="card" style="width: 18rem;">
   <div class="card-body">
-        <form asp-action="DeleteTask">
+        <form asp-action="DeleteTask" onsubmit="return deleteConfirmation();">
             <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;" />
             <button type="submit" class="btn-close" aria-label="Close" style="float: right"></button></form>
       <form asp-action="EditTask">
           <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;"/>
           <input asp-for="@Model.ProjectTask.FinishDate" readonly style="display: none;" />
-            <input asp-for="@Model.newValues[0]" value="@Model.ProjectTask.TaskName" class="card-title"/>
-            <input asp-for="@Model.newValues[1]" value="@Model.ProjectTask.TaskDescription" class="card-text" />
+            <input asp-for="@Model.newValues[0]" value="@Model.ProjectTask.TaskName" class="card-title disabled-@Model.ProjectTask.Id" disabled />
+            <input asp-for="@Model.newValues[1]" value="@Model.ProjectTask.TaskDescription" class="card-text disabled-@Model.ProjectTask.Id" disabled />
+            
             <div class="collapse" id="taskDetails-@Model.ProjectTask.Id">
-                <select asp-for="@Model.newValues[2]" class="form-select">
+                <select asp-for="@Model.newValues[2]" class="form-select" class="card-text disabled-@Model.ProjectTask.Id" disabled>
                     @{
                         var statusNumber = @Model.ProjectTask.Status.StatusID();
                         string[] statusMsg = new string[]
@@ -41,11 +55,11 @@
                         {
                             if(i == statusNumber)
                             {
-                                            <option value="@statusNumber" selected>@statusMsg[statusNumber]</option>
+                                                        <option value="@statusNumber" selected>@statusMsg[statusNumber]</option>
                             }
                             else
                             {
-                                            <option value="@i">@statusMsg[i]</option>
+                                                        <option value="@i">@statusMsg[i]</option>
                             }
                         }
                     }
@@ -63,7 +77,7 @@
                     
 
                 }
-                <input asp-for="@Model.newValues[3]" value="@finishDate" type="date" />
+                <input asp-for="@Model.newValues[3]" value="@finishDate" type="date" class="card-text disabled-@Model.ProjectTask.Id" disabled />
                 <br />
                 
                 <button type="button" id="edit-@Model.ProjectTask.Id">Edytuj</button>
@@ -74,8 +88,10 @@
             
         </div>
         <p class="d-inline-flex gap-1">
-            <a data-bs-toggle="collapse" href="#taskDetails-@Model.ProjectTask.Id" role="button" aria-expanded="false" aria-controls="taskDetails-@Model.ProjectTask.Id">
-               more
+            <a data-bs-toggle="collapse" href="#taskDetails-@Model.ProjectTask.Id" role="button" aria-expanded="false" aria-controls="taskDetails-@Model.ProjectTask.Id">            
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+            </svg>
             </a>
         </p>
     
