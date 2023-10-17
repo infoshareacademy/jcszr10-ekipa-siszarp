@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebTaskMaster.Controllers
 {
-    public class UserController : Controller
+	[Authorize(Roles = "User")]
+	public class UserController : Controller
     {
         private readonly IUserService _userService;
 

@@ -10,12 +10,13 @@
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/WebTaskMaster.styles.css" asp-append-version="true" />
 
+
 </head>
 <body>
 
 	@if (User.IsInRole("User"))
 	{
-		 
+
 		<div class="container-fluid">
 			<div class="row flex-nowrap">
 				<div class="sideBarColor col-auto  col-sm-4 col-md-4 col-lg-3 col-xl-2 min-vh-100 d-flex flex-column justify-content-between">
@@ -24,27 +25,26 @@
 							<span class="fs-4 d-none d-sm-inline">Account manager</span>
 						</a>
 						<ul class="nav nav-pills flex-column mt-4">
-							 
+
+							<li class="nav-item py-2 py-sm-0">
+								<a asp-area="" asp-controller="Project" asp-action="Index" class="nav-link text-white" aria-current="page">
+									<i class="fs-5 fa-solid fa-folder-tree" style="color: #ffffff;"></i><span class="fs-4 ms-3 d-none d-sm-inline">Project</span>
+								</a>
+							</li>
 							<li class="nav-item py-2 py-sm-0">
 								<a asp-area="" asp-controller="Team" asp-action="Index" class="nav-link text-white" aria-current="page">
-									<i class="fs-5 fa fa-house"></i><span class="fs-4 ms-3 d-none d-sm-inline">Team</span>
+									<i class="fs-5 fa fa-users"></i><span class="fs-4 ms-3 d-none d-sm-inline">Team</span>
 								</a>
 							</li>
 							<li class="nav-item py-2 py-sm-0">
 								<a asp-area="" asp-controller="Task" asp-action="Index" class="nav-link text-white" aria-current="page">
-									<i class="fs-5 fa fa-table-list"></i><span class="fs-4 ms-3 d-none d-sm-inline">TempTask</span>
+									<i class="fs-5 fa-solid fa-list-check" style="color: #fff"></i><span class="fs-4 ms-3 d-none d-sm-inline">Tasks</span>
 								</a>
 							</li>
 
-
-							<li class="nav-item py-2 py-sm-0">
-								<a asp-area="" asp-controller="Project" asp-action="Index" class="nav-link text-white" aria-current="page">
-									<i class="fs-5 fa fa-users"></i><span class="fs-4 ms-3 d-none d-sm-inline">Project</span>
-								</a>
-							</li>
 							<li class="nav-item py-2 py-sm-0 ">
 								<a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link text-white" aria-current="page">
-									<i class="fs-5 fa fa-users"></i><span class="fs-4 ms-3 d-none d-sm-inline">Logout</span>
+									<i class="fs-5 fa-solid fa-right-from-bracket" style="color: #ffffff;"></i><span class="fs-4 ms-3 d-none d-sm-inline">Logout</span>
 								</a>
 							</li>
 
@@ -52,19 +52,25 @@
 						</ul>
 					</div>
 
-					<div class="dropdown open p-3">
-						<button class="btn border-none dropdown-toggle" type="button" id="triggerId" data-bs-toggle="dropdown" aria-expanded="false">
-							<i class="fa fa-user"></i><span class="ms-2">User</span>
+					<div class="dropdown open p-3 nav-pills">
+						<button class="btn border border-warning dropdown-toggle  " type="button" id="triggerId" data-bs-toggle="dropdown" aria-expanded="false">
+							<i></i><span class="ms-2 text-white">User</span>
 						</button>
 						<div class="dropdown-menu" aria-labelledy="triggerId">
-							<button class="dropdown-item" href="#">Settings</button>
-							<button class="dropdown-item" href="#">Profile</button>
+							<a class="dropdown-item " asp-area="" asp-controller="User" asp-action="Details">
+								<i class="fa-solid fa-id-card-clip"></i><span class="  ms-2">Profile</span>
+							</a>
+							<a class="dropdown-item " >
+							<i class="fa-solid fa-gears"></i><span class="  ms-2">Settings</span>
+							</a>
+							 
 						</div>
 					</div>
 
 				</div>
 				<div class="col-auto col-md-10 min-vh-100">
 					<main role="main" class="pb-3">
+						<h1>TaskMaster</h1>
 						@RenderBody()
 					</main>
 				</div>
@@ -125,6 +131,7 @@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
+	<script src="https://kit.fontawesome.com/57597b26e3.js" crossorigin="anonymous"></script>
 
 	@await RenderSectionAsync("Scripts", required: false)
 

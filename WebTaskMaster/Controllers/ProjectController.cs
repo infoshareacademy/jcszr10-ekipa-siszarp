@@ -9,7 +9,8 @@ using WebTaskMaster.Models.Team;
 
 namespace WebTaskMaster.Controllers
 {
-    public class ProjectController : Controller
+	[Authorize(Roles = "User")]
+	public class ProjectController : Controller
     {
         private readonly IProjectService _projectService;
         private readonly ITeamService _teamService;
