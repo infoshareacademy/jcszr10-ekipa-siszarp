@@ -15,7 +15,7 @@
 
 	@if (User.IsInRole("User"))
 	{
-
+		 
 		<div class="container-fluid">
 			<div class="row flex-nowrap">
 				<div class="sideBarColor col-auto  col-sm-4 col-md-4 col-lg-3 col-xl-2 min-vh-100 d-flex flex-column justify-content-between">
@@ -24,11 +24,7 @@
 							<span class="fs-4 d-none d-sm-inline">Account manager</span>
 						</a>
 						<ul class="nav nav-pills flex-column mt-4">
-							<li class="nav-item py-2 py-sm-0">
-								<a asp-area="" asp-controller="User" asp-action="Index" class="nav-link text-white" aria-current="page">
-									<i class="fs-5 fa fa-gauge"></i><span class="fs-4 ms-3 d-none d-sm-inline">Users</span>
-								</a>
-							</li>
+							 
 							<li class="nav-item py-2 py-sm-0">
 								<a asp-area="" asp-controller="Team" asp-action="Index" class="nav-link text-white" aria-current="page">
 									<i class="fs-5 fa fa-house"></i><span class="fs-4 ms-3 d-none d-sm-inline">Team</span>

@@ -1,21 +1,35 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
+
 .colorMenu {
     background-color: rgb(123, 104, 238);
+}
+
+.nav-pills li a:hover {
+    background-color: orange;
+}
+
+.sideBarColor {
+    background-color: #399977;
+}
+
+.nav-item .nav-link.active {
+    background-color: #FFA500;
+    color: #fff;
 }
