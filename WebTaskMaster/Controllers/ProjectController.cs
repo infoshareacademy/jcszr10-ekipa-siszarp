@@ -69,6 +69,7 @@ namespace WebTaskMaster.Controllers
         }
 
         // GET: ProjectController/Details/5
+        [Route("project/{projectId:Guid}/details")]
         public ActionResult Details(Guid projectId)
         {
             var project = _projectService.GetProjectById(projectId);

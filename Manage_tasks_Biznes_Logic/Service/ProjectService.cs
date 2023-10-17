@@ -4,18 +4,6 @@ using System.Text.Json;
 
 namespace Manage_tasks_Biznes_Logic.Service
 {
-
-    public interface IProjectService
-    {
-        List<Project> GetAllProjects();
-        Project GetProjectById(Guid projectId);
-        List<Project> LoadProjectsFromJson();
-        void CreateProject(string name, string description);
-        public void RemoveProject(Guid id);
-        void ChangeTeam(Guid projectId, Guid newProjectTeamId);
-        void EditNameAndDescription(Guid projectId, string newName, string newDescription);
-    }
-
     public class ProjectService : IProjectService
 
     {
