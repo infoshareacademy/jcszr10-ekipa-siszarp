@@ -8,40 +8,35 @@ namespace WebTaskMaster.Controllers
 {
     public class TaskController : Controller
     {
-        private readonly IProjectService _projectService;
+        private readonly ITasksListService _tasksListService;
         
-        private readonly ITaskService _taskService;
-        public TaskController(ITaskService taskService)
+        
+        public TaskController(ITasksListService tasksListService)
         {
-            _taskService = taskService;
+            _tasksListService = tasksListService;
         }
 
-        public IActionResult Index()
-        {
-            var tasks = _taskService.GetAllTasks();         
-            return View(tasks);
-        }
+       
 
         
        
 
         [HttpPost]
-        public IActionResult CreateNewTask(NewTaskModel model)
+        public async Task<IActionResult> CreateNewTask(NewTaskModel model)
         {
-            _taskService.AddTask(_taskService.CreateNewTask(model.Name, model.Description));
+            await _tasksListService.AddNewTask(model.Name, model.Description, model.TasksListId);
             return RedirectToAction("Index");
         }       
         [HttpPost]
-        public IActionResult EditTask(WebTaskModel model)
+        public async Task<IActionResult> EditTask(WebTaskModel model)
         {           
-            _taskService.EditTask(model.newValues, _taskService.GetTaskByGuid(model.ProjectTask.Id));
+            await _tasksListService.EditTask(model.newValues, model.ProjectTask);
             return RedirectToAction("Index");
         }
         [HttpPost]
         public IActionResult DeleteTask(WebTaskModel model)
         {
-            var task = _taskService.GetTaskByGuid(model.ProjectTask.Id);
-            _taskService.RemoveTask(task);
+           
             return RedirectToAction("Index");
         }
     }

@@ -41,7 +41,7 @@
             <input asp-for="@Model.newValues[1]" value="@Model.ProjectTask.TaskDescription" class="card-text disabled-@Model.ProjectTask.Id" disabled />
             
             <div class="collapse" id="taskDetails-@Model.ProjectTask.Id">
-                <select asp-for="@Model.newValues[2]" class="form-select" class="card-text disabled-@Model.ProjectTask.Id" disabled>
+                <select asp-for="@Model.newValues[2]" class="card-text form-select disabled-@Model.ProjectTask.Id" disabled>
                     @{
                         var statusNumber = @Model.ProjectTask.Status.StatusID();
                         string[] statusMsg = new string[]

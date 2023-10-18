@@ -1,9 +1,9 @@
 ﻿namespace Manage_tasks_Database;
-
+[Flags]
 public enum TaskStatus : byte
 {
-    ToDo = 1,
-    InProgress = 2,
-    Done = 3,
+    ToDo = 0,
+    InProgress = 1,
+    Done = 2,
 }
 

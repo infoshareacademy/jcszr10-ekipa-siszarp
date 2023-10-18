@@ -9,6 +9,7 @@ namespace WebTaskMaster.Models.Task
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
-        public TasksList TasksList { get; set; }
+        public Guid TasksListId { get; set; }
+        public Guid ProjectId { get; set; }
     }
 }

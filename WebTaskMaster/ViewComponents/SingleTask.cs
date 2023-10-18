@@ -6,11 +6,17 @@ namespace WebTaskMaster.ViewComponents
 {
     public class SingleTask : ViewComponent
     {
-       public async Task<IViewComponentResult> InvokeAsync(Guid taskGuid)
+        private readonly ITaskService _taskService;
+        public SingleTask(ITaskService service)
+        {
+            _taskService = service;
+        }
+        public async Task<IViewComponentResult> InvokeAsync(Guid taskGuid)
        {
-            var taskService = new TaskService();           
+            
+                  
             var taskModel = new WebTaskModel();
-            taskModel.ProjectTask = taskService.GetTaskByGuid(taskGuid);
+            taskModel.ProjectTask = await _taskService.GetTaskByGuid(taskGuid);
             return View(taskModel);
        }
     }
