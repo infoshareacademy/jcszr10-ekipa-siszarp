@@ -16,39 +16,42 @@ namespace WebTaskMaster.Controllers
             _teamService = teamService;
             _userService = userService;
         }
-		[Route("team")]
-		public IActionResult Index()
+        [Route("team")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Index()
+		
         {
-            var models = CreateBasicModels();
+            var models = await CreateBasicModels();
 
             return View(models);
         }
 
 
         [HttpPost]
-        public IActionResult Create(TeamNameModel model)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Create(TeamNameModel model)
         {
             if (!ModelState.IsValid)
             {
                 ViewData["ActivateModal"] = nameof(Create);
 
-                var models = CreateBasicModels();
+                var models = await CreateBasicModels();
 
                 return View("Index", models);
             }
 
             model.Description ??= string.Empty;
 
-            _teamService.CreateTeam(model.Name, model.Description);
+            await _teamService.CreateTeam(model.Name, model.Description);
 
             TempData["ToastMessage"] = "Team added.";
 
             return RedirectToAction("Index");
         }
 
-        private IEnumerable<TeamIndexModel> CreateBasicModels()
+        private async Task<IEnumerable<TeamIndexModel>> CreateBasicModels()
         {
-            var teams = _teamService.GetAllTeams();
+            var teams = await _teamService.GetAllTeams();
 
             List<TeamIndexModel> teamsModels = new();
 
@@ -86,23 +89,25 @@ namespace WebTaskMaster.Controllers
             return teamsModels;
         }
 		[Route("team/{teamId:Guid}/details")]
-		public IActionResult Details(Guid teamId)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Details(Guid teamId)
         {
-            var team = _teamService.GetTeamById(teamId);
+            var team = await _teamService.GetTeamById(teamId);
 
             if (team is null)
             {
                 return RedirectToAction("Index");
             }
 
-            var teamModel = CreateDetailsModel(team);
+            var teamModel = await CreateDetailsModel(team);
 
             return View(teamModel);
         }
 
-        public IActionResult Delete(Guid teamId)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Delete(Guid teamId)
         {
-            _teamService.DeleteTeam(teamId);
+            await _teamService.DeleteTeam(teamId);
 
             TempData["ToastMessage"] = "Team deleted.";
 
@@ -110,27 +115,28 @@ namespace WebTaskMaster.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(TeamNameModel model, Guid teamId)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Edit(TeamNameModel model, Guid teamId)
         {
             if (!ModelState.IsValid)
             {
                 ViewData["ActivateModal"] = nameof(Edit);
 
-                var team = _teamService.GetTeamById(teamId);
+                var team = await _teamService.GetTeamById(teamId);
 
                 if (team is null)
                 {
                     return RedirectToAction("Index");
                 }
 
-                var teamModel = CreateDetailsModel(team);
+                var teamModel = await CreateDetailsModel(team);
 
                 return View("Details", teamModel);
             }
 
             var newDescription = model.Description ?? string.Empty;
 
-            _teamService.EditNameAndDescription(teamId, model.Name, newDescription);
+            await _teamService.EditNameAndDescription(teamId, model.Name, newDescription);
 
             TempData["ToastMessage"] = "Changes saved.";
 
@@ -138,34 +144,36 @@ namespace WebTaskMaster.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMembers(TeamAddMembersModel model, Guid teamId)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddMembers(TeamAddMembersModel model, Guid teamId)
         {
             if (!ModelState.IsValid)
             {
                 ViewData["ActivateModal"] = nameof(AddMembers);
 
-                var team = _teamService.GetTeamById(teamId);
+                var team = await _teamService.GetTeamById(teamId);
 
                 if (team is null)
                 {
                     return RedirectToAction("Index");
                 }
 
-                var teamModel = CreateDetailsModel(team);
+                var teamModel = await CreateDetailsModel(team);
 
                 return View("Details", teamModel);
             }
 
-            _teamService.AddMembersToTeam(teamId, model.MembersIdsToAdd);
+            await _teamService.AddMembersToTeam(teamId, model.MembersIdsToAdd);
 
             TempData["ToastMessage"] = "Team member added";
 
             return RedirectToAction("Details", new { teamId });
         }
 
-        public IActionResult DeleteMember(Guid teamId, Guid memberId)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> DeleteMember(Guid teamId, Guid memberId)
         {
-            _teamService.DeleteMemberFromTeam(teamId, memberId);
+            await _teamService.DeleteMemberFromTeam(teamId, memberId);
 
             TempData["ToastMessage"] = "Team member removed.";
 
@@ -173,32 +181,33 @@ namespace WebTaskMaster.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChangeLeader(TeamChangeLeaderModel model, Guid teamId)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> ChangeLeader(TeamChangeLeaderModel model, Guid teamId)
         {
             if (!ModelState.IsValid)
             {
                 ViewData["ActivateModal"] = nameof(ChangeLeader);
 
-                var team = _teamService.GetTeamById(teamId);
+                var team = await _teamService.GetTeamById(teamId);
 
                 if (team is null)
                 {
                     return RedirectToAction("Index");
                 }
 
-                var teamModel = CreateDetailsModel(team);
+                var teamModel = await CreateDetailsModel(team);
 
                 return View("Details", teamModel);
             }
 
-            _teamService.ChangeTeamLeader(teamId, model.NewLeaderId);
+            await _teamService.ChangeTeamLeader(teamId, model.NewLeaderId);
 
             TempData["ToastMessage"] = "Leader changed.";
 
             return RedirectToAction("Details", new { teamId });
         }
 
-        private TeamDetailsModel CreateDetailsModel(Team team)
+        private async Task<TeamDetailsModel> CreateDetailsModel(Team team)
         {
             var members = team.Members.Select(m => new TeamMemberModel
             {
@@ -212,7 +221,7 @@ namespace WebTaskMaster.Controllers
                 ? members.First(m => m.Id == team.Leader.Id)
                 : null;
 
-            var addMembersModel = CreateAddMembersModel(members);
+            var addMembersModel = await CreateAddMembersModel(members);
 
             var changeLeaderModel = CreateChangeLeaderModel(leader, members);
 
@@ -251,9 +260,9 @@ namespace WebTaskMaster.Controllers
             return changeLeaderModel;
         }
 
-        private TeamAddMembersModel CreateAddMembersModel(IEnumerable<TeamMemberModel> members)
+        private async Task<TeamAddMembersModel> CreateAddMembersModel(IEnumerable<TeamMemberModel> members)
         {
-            var availableMembers = _userService.GetAllUsers()
+            var availableMembers = (await _userService.GetAllUsers())
                 .ExceptBy(members.Select(m1 => m1.Id), m2 => m2.Id)
                 .Select(m => new TeamMemberModel
                 {

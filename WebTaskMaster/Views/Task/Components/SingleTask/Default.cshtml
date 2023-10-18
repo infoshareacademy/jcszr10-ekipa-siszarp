@@ -35,7 +35,7 @@
                     string finishDate;
                     if (Model.ProjectTask.FinishDate.HasValue)
                     {
-                        finishDate = $"{Model.ProjectTask.FinishDate.Value.Year}-{Model.ProjectTask.FinishDate.Value.Month}-{Model.ProjectTask.FinishDate.Value.Day}";
+                        finishDate = Model.ProjectTask.FinishDate.GetValueOrDefault().ToString("yyyy-MM-dd");
                     }
                     else
                     {

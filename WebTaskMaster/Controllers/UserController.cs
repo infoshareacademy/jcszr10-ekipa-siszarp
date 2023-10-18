@@ -1,7 +1,7 @@
-﻿using Manage_tasks_Biznes_Logic.Model;
+﻿using Manage_tasks_Biznes_Logic.Dtos.User;
 using Microsoft.AspNetCore.Mvc;
 using Manage_tasks_Biznes_Logic.Service;
-using WebTaskMaster.Models.User;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebTaskMaster.Controllers
 {
@@ -14,102 +14,41 @@ namespace WebTaskMaster.Controllers
             _userService = userService;
         }
 		[Route("user")]
-		public IActionResult Index()
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Details()
         {
-            var models = CreateUserModels();
+            var userIdText = HttpContext.User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(c => c.Value)
+                .FirstOrDefault();
 
-            return View(models);
+            if (!Guid.TryParse(userIdText, out var userId))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var dto = await _userService.GetUserDetails(userId);
+
+            if (dto is null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(dto);
         }
 
         [HttpPost]
-        public IActionResult Create(UserModel model)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Details(UserDetailsDto dto)
         {
             if (!ModelState.IsValid)
             {
-                ViewData["ActivateModal"] = nameof(Create);
-
-                var models = CreateUserModels();
-
-                return View("Index", models);
+                return View(dto);
             }
 
-            var newUser = new User
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Position = model.Position
-            };
+            await _userService.EditUserDetails(dto);
 
-            _userService.UpdateUser(newUser);
-
-            TempData["ToastMessage"] = "User added.";
-
-            return RedirectToAction("Index");
-        }
-
-        private IEnumerable<UserModel> CreateUserModels()
-        {
-            var users = _userService.GetAllUsers().Select(u => new UserModel
-            {
-                UserId = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                Position = u.Position
-            });
-
-            return users;
-        }
-		[Route("user/{userId:Guid}/details")]
-		public IActionResult Details(Guid userId)
-        {
-            var user = _userService.GetUserById(userId);
-
-            if (user is null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            var userModel = new UserModel
-            {
-                UserId = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Position = user.Position
-            };
-
-            return View(userModel);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(UserModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("Details", model);
-            }
-
-            var editedUser = new User
-            {
-                Id = model.UserId,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Position = model.Position
-            };
-
-            _userService.UpdateUser(editedUser);
-
-            TempData["ToastMessage"] = "Changes saved.";
-
-            return View("Details", model);
-        }
-
-        public IActionResult Delete(Guid userId)
-        {
-            _userService.DeleteUser(userId);
-
-            TempData["ToastMessage"] = "User deleted.";
-
-            return RedirectToAction("Index");
+            return View(dto);
         }
     }
 }
