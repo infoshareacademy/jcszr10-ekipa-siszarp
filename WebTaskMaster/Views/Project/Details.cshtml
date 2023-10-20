@@ -26,8 +26,8 @@
     </div>
     <div class="row justify-content-center px-2 py-2 mb-2 bg-primary bg-opacity-25">
 
-        @*{
-            var teamLinkClass = "btn btn-outline-secondary fs-5 col-12 col-sm-12 col-xl-1 order-first";
+        @{
+            var teamLinkClass = "btn btn-outline-secondary fs-5 col-12 col-sm-12 col-xl-3 order-first";
         }
 
         @* @if (Model.ProjectTeam is not null)
@@ -50,12 +50,17 @@
         {
             var team = Model.Teams[index];
 
-            <div class="col-md-6 mt-2 order-last">
-                <div class="row justify-content-center px-2 py-2 mx-1 mb-2 bg-info bg-opacity-25">
-                    <p class="fs-5 col-12 col-sm-10 col-xl-1 order-first">@(index + 1)</p>
+            <div class="col-md-12 mt-2 col-xl-11 ">
+                <div class="row justify-content-center px-3 py-2 mx-1 mb-3 bg-info bg-opacity-25">
+                    <a class="@teamLinkClass"
+                       asp-controller="Team" asp-action="Details" asp-route-teamId="@team.Id"
+                       data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Team details">
+                        <label asp-for="ProjectTeam">Team @(index + 1)</label>
+                    </a>
 
-                    <p class="fs-5 col-12 order-sm-last col-lg-6 col-xl-5">@team.Name</p>
-                    <p class="fs-5 col-12 order-sm-last col-lg-6 col-xl-5">@team.Leader</p>
+                    <p class="fs-4 col-12 order-sm-last col-lg-6 col-xl-5">@team.Name</p>
+                    @*<p class="fs-4 col-12 order-sm-last col-lg-6 col-xl-5">@team.Leader</p>*@
+
 
                     @* Delete Team Modal button *@
                     <button class="btn btn-danger col-12 order-last col-sm-2 order-sm-2 col-xl-1 order-xl-last" type="button"
@@ -72,8 +77,9 @@
                 </div>
             </div>
         }
+        <br />
         @* Add Team Modal button *@
-        <button id="addTeamModalBtn" class="btn btn-primary col-12 order-last col-sm-1" type="button"
+        <button id="addTeamModalBtn" class="btn btn-primary col-12 justify-content-end col-sm-1 col-xl-2" type="button"
                 data-bs-toggle="modal" data-bs-target="#addTeamModal"
                 data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Add team">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">

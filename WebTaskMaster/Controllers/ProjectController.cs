@@ -163,6 +163,8 @@ namespace WebTaskMaster.Controllers
         }
 
         [Authorize(Roles = "User")]
+
+        [Route("project/{projectId:Guid}/details/deleteTeam/{teamId:Guid}")]
         public async Task<IActionResult> DeleteTeam(Guid projectId, Guid teamId)
         {
             await _projectService.DeleteTeamFromProject(projectId, teamId);
@@ -172,16 +174,9 @@ namespace WebTaskMaster.Controllers
             return RedirectToAction("Details", new { projectId });
         }
 
-        // GET: ProjectController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ProjectController/Edit/5
-
-
         [HttpPost]
+        [Authorize(Roles = "User")]
+        [Route("project/{projectId:Guid}/edit")]
         public async Task<IActionResult> Edit(ProjectModel model, Guid projectId)
         {
             if (!ModelState.IsValid)
@@ -209,9 +204,10 @@ namespace WebTaskMaster.Controllers
             return RedirectToAction("Details", new { projectId });
         }
 
-        public IActionResult Delete(Guid projectId)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Delete(Guid projectId)
         {
-            _projectService.RemoveProject(projectId);
+            await _projectService.RemoveProject(projectId);
 
             TempData["ToastMessage"] = "Project deleted.";
 
