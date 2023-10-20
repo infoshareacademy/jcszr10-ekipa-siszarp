@@ -70,7 +70,8 @@
             </svg>
         </button>
         @*Tasks*@
-        <partial name="_TasksList" />
+        @{//<partial name="_TasksList" />
+         }
         @*
         @for (var index = 0; index < Model.Tasks.Count; index++)
         {

@@ -9,11 +9,13 @@ namespace WebTaskMaster.Controllers
     public class TaskController : Controller
     {
         private readonly ITasksListService _tasksListService;
+        private readonly ITaskService _taskService;
         
         
-        public TaskController(ITasksListService tasksListService)
+        public TaskController(ITasksListService tasksListService, ITaskService taskService)
         {
             _tasksListService = tasksListService;
+            _taskService = taskService;
         }
 
        

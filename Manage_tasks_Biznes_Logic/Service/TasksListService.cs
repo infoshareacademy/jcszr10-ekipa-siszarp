@@ -16,7 +16,7 @@ namespace Manage_tasks_Biznes_Logic.Service
         Task<TasksList> GetTasksListByGuid(Guid tasksListId);
         Task AddNewTask(string newTaskName, string newTaskDescription, Guid tasksListId);
         Task EditTask(string[] newValues, ProjectTask taskToEdit);
-        Task<ProjectTask?> GetTaskByGuid(Guid taskGuid);
+        
     }
     public class TasksListService : ITasksListService
     {
@@ -83,10 +83,7 @@ namespace Manage_tasks_Biznes_Logic.Service
             await _dbContext.SaveChangesAsync();
 
         }
-        public async Task<ProjectTask?> GetTaskByGuid(Guid taskGuid)
-        {
-            return await _taskService.GetTaskByGuid(taskGuid);
-        }
+        
          
     }
 }
