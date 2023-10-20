@@ -1,11 +1,8 @@
 ﻿using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
-using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol.Plugins;
-using System.Xml.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebTaskMaster.Models.Project;
-using WebTaskMaster.Models.Team;
 
 namespace WebTaskMaster.Controllers
 {
@@ -20,14 +17,14 @@ namespace WebTaskMaster.Controllers
             _teamService = teamService;
         }
 
-		// GET: ProjectController
-		[Route("project")]
+        // GET: ProjectController
+        [Route("project")]
         [Authorize(Roles = "User")]
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var user = User.Claims;
 
-            var model = CreateProjectModels();
+            var model = await CreateProjectModels();
             return View(model);
         }
 
@@ -40,7 +37,7 @@ namespace WebTaskMaster.Controllers
         // POST: ProjectController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ProjectModel model)
+        public async Task<IActionResult> Create(ProjectModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -50,76 +47,103 @@ namespace WebTaskMaster.Controllers
 
                 return View("Index", models);
             }
-
-            _projectService.CreateProject(model.Name, model.Description);
+            model.Description ??= string.Empty;
+            await _projectService.CreateProject(model.Name, model.Description);
 
             TempData["ToastMessage"] = "Project added.";
 
             return RedirectToAction("Index");
         }
-        private IEnumerable<ProjectModel> CreateProjectModels()
+        private async Task<IEnumerable<ProjectModel>> CreateProjectModels()
         {
-            var projects = _projectService.GetAllProjects().Select(u => new ProjectModel
+            var projects = await _projectService.GetAllProjects();
+            List<ProjectModel> projectModels = new();
+            foreach (var project in projects)
             {
-                Id = u.Id,
-                Name = u.Name,
-                Description = u.Description
-            });
-
-            return projects;
+                var projectModel = new ProjectModel
+                {
+                    Id = project.Id,
+                    Name = project.Name,
+                    Description = project.Description
+                };
+                projectModels.Add(projectModel);
+            }
+            return projectModels;
         }
 
         // GET: ProjectController/Details/5
         [Route("project/{projectId:Guid}/details")]
-        public ActionResult Details(Guid projectId)
+        public async Task<IActionResult> Details(Guid projectId)
         {
-            var project = _projectService.GetProjectById(projectId);
+            var project = await _projectService.GetProjectById(projectId);
 
             if (project is null)
             {
                 return RedirectToAction("Index");
             }
 
-            var projectModel = CreateDetailsModel(project);
+            var projectModel = await CreateDetailsModel(project);
 
             return View(projectModel);
         }
 
-        private async Task<object> CreateDetailsModel(Project project)
+        private async Task<ProjectDetailsModel> CreateDetailsModel(Project project)
         {
+            var teams = project.ProjectTeams.Select(t => new ProjectTeamModel
+            {
+                Id = t.Id,
+                Name = t.Name
+            })
+                .ToList();
+            var addTeamModel = new ProjectAddTeamModel
+            {
+                AvailableTeams = (await _teamService.GetAllTeams())
+                        .Select(t => new ProjectTeamModel
+                        {
+                            Id = t.Id,
+                            Name = t.Name,
+                            //Leader = t.Leader
+                        })
+                        .ToList()
+            };
             var projectModel = new ProjectDetailsModel
             {
                 Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
-                ProjectChangeTeamModel = new ProjectChangeTeamModel
-                {
-                    AvailableTeams = (await _teamService.GetAllTeams()).Select(t => new ProjectTeamModel() { Id = t.Id, Name = t.Name }).ToList()
-                }
+                Teams = teams,
+                //Tasks = project.Tasks,
+                ProjectAddTeamModel = addTeamModel
             };
-
-            if (await _teamService.GetTeamById(project.ProjectTeamId) is not null)
+            if (await _teamService.GetTeamById(project.ProjectTeamId) is null)
             {
-                projectModel.ProjectTeam = new ProjectTeamModel
-                {
-                    Id = (await _teamService.GetTeamById(project.ProjectTeamId)).Id,
-                    Name = (await _teamService.GetTeamById(project.ProjectTeamId)).Name,
-                    Leader = (await _teamService.GetTeamById(project.ProjectTeamId)).Leader.ToString(),
-                };
+                projectModel.ProjectTeam = new ProjectTeamModel();
             }
-            else projectModel.ProjectTeam = new ProjectTeamModel();
 
             return projectModel;
+
+            //if (await _teamService.GetTeamById(project.ProjectTeamId) is not null)
+            //{
+            //    projectModel.ProjectTeam = new ProjectTeamModel
+            //    {
+            //        Id = (await _teamService.GetTeamById(project.ProjectTeamId)).Id,
+            //        Name = (await _teamService.GetTeamById(project.ProjectTeamId)).Name,
+            //        Leader = (await _teamService.GetTeamById(project.ProjectTeamId)).Leader,
+            //    };
+            //}
+            //else projectModel.ProjectTeam = new ProjectTeamModel();
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeTeam(ProjectChangeTeamModel model, Guid projectId)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddTeam(ProjectAddTeamModel model, Guid projectId)
         {
             if (!ModelState.IsValid)
             {
-                ViewData["ActivateModal"] = nameof(ChangeTeam);
+                ViewData["ActivateModal"] = nameof(AddTeam);
 
-                var project = _projectService.GetProjectById(projectId);
+                var project = await _projectService.GetProjectById(projectId);
 
                 if (project is null)
                 {
@@ -131,9 +155,19 @@ namespace WebTaskMaster.Controllers
                 return View("Details", projectModel);
             }
 
-            _projectService.ChangeTeam(projectId, model.NewTeamId);
+            await _projectService.AddTeamToProject(projectId, model.TeamsIdsToAdd);
 
-            TempData["ToastMessage"] = "Team changed.";
+            TempData["ToastMessage"] = "Team added.";
+
+            return RedirectToAction("Details", new { projectId });
+        }
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> DeleteTeam(Guid projectId, Guid teamId)
+        {
+            await _projectService.DeleteTeamFromProject(projectId, teamId);
+
+            TempData["ToastMessage"] = "Team removed.";
 
             return RedirectToAction("Details", new { projectId });
         }
@@ -154,7 +188,7 @@ namespace WebTaskMaster.Controllers
             {
                 ViewData["ActivateModal"] = nameof(Edit);
 
-                var project = _projectService.GetProjectById(projectId);
+                var project = await _projectService.GetProjectById(projectId);
 
                 if (project is null)
                 {
@@ -168,7 +202,7 @@ namespace WebTaskMaster.Controllers
 
             var newDescription = model.Description ?? string.Empty;
 
-            _projectService.EditNameAndDescription(projectId, model.Name, newDescription);
+            await _projectService.EditNameAndDescription(projectId, model.Name, newDescription);
 
             TempData["ToastMessage"] = "Changes saved.";
 

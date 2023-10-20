@@ -45,7 +45,7 @@ public class ProjectTeamView
                 break;
 
             case 1:
-                _project.AddTeam(null);
+                _project.AddTeams(null);
                 Data.projectService.SaveProjectToJson();
                 break;
 

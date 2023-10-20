@@ -3,7 +3,7 @@ namespace Manage_tasks_Biznes_Logic.Data
 {
     public class Data
     {
-        public static ProjectService projectService = new ProjectService();
+        public static readonly ProjectService projectService = new(null);
 
         public static readonly UserService UserService = new(null);
 
