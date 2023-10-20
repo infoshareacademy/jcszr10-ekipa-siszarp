@@ -30,13 +30,13 @@ namespace WebTaskMaster.Controllers
             return View(model);
         }
 
-        // GET: ProjectController/Create
+        // GET: ProjectController/Add
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ProjectController/Create
+        // POST: ProjectController/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProjectModel model)

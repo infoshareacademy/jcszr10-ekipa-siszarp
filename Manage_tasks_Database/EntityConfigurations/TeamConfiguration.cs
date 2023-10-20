@@ -27,6 +27,7 @@ internal class TeamConfiguration : IEntityTypeConfiguration<TeamEntity>
         builder.HasOne(t => t.Leader)
             .WithMany(u => u.TeamsLeader)
             .HasForeignKey(t => t.LeaderId)
-            .HasPrincipalKey(u => u.Id);
+            .HasPrincipalKey(u => u.Id)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

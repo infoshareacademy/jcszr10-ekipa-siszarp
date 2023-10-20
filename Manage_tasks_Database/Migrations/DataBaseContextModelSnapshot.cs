@@ -214,11 +214,13 @@ namespace Manage_tasks_Database.Migrations
                 {
                     b.HasOne("Manage_tasks_Database.Entities.UserEntity", "AssignedUser")
                         .WithMany("Tasks")
-                        .HasForeignKey("AssignedUserId");
+                        .HasForeignKey("AssignedUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Manage_tasks_Database.Entities.TaskListEntity", "TaskList")
                         .WithMany("Tasks")
-                        .HasForeignKey("TaskListId");
+                        .HasForeignKey("TaskListId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("AssignedUser");
 
@@ -240,7 +242,8 @@ namespace Manage_tasks_Database.Migrations
                 {
                     b.HasOne("Manage_tasks_Database.Entities.UserEntity", "Leader")
                         .WithMany("TeamsLeader")
-                        .HasForeignKey("LeaderId");
+                        .HasForeignKey("LeaderId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Leader");
                 });

@@ -1,4 +1,8 @@
-﻿<div id="toast" class="toast align-items-center position-fixed top-0 start-0 mt-5 ms-5 bg-success bg-opacity-50"
+﻿@{
+    var colorClass = TempData.ContainsKey("ToastColorClass") ? TempData["ToastColorClass"] : "bg-success";
+}
+
+<div id="toast" class="toast align-items-center position-fixed top-0 start-0 mt-5 ms-5 @colorClass bg-opacity-50"
      role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
     <div class="d-flex">
         <div class="toast-body">

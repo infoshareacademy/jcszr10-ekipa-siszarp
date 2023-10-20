@@ -7,6 +7,6 @@ public interface IUserService
 {
     Task<User?> GetUserById(Guid id);
     Task<List<User>> GetAllUsers();
-    Task<UserDetailsDto?> GetUserDetails(Guid userId);
+    Task<UserDetailsDto> GetUserDetails(Guid userId);
     Task EditUserDetails(UserDetailsDto dto);
 }

@@ -1,0 +1,39 @@
+﻿@model WebTaskMaster.Models.Team.TeamChangeLeaderModel
+
+@{
+    ViewData["Title"] = "Change leader";
+}
+
+<div class="container text-center">
+    <div class="row justify-content-center">
+        <h1 class="col-12">Change leader</h1>
+
+        <form asp-action="ChangeLeader">
+            <input hidden="true" asp-for="TeamId" />
+
+            <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+            <div class="form-floating my-2">
+                <select asp-for="@Model.NewLeaderId" class="form-select">
+                    @foreach (var leader in Model.AvailableLeaders!)
+                    {
+                        <option value="@leader.MemberId">@($"{leader.FirstName} {leader.LastName}")</option>
+                    }
+                </select>
+                <label asp-for="@Model.AvailableLeaders"></label>
+                <span asp-validation-for="@Model.NewLeaderId" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 col-md-3 col-xxl-2 d-grid">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

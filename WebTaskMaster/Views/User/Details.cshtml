@@ -1,12 +1,7 @@
-﻿@model Manage_tasks_Biznes_Logic.Dtos.User.UserDetailsDto
+﻿@model WebTaskMaster.Models.User.UserDetailsModel
 
 @{
     ViewData["Title"] = "User details";
-
-    if (Model.ChangesSaved)
-    {
-        TempData["ToastMessage"] = "Changes saved.";
-    }
 }
 
 <div class="container">
@@ -52,7 +47,7 @@
     </div>
 
     <div class="row justify-content-end">
-        <a type="button" class="btn btn-danger col-12 col-sm-2" asp-controller="Account" asp-action="DeleteAccount">Delete account</a>
+        <a type="button" class="btn btn-danger col-12 col-sm-2" asp-controller="Account" asp-action="Delete">Delete account</a>
     </div>
 </div>
 

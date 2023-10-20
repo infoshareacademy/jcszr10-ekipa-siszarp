@@ -1,21 +1,24 @@
 ﻿using System.Security.Claims;
+using AutoMapper;
 using Manage_tasks_Biznes_Logic.Dtos.Account;
-using Manage_tasks_Biznes_Logic.Dtos.User;
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebTaskMaster.Models.Account;
 
 namespace WebTaskMaster.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAccountService _accServ;
+        private readonly IAccountService _accountService;
+        private readonly IMapper _mapper;
 
-        public AccountController(IAccountService AccServ)
+        public AccountController(IAccountService accountService, IMapper mapper)
         {
-            _accServ = AccServ;
+            _accountService = accountService;
+            _mapper = mapper;
         }
 
         [AllowAnonymous]
@@ -26,24 +29,25 @@ namespace WebTaskMaster.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginDto dto)
+        public async Task<IActionResult> Login(LoginModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(dto);
+                return View(model);
             }
 
-            await _accServ.LoginUser(dto);
+            var dto = _mapper.Map<LoginModel, LoginDto>(model);
+            var resultDto = await _accountService.LoginAccount(dto);
 
-            if (!dto.LoginWasSuccessful)
+            if (!resultDto.LoginWasSuccessful)
             {
-                return View(dto);
+                return View(model);
             }
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(dto.ClaimsIdentity),
-                dto.AuthProp);
+                new ClaimsPrincipal(resultDto.ClaimsIdentity),
+                resultDto.AuthProp);
 
             return RedirectToAction("index", "Home");
         }
@@ -56,18 +60,20 @@ namespace WebTaskMaster.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterDto dto)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(dto);
+                return View(model);
             }
 
-            await _accServ.RegisterUser(dto);
+            var dto = _mapper.Map<RegisterModel, RegisterDto>(model);
+            var resultDto = await _accountService.RegisterAccount(dto);
+            _mapper.Map(resultDto, model);
 
-            if (dto.RegistrationFailed)
+            if (model.RegistrationFailed)
             {
-                return View(dto);
+                return View(model);
             }
 
             return RedirectToAction("Login");
@@ -94,37 +100,42 @@ namespace WebTaskMaster.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var dto = await _accServ.GetEditEmail(userId);
+            var accountEmail = await _accountService.GetAccountEmail(userId);
 
-            if (dto is null)
+            var model = new EditEmailModel
             {
-                return RedirectToAction("Index", "Home");
-            }
+                UserId = userId,
+                CurrentEmail = accountEmail
+            };
 
-            return View(dto);
+            return View(model);
         }
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> EditEmail(EditEmailDto dto)
+        public async Task<IActionResult> EditEmail(EditEmailModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(dto);
+                return View(model);
             }
 
-            await _accServ.EditEmail(dto);
+            var dto = _mapper.Map<EditEmailModel, EditEmailDto>(model);
+            var resultDto = await _accountService.EditAccountEmail(dto);
+            _mapper.Map(resultDto, model);
 
-            if (dto.EditEmailFailed)
+            if (model.EditEmailFailed)
             {
-                return View(dto);
+                return View(model);
             }
+
+            TempData["ToastMessage"] = "Email changed.";
 
             return RedirectToAction("Details", "User");
         }
 
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> EditPassword()
+        public ActionResult EditPassword()
         {
             var userIdText = HttpContext.User.Claims
                 .Where(c => c.Type == "UserId")
@@ -136,7 +147,7 @@ namespace WebTaskMaster.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var dto = new EditPasswordDto
+            var dto = new EditPasswordModel
             {
                 UserId = userId
             };
@@ -146,25 +157,29 @@ namespace WebTaskMaster.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> EditPassword(EditPasswordDto dto)
+        public async Task<IActionResult> EditPassword(EditPasswordModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(dto);
+                return View(model);
             }
 
-            await _accServ.EditPassword(dto);
+            var dto = _mapper.Map<EditPasswordModel, EditPasswordDto>(model);
+            var resultDto = await _accountService.EditAccountPassword(dto);
+            _mapper.Map(resultDto, model);
 
-            if (dto.EditPasswordFailed)
+            if (model.EditPasswordFailed)
             {
-                return View(dto);
+                return View(model);
             }
+
+            TempData["ToastMessage"] = "Password changed.";
 
             return RedirectToAction("Details", "User");
         }
 
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> DeleteAccount()
+        public IActionResult Delete()
         {
             var userIdText = HttpContext.User.Claims
                 .Where(c => c.Type == "UserId")
@@ -176,33 +191,33 @@ namespace WebTaskMaster.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var dto = new DeleteAccountDto()
+            var model = new DeleteAccountModel()
             {
                 UserId = userId
             };
 
-            return View(dto);
+            return View(model);
         }
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> DeleteAccount(DeleteAccountDto dto)
+        public async Task<IActionResult> Delete(DeleteAccountModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(dto);
+                return View(model);
             }
 
-            await _accServ.DeleteAccount(dto);
+            var dto = _mapper.Map<DeleteAccountModel, DeleteAccountDto>(model);
+            var deletionSuccessful = await _accountService.DeleteAccount(dto);
 
-            if (dto.DeleteAccountFailed)
+            if (deletionSuccessful)
             {
-                return View(dto);
+                return RedirectToAction("Logout");
             }
 
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return RedirectToAction("Index", "Home");
+            model.DeleteAccountFailed = true;
+            return View(model);
         }
     }
 }

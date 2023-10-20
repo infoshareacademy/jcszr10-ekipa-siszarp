@@ -13,19 +13,21 @@ builder.Services.AddDbContext<DataBaseContext>(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
         options.SlidingExpiration = true;
         options.AccessDeniedPath = "/Account/Forbidden/";
         options.LoginPath = "/Account/Login";
     });
 
 
-//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Add services to the container.
 builder.Services
     .AddControllersWithViews()
     .AddRazorRuntimeCompilation();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
@@ -34,6 +36,9 @@ builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
+
+//TODO - Przeniesc walidacje automappera do testow.
+app.Services.GetService<AutoMapper.IConfigurationProvider>()!.AssertConfigurationIsValid();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -53,8 +58,8 @@ app.UseAuthorization();
 
 //using (var scope = app.Services.CreateScope())
 //{
-//    var autorizationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationUserDbContext>();
-//    autorizationDbContext.Database.Migrate();
+//    var dbContext = scope.ServiceProvider.GetRequiredService<DataBaseContext>();
+//    dbContext.Database.Migrate();
 //}
 
 app.MapControllerRoute(
