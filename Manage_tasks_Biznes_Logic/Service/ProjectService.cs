@@ -1,128 +1,250 @@
 ﻿using Manage_tasks_Biznes_Logic.Model;
+using Manage_tasks_Database.Context;
+using Manage_tasks_Database.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 
 namespace Manage_tasks_Biznes_Logic.Service
 {
     public class ProjectService : IProjectService
-
     {
-        private static List<Project> Projects = new();
-
-        const string _nameJsonFile = "ListaProjectow.json";
-        public void SaveProjectToJson()
+        private readonly DataBaseContext _dbContext;
+        public ProjectService(DataBaseContext dbContext)
         {
-
-            string objectSerialized = JsonSerializer.Serialize(Projects);
-            File.WriteAllText(_nameJsonFile, objectSerialized);
+            _dbContext = dbContext;
         }
-
-        public List<Project> LoadProjectsFromJson()
+        public async Task<List<Project>> GetAllProjects()
         {
-            if (!File.Exists(_nameJsonFile))
+            var projectEntities = await _dbContext.ProjectEntities
+                .Include(p => p.Teams)
+                .Include(p => p.TaskLists)
+                .ToListAsync();
+            var projects = projectEntities.Select(ConvertProjectEntity).ToList();
+            return projects;
+        }
+        public async Task<Project?> GetProjectById(Guid id)
+        {
+            var projectEntity = await _dbContext.ProjectEntities
+                .Include(p => p.Teams)
+                .Include(p => p.TaskLists)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (projectEntity == null)
             {
-                Projects = new List<Project>();
+                return null;
             }
-
-            Projects = JsonSerializer.Deserialize<List<Project>>(File.ReadAllText(_nameJsonFile));
-
-            return Projects;
+            var project = ConvertProjectEntity(projectEntity);
+            return project;
         }
-
-        public List<Project> GetAllProjects()
+        public async Task<Guid> CreateProject (string name, string description)
         {
-            return LoadProjectsFromJson();
-        }
-
-        public Project GetProjectById(Guid projectId)
-        {
-            try
+            var project = new ProjectEntity
             {
-                return GetAllProjects().FirstOrDefault(p => p.Id == projectId);
-            }
-            catch (Exception ex)
-            {
-                Project ExceptionProject = new Project();
-                ExceptionProject.Crash();
-                return ExceptionProject;
-
-            }
+                Name = name,
+                Description = description
+            };
+            await _dbContext.ProjectEntities.AddAsync(project);
+            await _dbContext.SaveChangesAsync();
+            return project.Id;
         }
-
-        public void RemoveProject(Guid id)
+        public async Task RemoveProject(Guid id)
         {
-            var projects = GetAllProjects();
-
-            var projectInDatabase = projects.FirstOrDefault(p => p.Id == id);
-
-            if (projectInDatabase is null)
+            var project = await _dbContext.ProjectEntities.FindAsync(id);
+            if(project is null)
             {
                 return;
             }
-
-            projects.Remove(projectInDatabase);
-
-            SaveProjectToJson();
+            _dbContext.ProjectEntities.Remove(project);
+            await _dbContext.SaveChangesAsync();
         }
-
-        public void CreateProject(string name, string description)
+        public async Task EditNameAndDescription(Guid projectId, string newName, string newDescription)
         {
-            Projects.Add(new Project(name, description));
-            SaveProjectToJson();
-        }
-
-        public void UpdateProject(Project project)
-        {
-            var projects = GetAllProjects();
-
-            var projectInDatabase = projects.FirstOrDefault(u => u.Id == project.Id);
-
-            if (projectInDatabase is not null)
-            {
-                projects.Remove(projectInDatabase);
-            }
-            else
-            {
-                project.Id = Guid.NewGuid();
-            }
-
-            projects.Add(project);
-
-            SaveProjectToJson();
-        }
-        public void EditNameAndDescription(Guid projectId, string newName, string newDescription)
-        {
-            var projects = GetAllProjects();
-            var projectInDataBase = GetProjectById(projectId);
-
-            if (projectInDataBase is null)
+            var project = await _dbContext.ProjectEntities.FirstOrDefaultAsync(p => p.Id == projectId);
+            if (project == null)
             {
                 return;
             }
-            else
+            project.Name = newName;
+            project.Description = newDescription;
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task AddTeamToProject(Guid projectId, IEnumerable<Guid> newTeamsIds)
+        {
+            var project = await _dbContext.ProjectEntities
+                .Include(p => p.Teams)
+                .FirstOrDefaultAsync(p =>p.Id == projectId);
+            if (project is null)
             {
-                projectInDataBase.Name = newName;
-                projectInDataBase.Description = newDescription;
+                return;
+            }
+            var possibleTeams = newTeamsIds.Except(project.Teams.Select(t => t.Id));
+
+            var teamEntities = await _dbContext.TeamEntities.ToListAsync();
+
+            var teamsToAdd = teamEntities.IntersectBy(possibleTeams, t => t.Id).ToList();
+
+            foreach (var team in teamsToAdd)
+            {
+                project.Teams.Add(team);
             }
 
-            projects.Add(projectInDataBase);
-            SaveProjectToJson();
+            await _dbContext.SaveChangesAsync();
         }
-        public void ChangeTeam(Guid projectId, Guid newProjectTeamId)
+        public async Task DeleteTeamFromProject(Guid projectId, Guid teamIdToDelete)
         {
-            var projects = GetAllProjects();
-            var projectInDataBase = GetProjectById(projectId);
-            if (projectInDataBase is null)
+            var project = await _dbContext.ProjectEntities
+                .Include(p => p.Teams)
+                .FirstOrDefaultAsync(p => p.Id == projectId);
+            if (project is null)
             {
-                projectInDataBase.Id = new Guid();
-                projectInDataBase.ProjectTeamId = newProjectTeamId;
+                return;
             }
-            else
+            var teamToRemove = project.Teams.FirstOrDefault(t => t.Id == teamIdToDelete);
+            if(teamToRemove is null)
             {
-                projectInDataBase.ProjectTeamId = newProjectTeamId;
+                return;
             }
-            projects.Add(projectInDataBase);
-            SaveProjectToJson();
+            project.Teams.Remove(teamToRemove);
+            await _dbContext.SaveChangesAsync();
         }
+        private static Project ConvertProjectEntity(ProjectEntity projectEntity)
+        {
+            var teams = projectEntity.Teams
+                .Select(u => new Team
+                {
+                    Id = u.Id,
+                    Name = u.Name,
+                    Description = u.Description ?? string.Empty
+                }).ToList();
+
+            var project = new Project
+            {
+                Id = projectEntity.Id,
+                Name = projectEntity.Name,
+                Description = projectEntity.Description ?? string.Empty,
+                ProjectTeams = teams
+            };
+
+            return project;
+        }
+
+        //private static List<Project> Projects = new();
+
+        //const string _nameJsonFile = "ListaProjectow.json";
+
+        //public void SaveProjectToJson()
+        //{
+
+        //    string objectSerialized = JsonSerializer.Serialize(Projects);
+        //    File.WriteAllText(_nameJsonFile, objectSerialized);
+        //}
+
+        //public List<Project> LoadProjectsFromJson()
+        //{
+        //    if (!File.Exists(_nameJsonFile))
+        //    {
+        //        Projects = new List<Project>();
+        //    }
+
+        //    Projects = JsonSerializer.Deserialize<List<Project>>(File.ReadAllText(_nameJsonFile));
+
+        //    return Projects;
+        //}
+
+        //public List<Project> GetAllProjects()
+        //{
+        //    return LoadProjectsFromJson();
+        //}
+
+        //public Project GetProjectById(Guid projectId)
+        //{
+        //    try
+        //    {
+        //        return GetAllProjects().FirstOrDefault(p => p.Id == projectId);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Project ExceptionProject = new Project();
+        //        ExceptionProject.Crash();
+        //        return ExceptionProject;
+
+        //    }
+        //}
+
+        //public void RemoveProject(Guid id)
+        //{
+        //    var projects = GetAllProjects();
+
+        //    var projectInDatabase = projects.FirstOrDefault(p => p.Id == id);
+
+        //    if (projectInDatabase is null)
+        //    {
+        //        return;
+        //    }
+
+        //    projects.Remove(projectInDatabase);
+
+        //    SaveProjectToJson();
+        //}
+
+        //public void CreateProject(string name, string description)
+        //{
+        //    Projects.Add(new Project(name, description));
+        //    SaveProjectToJson();
+        //}
+
+        //public void UpdateProject(Project project)
+        //{
+        //    var projects = GetAllProjects();
+
+        //    var projectInDatabase = projects.FirstOrDefault(u => u.Id == project.Id);
+
+        //    if (projectInDatabase is not null)
+        //    {
+        //        projects.Remove(projectInDatabase);
+        //    }
+        //    else
+        //    {
+        //        project.Id = Guid.NewGuid();
+        //    }
+
+        //    projects.Add(project);
+
+        //    SaveProjectToJson();
+        //}
+        //public void EditNameAndDescription(Guid projectId, string newName, string newDescription)
+        //{
+        //    var projects = GetAllProjects();
+        //    var projectInDataBase = GetProjectById(projectId);
+
+        //    if (projectInDataBase is null)
+        //    {
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        projectInDataBase.Name = newName;
+        //        projectInDataBase.Description = newDescription;
+        //    }
+
+        //    projects.Add(projectInDataBase);
+        //    SaveProjectToJson();
+        //}
+        //public void ChangeTeam(Guid projectId, Guid newProjectTeamId)
+        //{
+        //    var projects = GetAllProjects();
+        //    var projectInDataBase = GetProjectById(projectId);
+        //    if (projectInDataBase is null)
+        //    {
+        //        projectInDataBase.Id = new Guid();
+        //        projectInDataBase.ProjectTeamId = newProjectTeamId;
+        //    }
+        //    else
+        //    {
+        //        projectInDataBase.ProjectTeamId = newProjectTeamId;
+        //    }
+        //    projects.Add(projectInDataBase);
+        //    SaveProjectToJson();
+        //}
     }
 }

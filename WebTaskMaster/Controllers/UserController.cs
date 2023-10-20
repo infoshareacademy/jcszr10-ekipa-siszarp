@@ -13,7 +13,7 @@ namespace WebTaskMaster.Controllers
         {
             _userService = userService;
         }
-
+		[Route("user")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Details()
         {

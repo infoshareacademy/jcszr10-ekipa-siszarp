@@ -16,9 +16,10 @@ namespace WebTaskMaster.Controllers
             _teamService = teamService;
             _userService = userService;
         }
-
+        [Route("team")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Index()
+		
         {
             var models = await CreateBasicModels();
 
@@ -87,7 +88,7 @@ namespace WebTaskMaster.Controllers
 
             return teamsModels;
         }
-
+		[Route("team/{teamId:Guid}/details")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Details(Guid teamId)
         {
