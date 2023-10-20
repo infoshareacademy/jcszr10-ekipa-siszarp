@@ -30,22 +30,6 @@
             var teamLinkClass = "btn btn-outline-secondary fs-5 col-12 col-sm-12 col-xl-3 order-first";
         }
 
-        @* @if (Model.ProjectTeam is not null)
-        {
-            <a class="@teamLinkClass"
-               asp-controller="Team" asp-action="Details" asp-route-teamId="@Model.ProjectTeam.Id"
-               data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Team details">
-                <label asp-for="ProjectTeam">Team</label>
-            </a>
-
-            <p class=" fs-5 col-12 order-sm-last col-md-5 col-xl-5">@Model.ProjectTeam.Name</p>
-            <p class=" fs-5 col-12 order-sm-last col-md-6 col-xl-5">@Model.ProjectTeam.Leader</p>
-        }
-        else
-        {
-            <button class="@teamLinkClass" disabled="disabled"><label asp-for="ProjectTeam">Project Team</label></button>
-            <p class=" fs-4 col-12 col-sm-11 col-xl-9 order-2">Not assigned</p>
-        } *@
         @for (var index = 0; index < Model.Teams.Count; index++)
         {
             var team = Model.Teams[index];
@@ -100,37 +84,6 @@
                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
             </svg>
         </button>
-        @*
-        @for (var index = 0; index < Model.Tasks.Count; index++)
-        {
-            var task = Model.Tasks[index];
-
-            <div class="col-md-6 mt-2 order-last">
-                <div class="row justify-content-center px-2 py-2 mx-1 mb-2 bg-info bg-opacity-25">
-                    <a class="btn btn-outline-secondary fs-5 col-12 col-sm-10 col-xl-1 order-first"
-                       asp-controller="Task" asp-action="Details" asp-route-userId="@task.Id"
-                       data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Task details">
-                        @(index + 1)
-                    </a>
-
-                <p class="fs-5 col-12 order-sm-last col-lg-6 col-xl-5">@task.details</p>
-
-                    @* Delete Team Member Modal button
-                    <button class="btn btn-danger col-12 order-last col-sm-2 order-sm-2 col-xl-1 order-xl-last" type="button"
-                            data-bs-toggle="modal" data-bs-target="#deleteTaskModal" data-bs-link-id="link@(index)"
-                            data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete task">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                        </svg>
-                    </button>
-
-                    @* hidden link for modal
-                    <a id="link@(index)" hidden asp-action="DeleteTask" asp-route-projectId="@Model.Id" asp-route-taskId="@task.Id"></a>
-                </div>
-            </div>
-        }
-        *@
     </div>
     <div class="row justify-content-end">
         @* Delete Project Modal button  *@

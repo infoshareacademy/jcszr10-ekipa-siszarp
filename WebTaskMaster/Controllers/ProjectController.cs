@@ -119,20 +119,7 @@ namespace WebTaskMaster.Controllers
             {
                 projectModel.ProjectTeam = new ProjectTeamModel();
             }
-
             return projectModel;
-
-            //if (await _teamService.GetTeamById(project.ProjectTeamId) is not null)
-            //{
-            //    projectModel.ProjectTeam = new ProjectTeamModel
-            //    {
-            //        Id = (await _teamService.GetTeamById(project.ProjectTeamId)).Id,
-            //        Name = (await _teamService.GetTeamById(project.ProjectTeamId)).Name,
-            //        Leader = (await _teamService.GetTeamById(project.ProjectTeamId)).Leader,
-            //    };
-            //}
-            //else projectModel.ProjectTeam = new ProjectTeamModel();
-
         }
 
         [HttpPost]
