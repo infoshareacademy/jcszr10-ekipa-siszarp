@@ -15,6 +15,7 @@ html {
 
 body {
     margin-bottom: 60px;
+    
 }
 
 .colorMenu {
@@ -32,4 +33,16 @@ body {
 .nav-item .nav-link.active {
     background-color: #FFA500;
     color: #fff;
+}
+
+.btn-orange {
+    background-color: orange;
+}
+
+.btn-orange:hover {
+        background-color: #fdbe00;
+}
+.img-background {
+    background-image: url('../12324.jpg');
+    background-size: cover;
 }

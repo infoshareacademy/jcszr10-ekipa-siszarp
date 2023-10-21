@@ -12,7 +12,7 @@
 
 
 </head>
-<body>
+
 
 	@if (User.IsInRole("User"))
 	{
@@ -68,8 +68,8 @@
 					</div>
 
 				</div>
-				<div class="col-auto col-md-10 min-vh-100">
-					<main role="main" class="pb-3">
+			<div class="col-auto col-md-10 min-vh-100 img-background  text-white-50">
+				<main role="main" class="pb-3  ">
 						<h1>TaskMaster</h1>
 						@RenderBody()
 					</main>
@@ -100,20 +100,22 @@
 								<a class="nav-link text-warning" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link text-warning" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+								
 							</li>
 
 
 						</ul>
 
 					</div>
+					<a class="btn btn-orange mx-1 float-right  " asp-area="" asp-controller="Account" asp-action="Login">Login</a>
 				</div>
-
+				
 
 			</nav>
-
+			
 
 		</header>
+		
 		<div class="container">
 			<main role="main" class="pb-3">
 				@RenderBody()
@@ -135,5 +137,5 @@
 
 	@await RenderSectionAsync("Scripts", required: false)
 
-</body>
+</>
 </html>
