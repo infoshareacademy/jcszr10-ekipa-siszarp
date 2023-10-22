@@ -28,7 +28,6 @@
         public void ChangeStatus(int StatusAsNumber)
         {
             CurrentStatus = StatusList[StatusAsNumber];
-
         }
         public int StatusID()
         {

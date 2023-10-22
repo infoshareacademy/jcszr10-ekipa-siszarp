@@ -10,14 +10,14 @@
         public List<Team> ProjectTeams { get; set; }
         public Guid ProjectTeamId { get; set; }
 
-        public TasksList Tasks { get; set; }
+        public List<TasksList> Tasks { get; set; }
 
         public int OutID { get; set; }
         public Guid Id { get; set; }
 
         public Project()
         {
-            Tasks = new TasksList();
+            
 
 
         }

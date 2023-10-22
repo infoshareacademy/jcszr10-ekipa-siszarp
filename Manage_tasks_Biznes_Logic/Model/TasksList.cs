@@ -9,7 +9,7 @@ namespace Manage_tasks_Biznes_Logic.Model
     {
        
         private IEditTask _editTask;
-        public Guid Id { get; } //do przyszłej obsługi bazy danych
+        public Guid Id { get; set; } //do przyszłej obsługi bazy danych
         //kolejne właściwości do dodania jeśli zajdzie taka potrzeba
         public List<ProjectTask>? Tasks { get; set; }
         public string TasksListName { get; set; }
