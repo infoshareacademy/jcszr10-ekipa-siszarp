@@ -5,7 +5,7 @@
     ViewData["teamId"] = Model.TeamId;
 }
 
-<div class="container text-center text-wrap text-break">
+<div class="container text-center text-wrap  text-break">
     <div class="row justify-content-center px-2 py-2 mb-2 color-blue bg-opacity-25">
         <h1 class="col-12 col-sm-11 order-first">@Model.NameModel.Name</h1>
 
@@ -41,7 +41,7 @@
         @* Change Leader Modal button *@
         @if ((Model.Leader is not null && Model.Members.Count > 1) || (Model.Leader is null && Model.Members.Count > 0))
         {
-            <button id="changeLeaderModalBtn" class="btn btn-primary col-12 order-last col-sm-1 order-sm-2 col-xl-1 order-xl-last" type="button"
+            <button id="changeLeaderModalBtn" class="btn btn-orange col-12 order-last col-sm-1 order-sm-2 col-xl-1 order-xl-last" type="button"
                     data-bs-toggle="modal" data-bs-target="#changeLeaderModal"
                     data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Change leader">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -114,7 +114,7 @@
 <partial name="_AddMembersPartial" model="Model.AddMembersModel" />
 
 @* Delete Team Member Modal *@
-<div id="deleteTeamMemberModal" class="modal fade">
+<div id="deleteTeamMemberModal" class="modal fade text-dark">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -135,7 +135,7 @@
 </div>
 
 @* Delete Team Modal *@
-<div id="deleteTeamModal" class="modal fade">
+<div id="deleteTeamModal" class="modal fade text-dark">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

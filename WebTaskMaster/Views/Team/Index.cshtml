@@ -54,10 +54,8 @@
                 @if (team.LeaderModel is not null)
                 {
                     <div class="col-12">
-                        <div class="row justify-content-center my-2 mx-2 px-1 py-1 bg-info bg-opacity-25">
-                            <p class="fs-5 col-12 col-md-2">Leader</p>
-                            <p class="fs-5 col-12 col-md-5">@team.LeaderModel.FirstName</p>
-                            <p class="fs-5 col-12 col-md-5">@team.LeaderModel.LastName</p>
+                        <div class="row justify-content-center my-2 mx-2 px-1 py-1 noWrap   bg-opacity-25">
+                            <p class=" fs-5 col-12 col-md-2 fa-fade ">Leader :<span class="d-inline">  @team.LeaderModel.FirstName @team.LeaderModel.LastName</span></p>
                         </div>
                     </div>
                 }

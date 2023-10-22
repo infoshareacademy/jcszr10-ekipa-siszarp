@@ -1,13 +1,13 @@
 ﻿@model WebTaskMaster.Models.Team.TeamChangeLeaderModel
 
-<div id="changeLeaderModal" class="modal fade">
+<div id="changeLeaderModal" class="modal fade text-dark">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">Change leader</h1>
                 <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body ">
                 <form asp-action="ChangeLeader" asp-route-teamId="@ViewData["teamId"]">
 
                     <label class="form-label col-12" asp-for="AvailableLeaders"></label>

@@ -51,26 +51,17 @@ html {
 }
 
 .color-blue {
-    background-color: rgba(125, 108, 250, 1);
+    background-color: rgba(125, 108, 250, 0.75);
 }
 
     .color-blue:hover {
         background-color: rgba(141, 126, 250, 1);
     }
 
-.nav-item {
-    font-family: "Work Sans",sans-serif;
-    font-size: 18px;
-    line-height: 1.285714285714286em;
-    font-weight: 100;
-    letter-spacing: .08em;
-}
-.nav-item:hover {
-    transform: scale(1.25);
-    opacity: 0.9;
-    font-weight: 500;
-    letter-spacing: .01em;
-}
+
 .navbar-brand:hover {
     transform: scale(1.15)
+}
+.noWrap {
+    white-space: nowrap;
 }
