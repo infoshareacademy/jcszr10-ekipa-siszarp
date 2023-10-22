@@ -15,7 +15,6 @@ html {
 
 body {
     margin-bottom: 60px;
-    
 }
 
 .colorMenu {
@@ -39,10 +38,23 @@ body {
     background-color: orange;
 }
 
-.btn-orange:hover {
+    .btn-orange:hover {
         background-color: #fdbe00;
-}
+    }
+
 .img-background {
     background-image: url('../12324.jpg');
     background-size: cover;
 }
+
+.text-white-85 {
+    color: rgba(255, 255, 255, 0.95)
+}
+
+.color-blue {
+    background-color: rgba(125, 108, 250, 1);
+}
+
+    .color-blue:hover {
+        background-color: rgba(141, 126, 250, 1);
+    }
