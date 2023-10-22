@@ -7,9 +7,10 @@ namespace WebTaskMaster.ViewComponents
 {
     public class NewTask : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(Guid tasksListId)
         {
             NewTaskModel model = new NewTaskModel();
+            model.TasksListId = tasksListId;
             return View(model);
         }
     }

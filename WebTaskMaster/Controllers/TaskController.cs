@@ -3,6 +3,7 @@ using Manage_tasks_Biznes_Logic;
 using WebTaskMaster.Models.Task;
 using Manage_tasks_Biznes_Logic.Service;
 using Manage_tasks_Biznes_Logic.Model;
+using Microsoft.CodeAnalysis;
 
 namespace WebTaskMaster.Controllers
 {
@@ -27,19 +28,22 @@ namespace WebTaskMaster.Controllers
         public async Task<IActionResult> CreateNewTask(NewTaskModel model)
         {
             await _tasksListService.AddNewTask(model.Name, model.Description, model.TasksListId);
-            return RedirectToAction("Index");
+            string url = Url.Action("Details", "Project", new { projectId = model.ProjectId });
+            return Redirect(url);
         }       
         [HttpPost]
         public async Task<IActionResult> EditTask(WebTaskModel model)
         {           
             await _tasksListService.EditTask(model.newValues, model.ProjectTask);
-            return RedirectToAction("Index");
+            string url = Url.Action("Details", "Project", new { projectId = model.ProjectId });
+            return Redirect(url);
         }
         [HttpPost]
         public IActionResult DeleteTask(WebTaskModel model)
         {
-           
-            return RedirectToAction("Index");
+
+            string url = Url.Action("Details", "Project", new { projectId = model.ProjectId });
+            return Redirect(url);
         }
     }
 }

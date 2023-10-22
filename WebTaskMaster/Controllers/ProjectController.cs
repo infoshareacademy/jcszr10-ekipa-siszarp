@@ -112,7 +112,7 @@ namespace WebTaskMaster.Controllers
                 Name = project.Name,
                 Description = project.Description,
                 Teams = teams,
-                //Tasks = project.Tasks,
+                Tasks = project.Tasks,
                 ProjectAddTeamModel = addTeamModel
             };
             if (await _teamService.GetTeamById(project.ProjectTeamId) is null)

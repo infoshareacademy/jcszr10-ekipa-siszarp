@@ -31,12 +31,16 @@
 </script>
 <div class="card" style="width: 18rem;">
   <div class="card-body">
-        <form asp-action="DeleteTask" onsubmit="return deleteConfirmation();">
+        <form asp-controller="TaskController" asp-action="DeleteTask" onsubmit="return deleteConfirmation();">
             <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;" />
+            <input asp-for="TasksListId" readonly style="display: none;" />
+            <input asp-for="ProjectId" readonly style="display: none;" />
             <button type="submit" class="btn-close" aria-label="Close" style="float: right"></button></form>
-      <form asp-action="EditTask">
+        <form asp-controller="TaskController"  asp-action="EditTask">
           <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;"/>
           <input asp-for="@Model.ProjectTask.FinishDate" readonly style="display: none;" />
+            <input asp-for="TasksListId" readonly style="display: none;" />
+            <input asp-for="ProjectId" readonly style="display: none;" />
             <input asp-for="@Model.newValues[0]" value="@Model.ProjectTask.TaskName" class="card-title disabled-@Model.ProjectTask.Id" disabled />
             <input asp-for="@Model.newValues[1]" value="@Model.ProjectTask.TaskDescription" class="card-text disabled-@Model.ProjectTask.Id" disabled />
             

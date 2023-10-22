@@ -2,6 +2,7 @@
 using Manage_tasks_Biznes_Logic.Dtos.User;
 using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Database.Context;
+using Manage_tasks_Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Manage_tasks_Biznes_Logic.Service
         ProjectTask CreateNewTask(string taskName, string taskDescription);       
         Task<ProjectTask?> GetTaskByGuid(Guid taskGuid);        
         ProjectTask EditTask(string[] newValues, ProjectTask task);
+        ProjectTask EntityToModel(TaskEntity taskEntity);
     }
 
 
@@ -41,11 +43,7 @@ namespace Manage_tasks_Biznes_Logic.Service
             {
                 return null;
             }
-            ProjectTask projectTask = new ProjectTask();
-            projectTask.TaskName = dbTask.Name;
-            projectTask.TaskDescription = dbTask.Description;
-            projectTask.FinishDate = dbTask.FinishDate;
-            return projectTask;            
+            return EntityToModel(dbTask);
         }
         
         public ProjectTask EditTask(string[] newValues, ProjectTask task)
@@ -65,8 +63,21 @@ namespace Manage_tasks_Biznes_Logic.Service
 
             return task;
         }
+        public ProjectTask EntityToModel(TaskEntity taskEntity)
+        {
+            Status status = new Status();
+            status.ChangeStatus(((byte)taskEntity.StatusId));
+            ProjectTask task = new ProjectTask()
+            {
+                TaskName = taskEntity.Name,
+                TaskDescription = taskEntity.Description,
+                Id = taskEntity.Id,
+                FinishDate = taskEntity.FinishDate,
+                Status = status
+            };
+            return task;
+        }
         
-
     }
 
 

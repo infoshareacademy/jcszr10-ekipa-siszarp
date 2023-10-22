@@ -5,14 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 
+
 namespace Manage_tasks_Biznes_Logic.Service
 {
     public class ProjectService : IProjectService
     {
         private readonly DataBaseContext _dbContext;
-        public ProjectService(DataBaseContext dbContext)
+        private readonly ITasksListService _tasksListService;
+        public ProjectService(DataBaseContext dbContext, ITasksListService tasksListService)
         {
             _dbContext = dbContext;
+            _tasksListService = tasksListService;
         }
         public async Task<List<Project>> GetAllProjects()
         {
@@ -38,12 +41,16 @@ namespace Manage_tasks_Biznes_Logic.Service
         }
         public async Task<Guid> CreateProject (string name, string description)
         {
+            var projectId = Guid.NewGuid();
             var project = new ProjectEntity
             {
+                Id = projectId,
                 Name = name,
-                Description = description
+                Description = description,
+                
             };
             await _dbContext.ProjectEntities.AddAsync(project);
+            await _tasksListService.CreateTasksList("Backlog", projectId);
             await _dbContext.SaveChangesAsync();
             return project.Id;
         }
@@ -107,7 +114,7 @@ namespace Manage_tasks_Biznes_Logic.Service
             project.Teams.Remove(teamToRemove);
             await _dbContext.SaveChangesAsync();
         }
-        private static Project ConvertProjectEntity(ProjectEntity projectEntity)
+        private  Project ConvertProjectEntity(ProjectEntity projectEntity)
         {
             var teams = projectEntity.Teams
                 .Select(u => new Team
@@ -116,13 +123,14 @@ namespace Manage_tasks_Biznes_Logic.Service
                     Name = u.Name,
                     Description = u.Description ?? string.Empty
                 }).ToList();
-
+            
             var project = new Project
             {
                 Id = projectEntity.Id,
                 Name = projectEntity.Name,
                 Description = projectEntity.Description ?? string.Empty,
-                ProjectTeams = teams
+                ProjectTeams = teams,
+                Tasks = projectEntity.TaskLists.Select(_tasksListService.EntityToModel).ToList()    
             };
 
             return project;

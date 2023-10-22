@@ -4,9 +4,11 @@
 *@
 <div class="card" style="width: 18rem;">
     <div class="card-body">
-    <form asp-action="CreateNewTask">
+    <form asp-controller="Task" asp-action="CreateNewTask">
         <input asp-for="Name" />
         <input asp-for="Description" />
+            <input asp-for="TasksListId" readonly style="display: none;" />
+            <input asp-for="ProjectId" readonly style="display: none;" />
         <button type="submit">Stwórz</button>
     </form>
     </div></div>

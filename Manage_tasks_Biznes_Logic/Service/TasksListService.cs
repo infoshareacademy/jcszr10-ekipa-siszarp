@@ -16,7 +16,8 @@ namespace Manage_tasks_Biznes_Logic.Service
         Task<TasksList> GetTasksListByGuid(Guid tasksListId);
         Task AddNewTask(string newTaskName, string newTaskDescription, Guid tasksListId);
         Task EditTask(string[] newValues, ProjectTask taskToEdit);
-        
+        Task CreateTasksList(string tasksListName, Guid projectId);
+        TasksList EntityToModel(TaskListEntity entity);
     }
     public class TasksListService : ITasksListService
     {
@@ -31,7 +32,7 @@ namespace Manage_tasks_Biznes_Logic.Service
         {
             TasksList tasksList = new TasksList();
 
-            tasksList.Tasks = list.Tasks.Where(t => t.Status.StatusID() == statusId).ToList();
+            tasksList.Tasks = list.Tasks == null? null : list.Tasks.Where(t => t.Status.StatusID() == statusId).ToList();
 
             return tasksList;
         }
@@ -83,7 +84,29 @@ namespace Manage_tasks_Biznes_Logic.Service
             await _dbContext.SaveChangesAsync();
 
         }
-        
+        public async Task CreateTasksList(string tasksListName, Guid projectId)
+        {
+            var newTasksList = new TaskListEntity()
+            {
+                Name = tasksListName,
+                ProjectId = projectId,
+                Id = Guid.NewGuid(),
+            };
+            await _dbContext.AddAsync(newTasksList);
+            await _dbContext.SaveChangesAsync();
+        }
+        public TasksList EntityToModel(TaskListEntity entity) 
+        {
+            TasksList list = new TasksList()
+            {
+                TasksListName = entity.Name,
+                Id = entity.Id,
+
+                Tasks = entity.Tasks == null? null : entity.Tasks.Select(_taskService.EntityToModel).ToList(),
+            };
+            return list;
+        }
+       
          
     }
 }

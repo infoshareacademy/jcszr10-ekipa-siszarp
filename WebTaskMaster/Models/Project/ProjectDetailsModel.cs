@@ -10,7 +10,7 @@ namespace WebTaskMaster.Models.Project
         public ProjectTeamModel ProjectTeam { get; set; } = new ProjectTeamModel();
 
         public List<ProjectTeamModel> Teams { get; set; } = new List<ProjectTeamModel>();
-        public TasksList Tasks { get; set; } = new TasksList();
+        public List<TasksList> Tasks { get; set; } = new List<TasksList>();
         public ProjectAddTeamModel? ProjectAddTeamModel { get; set; }
         public ProjectModel? ProjectEditModel { get; set; }
     }
