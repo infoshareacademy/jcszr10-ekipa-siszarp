@@ -5,6 +5,8 @@ using Manage_tasks_Biznes_Logic.Service;
 using Manage_tasks_Biznes_Logic.Model;
 using Microsoft.CodeAnalysis;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace WebTaskMaster.Controllers
 {
 	[Authorize(Roles = "User")]
