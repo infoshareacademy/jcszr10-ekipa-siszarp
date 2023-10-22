@@ -39,9 +39,9 @@ namespace WebTaskMaster.Controllers
             return Redirect(url);
         }
         [HttpPost]
-        public IActionResult DeleteTask(WebTaskModel model)
+        public async Task<IActionResult> DeleteTask(WebTaskModel model)
         {
-
+            await _tasksListService.DeleteTask(model.ProjectTask.Id);
             string url = Url.Action("Details", "Project", new { projectId = model.ProjectId });
             return Redirect(url);
         }

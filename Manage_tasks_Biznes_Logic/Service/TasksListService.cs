@@ -18,6 +18,7 @@ namespace Manage_tasks_Biznes_Logic.Service
         Task EditTask(string[] newValues, ProjectTask taskToEdit);
         Task CreateTasksList(string tasksListName, Guid projectId);
         TasksList EntityToModel(TaskListEntity entity);
+        Task DeleteTask(Guid taskId);
     }
     public class TasksListService : ITasksListService
     {
@@ -106,7 +107,16 @@ namespace Manage_tasks_Biznes_Logic.Service
             };
             return list;
         }
-       
+        public async Task DeleteTask(Guid taskId)
+        {
+            var task = await _dbContext.TaskEntities.FindAsync(taskId);
+            if (task is null)
+            {
+                return;
+            }
+            _dbContext.TaskEntities.Remove(task);
+            await _dbContext.SaveChangesAsync();
+        }
          
     }
 }

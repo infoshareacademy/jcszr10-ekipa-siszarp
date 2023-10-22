@@ -30,7 +30,7 @@ namespace Manage_tasks_Biznes_Logic.Service
         {
             var projectEntity = await _dbContext.ProjectEntities
                 .Include(p => p.Teams)
-                .Include(p => p.TaskLists)
+                .Include(p => p.TaskLists).ThenInclude(t => t.Tasks)
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (projectEntity == null)
             {
