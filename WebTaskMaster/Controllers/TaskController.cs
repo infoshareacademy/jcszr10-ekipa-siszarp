@@ -3,10 +3,13 @@ using Manage_tasks_Biznes_Logic;
 using WebTaskMaster.Models.Task;
 using Manage_tasks_Biznes_Logic.Service;
 using Manage_tasks_Biznes_Logic.Model;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace WebTaskMaster.Controllers
 {
-    public class TaskController : Controller
+	[Authorize(Roles = "User")]
+	public class TaskController : Controller
     {
         private readonly IProjectService _projectService;
         private readonly ITaskService _taskService;

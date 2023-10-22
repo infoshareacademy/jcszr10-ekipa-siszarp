@@ -6,7 +6,8 @@ using WebTaskMaster.Models.Team;
 
 namespace WebTaskMaster.Controllers
 {
-    public class TeamController : Controller
+	[Authorize(Roles = "User")]
+	public class TeamController : Controller
     {
         private readonly ITeamService _teamService;
         private readonly IUserService _userService;
