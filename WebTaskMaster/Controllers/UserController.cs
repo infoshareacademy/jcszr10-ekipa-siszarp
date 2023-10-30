@@ -4,6 +4,7 @@ using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using WebTaskMaster.Models.User;
+using WebTaskMaster.Extensions;
 
 namespace WebTaskMaster.Controllers
 {
@@ -49,7 +50,7 @@ namespace WebTaskMaster.Controllers
             var dto = _mapper.Map<UserDetailsModel, UserDetailsDto>(model);
             await _userService.EditUserDetails(dto);
 
-            TempData["ToastMessage"] = "Changed saved.";
+            TempData.SetSuccessToastMessage("Changed saved.");
 
             return View(model);
         }

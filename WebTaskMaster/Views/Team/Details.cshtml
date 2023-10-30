@@ -1,4 +1,5 @@
-﻿@model WebTaskMaster.Models.Team.TeamDetailsModel
+﻿@using WebTaskMaster.Extensions
+@model WebTaskMaster.Models.Team.TeamDetailsModel
 
 @{
     ViewData["Title"] = Model.Name;
@@ -160,7 +161,7 @@
     {
 
     @* show toast for team edit response *@
-    @if (TempData["ToastMessage"] is not null)
+    @if (TempData.ContainsToastMessage())
     {
         <script type="text/javascript">
             bootstrap.Toast.getOrCreateInstance(document.getElementById('toast')).show();

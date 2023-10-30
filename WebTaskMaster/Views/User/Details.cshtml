@@ -1,4 +1,5 @@
-﻿@model WebTaskMaster.Models.User.UserDetailsModel
+﻿@using WebTaskMaster.Extensions
+@model WebTaskMaster.Models.User.UserDetailsModel
 
 @{
     ViewData["Title"] = "User details";
@@ -60,7 +61,7 @@
     }
 
     @* show toast for user edit response *@
-    @if (TempData["ToastMessage"] is not null)
+    @if (TempData.ContainsToastMessage())
     {
         <script type="text/javascript">
             bootstrap.Toast.getOrCreateInstance(document.getElementById('toast')).show();

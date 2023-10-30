@@ -3,6 +3,7 @@ using Manage_tasks_Biznes_Logic.Dtos.Team;
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebTaskMaster.Extensions;
 using WebTaskMaster.Models.Team;
 
 namespace WebTaskMaster.Controllers;
@@ -41,10 +42,10 @@ public class TeamController : Controller
             return View(model);
         }
 
-        var dto = _mapper.Map<TeamAddModel,TeamAddDto>(model);
+        var dto = _mapper.Map<TeamAddModel, TeamAddDto>(model);
         await _teamService.AddTeam(dto);
 
-        TempData["ToastMessage"] = "Team added.";
+        TempData.SetSuccessToastMessage("Team added.");
 
         return RedirectToAction("List");
     }
@@ -64,7 +65,7 @@ public class TeamController : Controller
     {
         await _teamService.DeleteTeam(teamId);
 
-        TempData["ToastMessage"] = "Team deleted.";
+        TempData.SetSuccessToastMessage("Team deleted.");
 
         return RedirectToAction("List");
     }
@@ -91,7 +92,7 @@ public class TeamController : Controller
         var dto = _mapper.Map<TeamEditModel, TeamNameEditDto>(model);
         await _teamService.EditTeam(dto);
 
-        TempData["ToastMessage"] = "Name and description changed.";
+        TempData.SetSuccessToastMessage("Name and description changed.");
 
         return RedirectToAction("Details", new { model.TeamId });
     }
@@ -131,7 +132,7 @@ public class TeamController : Controller
 
         await _teamService.ChangeTeamLeader(dto);
 
-        TempData["ToastMessage"] = "Leader changed.";
+        TempData.SetSuccessToastMessage("Leader changed.");
 
         return RedirectToAction("Details", new { dto.TeamId });
     }
@@ -141,7 +142,7 @@ public class TeamController : Controller
     {
         await _teamService.RemoveLeader(teamId);
 
-        TempData["ToastMessage"] = "Leader removed.";
+        TempData.SetSuccessToastMessage("Leader removed.");
 
         return RedirectToAction("Details", new { teamId });
     }
@@ -153,8 +154,7 @@ public class TeamController : Controller
 
         if (dto.Count == 0)
         {
-            TempData["ToastMessage"] = "No available members.";
-            TempData["ToastColorClass"] = "bg-danger";
+            TempData.SetDangerToastMessage("No available members.");
 
             return RedirectToAction("Details", new { teamId });
         }
@@ -184,7 +184,7 @@ public class TeamController : Controller
 
         await _teamService.AddTeamMembers(dto);
 
-        TempData["ToastMessage"] = "Members added.";
+        TempData.SetSuccessToastMessage("Members added.");
 
         return RedirectToAction("Details", new { model.TeamId });
     }
@@ -224,7 +224,7 @@ public class TeamController : Controller
 
         await _teamService.RemoveTeamMembers(dto);
 
-        TempData["ToastMessage"] = "Members removed.";
+        TempData.SetSuccessToastMessage("Members removed.");
 
         return RedirectToAction("Details", new { model.TeamId });
     }

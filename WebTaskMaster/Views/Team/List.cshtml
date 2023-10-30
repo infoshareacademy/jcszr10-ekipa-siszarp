@@ -1,5 +1,6 @@
 ﻿@using Manage_tasks_Biznes_Logic.Dtos.Team
 @using Humanizer
+@using WebTaskMaster.Extensions
 
 @model ICollection<TeamBasicDto>
 
@@ -65,7 +66,7 @@
 @section Scripts
     {
     @* show toast for team add response *@
-    @if (TempData["ToastMessage"] is not null)
+    @if (TempData.ContainsToastMessage())
     {
         <script type="text/javascript">
             bootstrap.Toast.getOrCreateInstance(document.getElementById('toast')).show();

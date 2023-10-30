@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebTaskMaster.Extensions;
 using WebTaskMaster.Models.Account;
 
 namespace WebTaskMaster.Controllers
@@ -129,7 +130,7 @@ namespace WebTaskMaster.Controllers
                 return View(model);
             }
 
-            TempData["ToastMessage"] = "Email changed.";
+            TempData.SetSuccessToastMessage("Email changed.");
 
             return RedirectToAction("Details", "User");
         }
@@ -173,7 +174,7 @@ namespace WebTaskMaster.Controllers
                 return View(model);
             }
 
-            TempData["ToastMessage"] = "Password changed.";
+            TempData.SetSuccessToastMessage("Password changed.");
 
             return RedirectToAction("Details", "User");
         }
