@@ -2,13 +2,13 @@
 
 <div id="editProjectModal" class="modal fade">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content text-dark">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">Edit project</h1>
                 <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="Edit" asp-route-teamId="@ViewData["projectId"]">
+                <form asp-action="Edit" asp-route-projectId="@ViewData["projectId"]">
                     <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
 
                     <label class="form-label col-12" asp-for="Name"></label>

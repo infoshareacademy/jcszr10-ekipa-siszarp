@@ -8,6 +8,7 @@ using WebTaskMaster.Models.Team;
 
 namespace WebTaskMaster.Controllers;
 
+[Authorize(Roles = "User")]
 public class TeamController : Controller
 {
     private readonly ITeamService _teamService;
@@ -19,6 +20,7 @@ public class TeamController : Controller
         _mapper = mapper;
     }
 
+    [Route("team")]
     [Authorize(Roles = "User")]
     public async Task<IActionResult> List()
     {
@@ -50,6 +52,7 @@ public class TeamController : Controller
         return RedirectToAction("List");
     }
 
+    [Route("team/{teamId:Guid}/details")]
     [Authorize(Roles = "User")]
     public async Task<IActionResult> Details(Guid teamId)
     {

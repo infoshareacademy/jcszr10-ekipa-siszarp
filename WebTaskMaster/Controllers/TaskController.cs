@@ -3,47 +3,50 @@ using Manage_tasks_Biznes_Logic;
 using WebTaskMaster.Models.Task;
 using Manage_tasks_Biznes_Logic.Service;
 using Manage_tasks_Biznes_Logic.Model;
+using Microsoft.CodeAnalysis;
+
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebTaskMaster.Controllers
 {
-    public class TaskController : Controller
+	[Authorize(Roles = "User")]
+	public class TaskController : Controller
     {
-        private readonly IProjectService _projectService;
+        private readonly ITasksListService _tasksListService;
         private readonly ITaskService _taskService;
-        public TaskController(ITaskService taskService)
+        
+        
+        public TaskController(ITasksListService tasksListService, ITaskService taskService)
         {
+            _tasksListService = tasksListService;
             _taskService = taskService;
         }
 
-        public IActionResult Index()
-        {
-            var tasks = _taskService.GetAllTasks();         
-            return View(tasks);
-        }
+       
 
         
-        public IActionResult CreateNewTask() 
-        {
-            return View();
-        }
+       
 
         [HttpPost]
-        public IActionResult CreateNewTask(NewTaskModel model)
+        public async Task<IActionResult> CreateNewTask(NewTaskModel model)
         {
-            _taskService.AddTask(_taskService.CreateNewTask(model.Name, model.Description));
-            return RedirectToAction("Index");
+            await _tasksListService.AddNewTask(model.Name, model.Description, model.TasksListId);
+            string url = Url.Action("Details", "Project", new { projectId = model.ProjectId });
+            return Redirect(url);
         }       
         [HttpPost]
-        public IActionResult EditTask(WebTaskModel model)
-        {
-            
-            _taskService.EditTask(model.newValues, _taskService.GetTaskByGuid(model.ProjectTask.Id));
-            return RedirectToAction("Index");
+        public async Task<IActionResult> EditTask(WebTaskModel model)
+        {           
+            await _tasksListService.EditTask(model.newValues, model.ProjectTask);
+            string url = Url.Action("Details", "Project", new { projectId = model.ProjectId });
+            return Redirect(url);
         }
         [HttpPost]
-        public IActionResult DeleteTask(ProjectTask model)
+        public async Task<IActionResult> DeleteTask(WebTaskModel model)
         {
-            return RedirectToAction("Index");
+            await _tasksListService.DeleteTask(model.ProjectTask.Id);
+            string url = Url.Action("Details", "Project", new { projectId = model.ProjectId });
+            return Redirect(url);
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿
+using Manage_tasks_Biznes_Logic.Dtos.User;
 using Manage_tasks_Biznes_Logic.Model;
+using Manage_tasks_Database.Context;
+using Manage_tasks_Database.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,55 +14,39 @@ namespace Manage_tasks_Biznes_Logic.Service
 {
     public interface ITaskService
     {
-        string[] TasksNames(Project project);
-        ProjectTask CreateNewTask(string taskName, string taskDescription);
-        void AddTask(ProjectTask task);
-        void RemoveTask(ProjectTask task);
-        ProjectTask? GetTaskByGuid(Guid taskGuid);
-        TasksList? GetAllTasks();
-        void EditTask(string[] newValues, ProjectTask task);
+        ProjectTask CreateNewTask(string taskName, string taskDescription);       
+        Task<ProjectTask?> GetTaskByGuid(Guid taskGuid);        
+        ProjectTask EditTask(string[] newValues, ProjectTask task);
+        ProjectTask EntityToModel(TaskEntity taskEntity);
     }
 
 
 
-    public class TaskService :ITaskService
+    public class TaskService : ITaskService
     {
-        public static TasksList tempTasks = new TasksList();
+        private readonly DataBaseContext _dbContext;
         
-        public string[] TasksNames(Project project)
+        public TaskService(DataBaseContext context)
         {
-            if (project.Tasks == null)
-            {
-                var TasksNameArray = new string[0];
-                return TasksNameArray;
-            }
-            else
-            {
-                var TasksNamesArray = project.Tasks.Tasks.Select(x => x.TaskName).ToArray();
-                return TasksNamesArray;
-            }
+             _dbContext = context;
         }
+        
         public ProjectTask CreateNewTask(string taskName, string taskDescription)
         {
             return new ProjectTask(taskName, taskDescription);
         }
-        public void AddTask(ProjectTask task)
+        
+        public async Task<ProjectTask?> GetTaskByGuid(Guid taskGuid)
         {
-            tempTasks.AddTask(task);
+            var dbTask = await _dbContext.TaskEntities.FindAsync(taskGuid);
+            if (dbTask == null)
+            {
+                return null;
+            }
+            return EntityToModel(dbTask);
         }
-        public void RemoveTask(ProjectTask task)
-        {
-            tempTasks.RemoveTask(task);
-        }
-        public ProjectTask? GetTaskByGuid(Guid taskGuid)
-        {
-            return tempTasks.GetTaskByGuid(taskGuid);            
-        }
-        public TasksList GetAllTasks()
-        {
-            return tempTasks;
-        }
-        public void EditTask(string[] newValues, ProjectTask task)
+        
+        public ProjectTask EditTask(string[] newValues, ProjectTask task)
         {
             TasksList editTaskName = new TasksList(new EditTaskName());
             editTaskName.EditTask(newValues[0], task);
@@ -67,14 +54,28 @@ namespace Manage_tasks_Biznes_Logic.Service
             editTaskDescription.EditTask(newValues[1], task);
             TasksList editTaskStatus = new TasksList(new EditTaskStatus());
             editTaskStatus.EditTask(newValues[2], task);
-            if (newValues[2] == "0" || newValues[2] == "1")
+
+            if (Int32.Parse(newValues[2]) == 2)
             {
-                newValues[3] = null;
                 TasksList editTaskFinishDate = new TasksList(new EditTaskFinishDate());
-                editTaskFinishDate.EditTask(newValues[3], task);
+                 editTaskFinishDate.EditTask(newValues[3], task);
             }
-            
-            
+
+            return task;
+        }
+        public ProjectTask EntityToModel(TaskEntity taskEntity)
+        {
+            Status status = new Status();
+            status.ChangeStatus(((byte)taskEntity.StatusId));
+            ProjectTask task = new ProjectTask()
+            {
+                TaskName = taskEntity.Name,
+                TaskDescription = taskEntity.Description,
+                Id = taskEntity.Id,
+                FinishDate = taskEntity.FinishDate,
+                Status = status
+            };
+            return task;
         }
         
     }

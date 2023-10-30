@@ -1,25 +1,29 @@
-﻿@model WebTaskMaster.Models.Project.ProjectChangeTeamModel
+﻿@model WebTaskMaster.Models.Project.ProjectAddTeamModel
 
-<div id="changeTeamModal" class="modal fade">
+<div id="addTeamModal" class="modal fade">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content text-dark">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Change Team</h1>
+                <h1 class="modal-title fs-5">Add Team</h1>
                 <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="ChangeTeam" asp-route-projectId="@ViewData["projectId"]">
+                <form asp-action="AddTeam" asp-route-projectId="@ViewData["projectId"]">
 
                     <label class="form-label col-12" asp-for="AvailableTeams"></label>
-                    <select class="form-select col-12" asp-for="NewTeamId">
+                    <select class="form-select col-12" asp-for="TeamsIdsToAdd">
                         @foreach (var team in Model.AvailableTeams!)
                         {
                             <option value="@team.Id">@team.Name</option>
                         }
                     </select>
-                    <span class="col-12 text-danger" asp-validation-for="NewTeamId"></span>
+                    <div class="form-text col-12">
+                        <span class="text-warning">Ctr + click</span>
+                        <span class="text-info">- select multiple members.</span>
+                    </div>
+                    <span class="col-12 text-danger" asp-validation-for="TeamsIdsToAdd"></span>
 
-                    <button class="btn btn-primary col-12 my-2" type="submit">Change</button>
+                    <button class="btn btn-primary col-12 my-2" type="submit">Add</button>
                 </form>
             </div>
             <div class="modal-footer">

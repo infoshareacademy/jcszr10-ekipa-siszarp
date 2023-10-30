@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebTaskMaster.Models.Team;
 
 namespace WebTaskMaster.Models.Project
 {
@@ -9,7 +10,7 @@ namespace WebTaskMaster.Models.Project
         [Display(Name = "Team Name")]
         public string Name { get; set; }
         [Display(Name = "Team Leader")]
-        public string Leader { get; set; }
+        public TeamMemberModel? Leader { get; set; }
     }
 }
 

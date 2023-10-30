@@ -1,25 +1,25 @@
 ﻿namespace Manage_tasks_Biznes_Logic.Model
 {
 
-    public class Project 
+    public class Project
 
     {
-        
+
         public string Name { get; set; }
         public string Description { get; set; }
-        public Team ProjectTeam { get; set; }
+        public List<Team> ProjectTeams { get; set; }
         public Guid ProjectTeamId { get; set; }
 
-        public TasksList Tasks { get; set; }
+        public List<TasksList> Tasks { get; set; }
 
         public int OutID { get; set; }
         public Guid Id { get; set; }
 
         public Project()
         {
-            Tasks = new TasksList();
             
-            
+
+
         }
 
         public Project(string projectName, string projectDescription) : this()
@@ -30,9 +30,9 @@
         }
 
 
-        public void AddTeam(Team team)
+        public void AddTeams(List<Team> teams)
         {
-            ProjectTeam = team;
+            ProjectTeams = teams;
             ProjectTeamId = Guid.NewGuid();
         }
 

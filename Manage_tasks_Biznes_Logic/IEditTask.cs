@@ -40,9 +40,17 @@ namespace Manage_tasks_Biznes_Logic
     public class EditTaskStatus : IEditTask
     {
         public void EditTask(string statusId, ProjectTask task)
-        {                        
+        { 
+            if(Int32.Parse(statusId) != task.Status.StatusID())
+            {
                 task.Status.ChangeStatus(Int32.Parse(statusId));
-                task.CheckIfFinished();          
+                task.CheckIfFinished(); 
+            }
+            else
+            {
+                
+            }
+                         
         }
     }
 }

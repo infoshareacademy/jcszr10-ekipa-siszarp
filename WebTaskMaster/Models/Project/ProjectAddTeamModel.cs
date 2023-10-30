@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebTaskMaster.Models.Project
 {
-    public class ProjectChangeTeamModel
+    public class ProjectAddTeamModel
     {
         [Required(ErrorMessage = "Select assigned team.")]
-        public Guid NewTeamId { get; set; }
+        public List<Guid> TeamsIdsToAdd { get; set; }
 
         [Display(Name = "Available teams")]
         public List<ProjectTeamModel>? AvailableTeams { get; set; }

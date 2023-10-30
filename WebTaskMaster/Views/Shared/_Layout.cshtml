@@ -1,4 +1,4 @@
-﻿@using WebTaskMaster.Models.User;
+@using WebTaskMaster.Models.User;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,76 +10,128 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebTaskMaster.styles.css" asp-append-version="true" />
 
+
 </head>
-<body>
-
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light   navbar-dark   border-bottom box-shadow mb-3 colorMenu">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TaskMaster</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarScroll">
-                    <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                        @if (User.IsInRole("User"))
-                        {
-                            <li class="nav-item ">
-                                <a class="nav-link text-warning " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-warning" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-warning" asp-area="" asp-controller="User" asp-action="Details">My account</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-warning" asp-area="" asp-controller="Team" asp-action="List">Teams</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-warning" asp-area="" asp-controller="Task" asp-action="Index">tempTasks</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-warning" asp-area="" asp-controller="Project" asp-action="Index">Project</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-warning" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-warning" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                        }
-
-                    </ul>
-
-                </div>
-            </div>
 
 
-        </nav>
+	@if (User.IsInRole("User"))
+	{
+
+		<div class="container-fluid">
+			<div class="row flex-nowrap">
+				<div class="sideBarColor col-auto  col-sm-4 col-md-4 col-lg-3 col-xl-2 min-vh-100 d-flex flex-column justify-content-between">
+					<div class="sideBarColor p-2">
+						<a class="d-flex text-decoration-none mt-1 align-items-center text-white">
+							<span class="fs-4 d-none d-sm-inline">Account manager</span>
+						</a>
+						<ul class="nav nav-pills flex-column mt-4">
+
+							<li class="nav-item py-2 py-sm-0">
+								<a asp-area="" asp-controller="Project" asp-action="Index" class="nav-link text-white" aria-current="page">
+									<i class="fs-5 fa-solid fa-folder-tree" style="color: #ffffff;"></i><span class="fs-4 ms-3 d-none d-sm-inline">Project</span>
+								</a>
+							</li>
+							<li class="nav-item py-2 py-sm-0">
+								<a asp-area="" asp-controller="Team" asp-action="Index" class="nav-link text-white" aria-current="page">
+									<i class="fs-5 fa fa-users"></i><span class="fs-4 ms-3 d-none d-sm-inline">Team</span>
+								</a>
+							</li>
+							
+
+							<li class="nav-item py-2 py-sm-0 ">
+								<a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link text-white" aria-current="page">
+									<i class="fs-5 fa-solid fa-right-from-bracket" style="color: #ffffff;"></i><span class="fs-4 ms-3 d-none d-sm-inline">Logout</span>
+								</a>
+							</li>
 
 
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+						</ul>
+					</div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - TaskMaster - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+					<div class="dropdown open p-3 nav-pills">
+						<button class="btn border border-warning dropdown-toggle  " type="button" id="triggerId" data-bs-toggle="dropdown" aria-expanded="false">
+							<i></i><span class="ms-2 text-white">User</span>
+						</button>
+						<div class="dropdown-menu" aria-labelledy="triggerId">
+							<a class="dropdown-item " asp-area="" asp-controller="User" asp-action="Details">
+								<i class="fa-solid fa-id-card-clip"></i><span class="  ms-2">Profile</span>
+							</a>
+							@*<a class="dropdown-item " >
+							<i class="fa-solid fa-gears"></i><span class="  ms-2">Settings</span>
+							</a>*@
+							 
+						</div>
+					</div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+				</div>
+			<div class="col-auto col-md-10 min-vh-100 img-background  text-white-85">
+				<main role="main" class="pb-3  ">
+						<h1>TaskMaster</h1>
+						@RenderBody()
+					</main>
+				</div>
+			</div>
 
-    @await RenderSectionAsync("Scripts", required: false)
+		</div>
 
-</body>
+
+	}
+	else
+	{
+		<header>
+			<nav class="navbar navbar-expand-lg navbar-light   navbar-dark   border-bottom box-shadow mb-3 colorMenu">
+				<div class="container-fluid">
+					<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TaskMaster</a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarScroll">
+						<ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+
+
+							<li class="nav-item ">
+								<a class="nav-link text-warning " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-warning" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+							</li>
+							<li class="nav-item">
+								
+							</li>
+
+
+						</ul>
+
+					</div>
+					<a class="btn btn-orange mx-1 float-right  " asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+				</div>
+				
+
+			</nav>
+			
+
+		</header>
+		
+		<div class="container">
+			<main role="main" class="pb-3">
+				@RenderBody()
+			</main>
+		</div>
+	}
+
+
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; 2023 - TaskMaster - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+		</div>
+	</footer>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	<script src="https://kit.fontawesome.com/57597b26e3.js" crossorigin="anonymous"></script>
+
+	@await RenderSectionAsync("Scripts", required: false)
+
+</>
 </html>

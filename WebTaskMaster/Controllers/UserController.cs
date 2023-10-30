@@ -8,7 +8,8 @@ using WebTaskMaster.Extensions;
 
 namespace WebTaskMaster.Controllers
 {
-    public class UserController : Controller
+	[Authorize(Roles = "User")]
+	public class UserController : Controller
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
@@ -18,7 +19,7 @@ namespace WebTaskMaster.Controllers
             _userService = userService;
             _mapper = mapper;
         }
-
+		[Route("user")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Details()
         {

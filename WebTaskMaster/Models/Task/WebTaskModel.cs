@@ -4,6 +4,8 @@ namespace WebTaskMaster.Models.Task
 {
     public class WebTaskModel
     {
+        public Guid TasksListId { get; set; }
+        public Guid ProjectId { get; set; }
         public ProjectTask ProjectTask { get; set; }
         public string[] newValues {  get; set; }
         public WebTaskModel()
