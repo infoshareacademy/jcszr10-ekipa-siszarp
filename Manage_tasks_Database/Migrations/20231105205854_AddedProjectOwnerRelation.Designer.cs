@@ -4,6 +4,7 @@ using Manage_tasks_Database.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manage_tasks_Database.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231105205854_AddedProjectOwnerRelation")]
+    partial class AddedProjectOwnerRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,13 +231,11 @@ namespace Manage_tasks_Database.Migrations
                 {
                     b.HasOne("Manage_tasks_Database.Entities.UserEntity", "AssignedUser")
                         .WithMany("Tasks")
-                        .HasForeignKey("AssignedUserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("AssignedUserId");
 
                     b.HasOne("Manage_tasks_Database.Entities.TaskListEntity", "TaskList")
                         .WithMany("Tasks")
-                        .HasForeignKey("TaskListId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("TaskListId");
 
                     b.Navigation("AssignedUser");
 
@@ -257,8 +257,7 @@ namespace Manage_tasks_Database.Migrations
                 {
                     b.HasOne("Manage_tasks_Database.Entities.UserEntity", "Leader")
                         .WithMany("TeamsLeader")
-                        .HasForeignKey("LeaderId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("LeaderId");
 
                     b.Navigation("Leader");
                 });
