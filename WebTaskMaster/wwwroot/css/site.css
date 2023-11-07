@@ -3,35 +3,65 @@ html {
 }
 
 @media (min-width: 768px) {
-  .html {
-    font-size: 16px;
-  }
+    .html {
+        font-size: 16px;
+    }
 }
 
 .html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 .body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 .colorMenu {
     background-color: rgb(123, 104, 238);
 }
-.nav-item {
-    font-family: "Work Sans",sans-serif;
-    font-size: 18px;
-    line-height: 1.285714285714286em;
-    font-weight: 100;
-    letter-spacing: .08em;
+
+.nav-pills li a:hover {
+    background-color: orange;
 }
-.nav-item:hover {
-    transform: scale(1.25);
-    opacity: 0.9;
-    font-weight: 500;
-    letter-spacing: .01em;
+
+.sideBarColor {
+    background-color: #2e2e48;
 }
+
+.nav-item .nav-link.active {
+    background-color: #FFA500;
+    color: #fff;
+}
+
+.btn-orange {
+    background-color: orange;
+}
+
+    .btn-orange:hover {
+        background-color: #fdbe00;
+    }
+
+.img-background {
+    background-image: url('../12324.jpg');
+    background-size: cover;
+}
+
+.text-white-85 {
+    color: rgba(255, 255, 255, 0.95)
+}
+
+.color-blue {
+    background-color: rgba(125, 108, 250, 0.75);
+}
+
+    .color-blue:hover {
+        background-color: rgba(141, 126, 250, 1);
+    }
+
+
 .navbar-brand:hover {
     transform: scale(1.15)
+}
+.noWrap {
+    white-space: nowrap;
 }

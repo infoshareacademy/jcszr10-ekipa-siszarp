@@ -14,7 +14,7 @@
         <h1 class="col-12 col-sm-9 col-lg-10">Teams</h1>
 
         @* Create Team Modal button  *@
-        <button id="createTeamModalBtn" class="btn btn-primary col-12 col-sm-3 col-lg-2" type="button"
+        <button id="createTeamModalBtn" class="btn btn-orange col-12 col-sm-3 col-lg-2" type="button"
                 data-bs-toggle="modal" data-bs-target="#createTeamModal">
             Add team
         </button>
@@ -30,7 +30,7 @@
             var teamDescription = team.NameModel.Description;
 
 
-            <div class="row justify-content-start my-2 px-2 py-2 bg-primary bg-opacity-25">
+            <div class="row justify-content-start my-2 px-2 py-2 color-blue bg-opacity-50">
                 <a class="btn btn-outline-secondary fs-5 col-12 col-sm-1"
                    asp-action="Details" asp-route-teamId="@team.Id"
                    data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Team details">
@@ -54,10 +54,8 @@
                 @if (team.LeaderModel is not null)
                 {
                     <div class="col-12">
-                        <div class="row justify-content-center my-2 mx-2 px-1 py-1 bg-info bg-opacity-25">
-                            <p class="fs-5 col-12 col-md-2">Leader</p>
-                            <p class="fs-5 col-12 col-md-5">@team.LeaderModel.FirstName</p>
-                            <p class="fs-5 col-12 col-md-5">@team.LeaderModel.LastName</p>
+                        <div class="row justify-content-center my-2 mx-2 px-1 py-1 noWrap   bg-opacity-25">
+                            <p class=" fs-5 col-12 col-md-2 fa-fade ">Leader :<span class="d-inline">  @team.LeaderModel.FirstName @team.LeaderModel.LastName</span></p>
                         </div>
                     </div>
                 }

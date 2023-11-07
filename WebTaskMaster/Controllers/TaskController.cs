@@ -5,9 +5,12 @@ using Manage_tasks_Biznes_Logic.Service;
 using Manage_tasks_Biznes_Logic.Model;
 using Microsoft.CodeAnalysis;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace WebTaskMaster.Controllers
 {
-    public class TaskController : Controller
+	[Authorize(Roles = "User")]
+	public class TaskController : Controller
     {
         private readonly ITasksListService _tasksListService;
         private readonly ITaskService _taskService;
