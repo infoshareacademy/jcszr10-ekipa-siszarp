@@ -6,6 +6,7 @@ namespace WebTaskMaster.Models.Task
     {
         public Guid TasksListId { get; set; }
         public Guid ProjectId { get; set; }
+        public Manage_tasks_Biznes_Logic.Model.Team? Team { get; set; }
         public ProjectTask ProjectTask { get; set; }
         public string[] newValues {  get; set; }
         public WebTaskModel()

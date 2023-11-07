@@ -13,9 +13,11 @@ namespace WebTaskMaster.ViewComponents
             _tasksListService = tasksListService;
         }
         
-        public async Task<IViewComponentResult> InvokeAsync(TasksList list, int statusId)
+        public async Task<IViewComponentResult> InvokeAsync(TasksList list, int statusId, Guid teamId)
         {
-            TasksList tasksList = _tasksListService.GetListByStatus(list, statusId);
+            WebTasksList tasksList = new WebTasksList();
+            tasksList.Tasks = _tasksListService.GetListByStatus(list, statusId);
+            tasksList.TeamId = teamId;
             return View(tasksList);
         }
     }
