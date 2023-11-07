@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Humanizer;
 using Manage_tasks_Biznes_Logic.Dtos.Team;
 using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Database.Context;
@@ -48,50 +49,82 @@ public class TeamService : ITeamService
 
         return teams;
     }
-    public async Task<ICollection<TeamBasicDto>> GetTeamList()
+
+    public async Task<TeamListForUserDto> GetTeamListForUser(Guid userId)
     {
         var teamsQuery = _dbContext.TeamEntities
             .Include(t => t.Leader)
-            .Include(t => t.Members);
+            .Include(t => t.Members)
+            .Where(t => t.Members.Any(m => m.Id == userId));
 
-        var teams = await _mapper.ProjectTo<TeamBasicDto>(teamsQuery).ToArrayAsync();
+        var userTeams = await _mapper.ProjectTo<TeamBasicDto>(teamsQuery).ToArrayAsync();
 
-        return teams;
+        var teamsLeader = userTeams.Where(t => t.Leader.MemberId == userId).ToList();
+        var teamsMember = userTeams.Except(teamsLeader).ToList();
+
+        var dto = new TeamListForUserDto
+        {
+            TeamsLeader = teamsLeader,
+            TeamsMember = teamsMember
+        };
+
+        return dto;
     }
 
     public async Task AddTeam(TeamAddDto dto)
     {
-        var team = new TeamEntity
+        var team = _mapper.Map<TeamAddDto, TeamEntity>(dto);
+
+        var leader = await _dbContext.UserEntities.FindAsync(dto.LeaderId);
+
+        if (leader is null)
         {
-            Name = dto.Name,
-            Description = dto.Description
-        };
+            throw new InvalidOperationException("Leader do not exist.");
+        }
+
+        team.Leader = leader;
+        team.Members.Add(leader);
 
         await _dbContext.TeamEntities.AddAsync(team);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteTeam(Guid teamId)
+    public async Task DeleteTeam(Guid teamId, Guid editorId)
     {
-        var team = await _dbContext.TeamEntities.FindAsync(teamId);
+        var team = await _dbContext.TeamEntities
+            .Include(t => t.Leader)
+            .FirstOrDefaultAsync(t => t.Id == teamId);
 
         if (team is null)
         {
-            return;
+            throw new InvalidOperationException("Team do not exist.");
+        }
+
+        if (team.Leader.Id != editorId)
+        {
+            throw new UnauthorizedAccessException("Only the team leader can delete a team.");
         }
 
         _dbContext.TeamEntities.Remove(team);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<TeamDetailsDto> GetTeamDetails(Guid teamId)
+    public async Task<TeamDetailsForUserDto> GetTeamDetailsForUser(Guid teamId, Guid userId)
     {
         var teamQuery = _dbContext.TeamEntities
             .Include(t => t.Leader)
             .Include(t => t.Members)
-            .Where(t => t.Id == teamId);
+            .Where(t => t.Id == teamId)
+            .Where(t => t.Members.Any(m => m.Id == userId));
 
-        var team = await _mapper.ProjectTo<TeamDetailsDto>(teamQuery).FirstAsync();
+        var team = await _mapper.ProjectTo<TeamDetailsForUserDto>(teamQuery).FirstOrDefaultAsync();
+
+        if (team is null)
+        {
+            throw new InvalidOperationException("Team do not exist, or the user is not a member of the team.");
+        }
+
+        team.CanEditTeam = team.Leader.MemberId == userId;
 
         return team;
     }
@@ -100,20 +133,36 @@ public class TeamService : ITeamService
     {
         var teamQuery = _dbContext.TeamEntities
             .Include(t => t.Leader)
-            .Include(t => t.Members)
-            .Where(t => t.Id == teamId);
+            .Include(t => t.Members);
 
-        var team = await _mapper.ProjectTo<TeamBasicDto>(teamQuery).FirstAsync();
+        var team = await _mapper.ProjectTo<TeamBasicDto>(teamQuery)
+            .FirstOrDefaultAsync(t => t.TeamId == teamId);
+
+        if (team is null)
+        {
+            throw new InvalidOperationException("Team do not exist.");
+        }
 
         return team;
     }
 
     public async Task EditTeam(TeamNameEditDto dto)
     {
-        var team = await _dbContext.TeamEntities.FirstAsync(t => t.Id == dto.TeamId);
+        var team = await _dbContext.TeamEntities
+            .Include(t => t.Leader)
+            .FirstOrDefaultAsync(t => t.Id == dto.TeamId);
 
-        team.Name = dto.Name;
-        team.Description = dto.Description;
+        if (team is null)
+        {
+            throw new InvalidOperationException("Team do not exist.");
+        }
+
+        if (team.Leader.Id != dto.EditorId)
+        {
+            throw new UnauthorizedAccessException("Only the team leader can edit team data.");
+        }
+
+        _mapper.Map(dto, team);
 
         await _dbContext.SaveChangesAsync();
     }
@@ -123,14 +172,14 @@ public class TeamService : ITeamService
         var team = await _dbContext.TeamEntities
             .Include(t => t.Leader)
             .Include(t => t.Members)
-            .FirstAsync(t => t.Id == teamId);
+            .FirstOrDefaultAsync(t => t.Id == teamId);
 
-        var availableMembers = team.Members.AsEnumerable();
-
-        if (team.Leader is not null)
+        if (team is null)
         {
-            availableMembers = availableMembers.Where(m => m.Id != team.LeaderId);
+            throw new InvalidOperationException("Team do not exist.");
         }
+
+        var availableMembers = team.Members.Where(m => m.Id != team.LeaderId);
 
         var dto = _mapper.Map<IEnumerable<UserEntity>, ICollection<TeamMemberDto>>(availableMembers);
 
@@ -142,9 +191,19 @@ public class TeamService : ITeamService
         var team = await _dbContext.TeamEntities
             .Include(t => t.Leader)
             .Include(t => t.Members)
-            .FirstAsync(t => t.Id == dto.TeamId);
+            .FirstOrDefaultAsync(t => t.Id == dto.TeamId);
 
-        if (team.Leader is not null && team.Leader.Id == dto.NewLeaderId)
+        if (team is null)
+        {
+            throw new InvalidOperationException("Team do not exist.");
+        }
+
+        if (team.Leader.Id != dto.EditorId)
+        {
+            throw new UnauthorizedAccessException("Only the team leader can change the team leader.");
+        }
+
+        if (team.Leader.Id == dto.NewLeaderId)
         {
             throw new InvalidOperationException("New leader is the same as the current one.");
         }
@@ -159,33 +218,14 @@ public class TeamService : ITeamService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task RemoveLeader(Guid teamId)
-    {
-        var team = await _dbContext.TeamEntities
-            .Include(t => t.Leader)
-            .FirstAsync(t => t.Id == teamId);
-
-        if (team.Leader is null)
-        {
-            throw new InvalidOperationException("This team has no leader.");
-        }
-
-        team.Leader = null;
-
-        await _dbContext.SaveChangesAsync();
-    }
-
     public async Task<ICollection<TeamMemberDto>> GetAvailableTeamMembers(Guid teamId)
     {
-        var teamEntity = await _dbContext.TeamEntities
-            .Include(t => t.Members)
-            .FirstAsync(t => t.Id == teamId);
+        var users = await _dbContext.UserEntities
+            .Include(u => u.Teams)
+            .Where(u => u.Teams.All(t => t.Id != teamId))
+            .ToArrayAsync();
 
-        var users = await _dbContext.UserEntities.ToArrayAsync();
-
-        var availableUsers = users.ExceptBy(teamEntity.Members.Select(m => m.Id), u => u.Id);
-
-        var dto = _mapper.Map<IEnumerable<UserEntity>, ICollection<TeamMemberDto>>(availableUsers);
+        var dto = _mapper.Map<IEnumerable<UserEntity>, ICollection<TeamMemberDto>>(users);
 
         return dto;
     }
@@ -194,15 +234,27 @@ public class TeamService : ITeamService
     {
         var team = await _dbContext.TeamEntities
             .Include(t => t.Members)
-            .FirstAsync(t => t.Id == dto.TeamId);
+            .Include(t => t.Leader)
+            .FirstOrDefaultAsync(t => t.Id == dto.TeamId);
+
+        if (team is null)
+        {
+            throw new InvalidOperationException("Team do not exist.");
+        }
+
+        if (team.Leader.Id != dto.EditorId)
+        {
+            throw new UnauthorizedAccessException("Only the team leader can add members to the team.");
+        }
 
         if (team.Members.Select(m => m.Id).Intersect(dto.NewMemberIds).Any())
         {
             throw new InvalidOperationException("Some new members are already in the team.");
         }
 
-        var userEntities = await _dbContext.UserEntities.ToArrayAsync();
-        var users = userEntities.IntersectBy(dto.NewMemberIds, u => u.Id).ToArray();
+        var users = await _dbContext.UserEntities
+            .Where(u => dto.NewMemberIds.Any(nmId => nmId == u.Id))
+            .ToArrayAsync();
 
         if (users.Length < dto.NewMemberIds.Count)
         {
@@ -221,12 +273,7 @@ public class TeamService : ITeamService
             .Include(t => t.Members)
             .FirstAsync(t => t.Id == teamId);
 
-        var availableRemoveMembers = team.Members.AsEnumerable();
-
-        if (team.Leader is not null)
-        {
-            availableRemoveMembers = availableRemoveMembers.Where(m => m.Id != team.LeaderId);
-        }
+        var availableRemoveMembers = team.Members.Where(m => m.Id != team.LeaderId);
 
         var dto = _mapper.Map<IEnumerable<UserEntity>, ICollection<TeamMemberDto>>(availableRemoveMembers);
 
@@ -238,7 +285,17 @@ public class TeamService : ITeamService
         var team = await _dbContext.TeamEntities
             .Include(t => t.Leader)
             .Include(t => t.Members)
-            .FirstAsync(t => t.Id == dto.TeamId);
+            .FirstOrDefaultAsync(t => t.Id == dto.TeamId);
+
+        if (team is null)
+        {
+            throw new InvalidOperationException("Team do not exist.");
+        }
+
+        if (team.Leader.Id != dto.EditorId)
+        {
+            throw new UnauthorizedAccessException("Only the team leader can remove members from the team.");
+        }
 
         if (team.Leader is not null && dto.RemoveMemberIds.Contains(team.Leader.Id))
         {

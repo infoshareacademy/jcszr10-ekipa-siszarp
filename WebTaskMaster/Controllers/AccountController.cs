@@ -91,12 +91,7 @@ namespace WebTaskMaster.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> EditEmail()
         {
-            var userIdText = HttpContext.User.Claims
-                .Where(c => c.Type == "UserId")
-                .Select(c => c.Value)
-                .FirstOrDefault();
-
-            if (!Guid.TryParse(userIdText, out var userId))
+            if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -138,12 +133,7 @@ namespace WebTaskMaster.Controllers
         [Authorize(Roles = "User")]
         public ActionResult EditPassword()
         {
-            var userIdText = HttpContext.User.Claims
-                .Where(c => c.Type == "UserId")
-                .Select(c => c.Value)
-                .FirstOrDefault();
-
-            if (!Guid.TryParse(userIdText, out var userId))
+            if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -182,12 +172,7 @@ namespace WebTaskMaster.Controllers
         [Authorize(Roles = "User")]
         public IActionResult Delete()
         {
-            var userIdText = HttpContext.User.Claims
-                .Where(c => c.Type == "UserId")
-                .Select(c => c.Value)
-                .FirstOrDefault();
-
-            if (!Guid.TryParse(userIdText, out var userId))
+            if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
             {
                 return RedirectToAction("Index", "Home");
             }

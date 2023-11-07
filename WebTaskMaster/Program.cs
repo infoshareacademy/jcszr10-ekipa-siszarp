@@ -38,9 +38,6 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 
-//TODO - Przeniesc walidacje automappera do testow.
-app.Services.GetService<AutoMapper.IConfigurationProvider>()!.AssertConfigurationIsValid();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -54,6 +51,9 @@ else
 
     var dbContext = scope.ServiceProvider.GetRequiredService<DataBaseContext>();
     dbContext.Database.Migrate();
+
+    var mapperConf = scope.ServiceProvider.GetRequiredService<AutoMapper.IConfigurationProvider>();
+    mapperConf.AssertConfigurationIsValid();
 }
 
 app.UseHttpsRedirection();

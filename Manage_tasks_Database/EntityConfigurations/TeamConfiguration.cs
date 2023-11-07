@@ -28,6 +28,6 @@ internal class TeamConfiguration : IEntityTypeConfiguration<TeamEntity>
             .WithMany(u => u.TeamsLeader)
             .HasForeignKey(t => t.LeaderId)
             .HasPrincipalKey(u => u.Id)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.ClientCascade);
     }
 }

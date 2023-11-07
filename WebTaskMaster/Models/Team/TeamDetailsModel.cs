@@ -13,16 +13,14 @@ public class TeamDetailsModel
     public string? Description { get; set; }
 
     [Display(Name = "Leader")]
-    public TeamMemberModel? Leader { get; set; }
+    public TeamMemberModel Leader { get; set; }
 
     [Display(Name = "Members")]
     public ICollection<TeamMemberModel> Members { get; set; }
 
-    public bool CanRemoveLeader => Leader is not null;
+    public bool CanEditTeam { get; set; }
 
-    public bool CanChangeLeader => (Leader is null && Members.Count > 0) ||
-                                   (Leader is not null && Members.Count > 1);
+    public bool CanChangeLeader => Members.Count > 1;
 
-    public bool CanRemoveMembers => (Leader is not null && Members.Count > 1) ||
-                                    (Leader is null && Members.Count > 0);
+    public bool CanRemoveMembers => Members.Count > 1;
 }

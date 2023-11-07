@@ -4,5 +4,7 @@ public class TeamChangeLeaderDto
 {
     public Guid TeamId { get; set; }
 
+    public Guid EditorId { get; set; }
+
     public Guid NewLeaderId { get; set; }
 }

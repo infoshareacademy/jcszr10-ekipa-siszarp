@@ -24,9 +24,16 @@ public class TeamController : Controller
     [Authorize(Roles = "User")]
     public async Task<IActionResult> List()
     {
-        var dto = await _teamService.GetTeamList();
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
 
-        return View(dto);
+        var dto = await _teamService.GetTeamListForUser(userId);
+
+        var model = _mapper.Map<TeamListForUserDto, TeamListModel>(dto);
+
+        return View(model);
     }
 
     [Authorize(Roles = "User")]
@@ -44,7 +51,14 @@ public class TeamController : Controller
             return View(model);
         }
 
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         var dto = _mapper.Map<TeamAddModel, TeamAddDto>(model);
+        dto.LeaderId = userId;
+
         await _teamService.AddTeam(dto);
 
         TempData.SetSuccessToastMessage("Team added.");
@@ -56,9 +70,14 @@ public class TeamController : Controller
     [Authorize(Roles = "User")]
     public async Task<IActionResult> Details(Guid teamId)
     {
-        var dto = await _teamService.GetTeamDetails(teamId);
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
 
-        var model = _mapper.Map<TeamDetailsDto, TeamDetailsModel>(dto);
+        var dto = await _teamService.GetTeamDetailsForUser(teamId, userId);
+
+        var model = _mapper.Map<TeamDetailsForUserDto, TeamDetailsModel>(dto);
 
         return View(model);
     }
@@ -66,7 +85,12 @@ public class TeamController : Controller
     [Authorize(Roles = "User")]
     public async Task<IActionResult> Delete(Guid teamId)
     {
-        await _teamService.DeleteTeam(teamId);
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        await _teamService.DeleteTeam(teamId, userId);
 
         TempData.SetSuccessToastMessage("Team deleted.");
 
@@ -92,7 +116,14 @@ public class TeamController : Controller
             return View(model);
         }
 
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         var dto = _mapper.Map<TeamEditModel, TeamNameEditDto>(model);
+        dto.EditorId = userId;
+
         await _teamService.EditTeam(dto);
 
         TempData.SetSuccessToastMessage("Name and description changed.");
@@ -131,23 +162,19 @@ public class TeamController : Controller
             return View(model);
         }
 
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         var dto = _mapper.Map<TeamChangeLeaderModel, TeamChangeLeaderDto>(model);
+        dto.EditorId = userId;
 
         await _teamService.ChangeTeamLeader(dto);
 
         TempData.SetSuccessToastMessage("Leader changed.");
 
         return RedirectToAction("Details", new { dto.TeamId });
-    }
-
-    [Authorize(Roles = "User")]
-    public async Task<IActionResult> RemoveLeader(Guid teamId)
-    {
-        await _teamService.RemoveLeader(teamId);
-
-        TempData.SetSuccessToastMessage("Leader removed.");
-
-        return RedirectToAction("Details", new { teamId });
     }
 
     [Authorize(Roles = "User")]
@@ -183,7 +210,13 @@ public class TeamController : Controller
             return View(model);
         }
 
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         var dto = _mapper.Map<TeamAddMembersModel, TeamAddMembersDto>(model);
+        dto.EditorId = userId;
 
         await _teamService.AddTeamMembers(dto);
 
@@ -223,7 +256,13 @@ public class TeamController : Controller
             return View(model);
         }
 
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         var dto = _mapper.Map<TeamRemoveMembersModel, TeamRemoveMembersDto>(model);
+        dto.EditorId = userId;
 
         await _teamService.RemoveTeamMembers(dto);
 

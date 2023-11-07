@@ -9,13 +9,13 @@ public interface ITeamService
 
     Task<List<Team>> GetAllTeams();
 
-    Task<ICollection<TeamBasicDto>> GetTeamList();
+    Task<TeamListForUserDto> GetTeamListForUser(Guid userId);
 
     Task AddTeam(TeamAddDto dto);
 
-    Task DeleteTeam(Guid teamId);
+    Task DeleteTeam(Guid teamId, Guid editorId);
 
-    Task<TeamDetailsDto> GetTeamDetails(Guid teamId);
+    Task<TeamDetailsForUserDto> GetTeamDetailsForUser(Guid teamId, Guid userId);
 
     Task<TeamBasicDto> GetTeamBasic(Guid teamId);
 
@@ -24,8 +24,6 @@ public interface ITeamService
     Task<ICollection<TeamMemberDto>> GetAvailableTeamLeaders(Guid teamId);
 
     Task ChangeTeamLeader(TeamChangeLeaderDto dto);
-
-    Task RemoveLeader(Guid teamId);
 
     Task<ICollection<TeamMemberDto>> GetAvailableTeamMembers(Guid teamId);
 

@@ -5,8 +5,8 @@
 }
 
 <div class="container">
-    <div class="row justify-content-center">
-        <h1 class="col-12 text-center">Remove members</h1>
+    <div class="row justify-content-center text-dark bg-white rounded">
+        <h1 class="col-12 mt-2 text-center">Remove members</h1>
 
         <form asp-action="RemoveMembers">
             <input hidden="true" asp-for="TeamId" />
@@ -28,8 +28,8 @@
 
             <span asp-validation-for="@Model.RemoveMemberIds" class="text-danger"></span>
 
-            <div class="col-12 col-md-3 col-xxl-2 d-grid">
-                <button class="btn btn-primary" type="submit">Save</button>
+            <div class="col-12 col-md-3 col-xxl-2 d-grid mb-2">
+                <button class="btn btn-primary" type="submit">Remove</button>
             </div>
         </form>
     </div>

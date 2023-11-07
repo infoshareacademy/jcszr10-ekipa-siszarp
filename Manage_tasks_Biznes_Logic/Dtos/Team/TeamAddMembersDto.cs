@@ -4,5 +4,7 @@ public class TeamAddMembersDto
 {
     public Guid TeamId { get; set; }
 
+    public Guid EditorId { get; set; }
+
     public ICollection<Guid> NewMemberIds { get; init; }
 }
