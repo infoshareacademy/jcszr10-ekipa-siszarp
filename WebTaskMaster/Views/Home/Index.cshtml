@@ -2,10 +2,294 @@
 	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+@* <div class="text-center">
 	<h1 class="display-4">Welcome</h1>
 	<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+</div> *@
+
+<!--  Navbar -->
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark py-4 fixed-top">
+	<div class="container">
+		<a class="navbar-brand" asp-controller="Home" asp-action="Index">WebTask Master</a>
+		<button class="navbar-toggler"
+				type="button"
+				data-bs-toggle="collapse"
+				data-bs-target="#navmenu">
+
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navmenu">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item">
+					<a href="#read" class="nav-link">Our Solution</a>
+				</li>
+				<li class="nav-item">
+					<a href="#questions" class="nav-link">Questions</a>
+				</li>
+				<li class="nav-item">
+					<a href="#recomendations" class="nav-link">About Us</a>
+				</li>
+				<li class="nav-item h3">
+					<a href="https://facebook.com" class="text-warning i bi bi-facebook mx-1"></a>
+				</li>
+				<li class="nav-item h3">
+					<a href="https://linkedin.com" class="i bi bi-linkedin text-warning mx-1"></a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<!-- Showcase -->
+		<section class="bg-dark text-light p-4 p-lg-0 pt-lg-5 text-center text-sm-start">
+			<div class="container">
+				<div class="d-sm-flex align-items-center justify-content-between mx-5">
+					<div>
+
+						<div class="display-3 fw-bolder">Manage Your Team Like a <span class="text-warning fw-bold">Master</span></div>
+						<p class="lead my-4">
+							All-in-one App! The easy way to manage people, projects and time.
+							Increase efficiency to deliver results and hit your goals on every project.
+							Use WebTask Master and keep work on track everyday!
+						</p>
+						<a class="btn btn-warning btn-lg rounded-5" asp-area="" asp-controller="Account" asp-action="Login">Get started</a>
+					</div>
+				<img class="img-fluid d-none d-lg-block" style= "height:500px"src="image/completed_tasks_orange.svg" alt="">
+				</div>
+			</div>
+		</section>
+
+	<!-- Read Sections -->
+	<section id="read" class="p-5">
+		<div class="container">
+			<div class="row align-items-center justify-content-between">
+				<div class="col-md">
+					<img src="image/team-desk.jpg" class="img-fluid" alt="">
+				</div>
+				<div class="col-lg p-5">
+					<h2>Collaboration becomes a lot more easy when the work is in one place. </h2>
+					<p class="lead">
+						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati reprehenderit, consectetur excepturi est accusamus delectus?
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ex dicta, illo, nisi distinctio eos quasi similique reiciendis explicabo molestiae, cumque minus dolor debitis ipsam tempora facere ad odio amet.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="read" class="p-5 bg-dark text-light">
+		<div class="container">
+			<div class="row align-items-center justify-content-between">
+				<div class="col-lg p-5">
+					<h2>Move fast, stay aligned, and build better - together</h2>
+					<p class="lead">
+						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati reprehenderit, consectetur excepturi est accusamus delectus?
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ex dicta, illo, nisi distinctio eos quasi similique reiciendis explicabo molestiae, cumque minus dolor debitis ipsam tempora facere ad odio amet.
+					</p>
+				</div>
+				<div class="col-md">
+					<img src="image/team-black-orange.jpg" class="img-fluid" alt="">
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Boxes -->
+	<section class="p-5">
+		<div class="container">
+			<div class="row text-center g-4">
+				<div class="col-md">
+					<div class="card bg-dark text-light">
+						<div class="card-body text-center">
+							<div class="h1 mb-3">
+								<i class="bi bi-laptop"></i>
+							</div>
+							<h3 class="card-title mb-3">
+								Virtual
+							</h3>
+							<p class="cart-text">
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ex dicta, illo, nisi distinctio eos quasi similique reiciendis explicabo molestiae, cumque minus dolor debitis ipsam tempora facere ad odio amet.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md">
+					<div class="card text-light" style="background: orange;">
+						<div class="card-body text-center">
+							<div class="h1 mb-3">
+								<i class="bi bi-person-square"></i>
+							</div>
+							<h3 class="card-title mb-3">
+								Hybrid
+							</h3>
+							<p class="cart-text">
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ex dicta, illo, nisi distinctio eos quasi similique reiciendis explicabo molestiae, cumque minus dolor debitis ipsam tempora facere ad odio amet.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md">
+					<div class="card bg-dark text-light">
+						<div class="card-body text-center">
+							<div class="h1 mb-3">
+								<i class="bi bi-people"></i>
+							</div>
+							<h3 class="card-title mb-3">
+								In person
+							</h3>
+							<p class="cart-text">
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ex dicta, illo, nisi distinctio eos quasi similique reiciendis explicabo molestiae, cumque minus dolor debitis ipsam tempora facere ad odio amet.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Question Accordion -->
+	<section id="questions" class="p-5">
+		<div class="cotainer">
+			<h2 class="text-center mb-4">
+				Frequently Asked Questions
+			</h2>
+			<div class="accordion accordion-flush" id="questions">
+				<!-- Item 1 -->
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-one">
+							How many projects can we plan at once?
+						</button>
+					</h2>
+					<div id="question-one" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+						<div class="accordion-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, harum quod voluptas quo exercitationem accusantium sapiente alias quibusdam iure architecto, itaque maiores pariatur soluta eius ex, vel laudantium libero incidunt beatae inventore voluptatibus. Voluptatum ullam sed ea excepturi recusandae, saepe molestias amet dolor voluptate possimus minima maxime autem assumenda culpa!</div>
+					</div>
+				</div>
+				<!-- Item 2 -->
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-two">
+							How much does yearly subscription cost?
+						</button>
+					</h2>
+					<div id="question-two" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+						<div class="accordion-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, harum quod voluptas quo exercitationem accusantium sapiente alias quibusdam iure architecto, itaque maiores pariatur soluta eius ex, vel laudantium libero incidunt beatae inventore voluptatibus. Voluptatum ullam sed ea excepturi recusandae, saepe molestias amet dolor voluptate possimus minima maxime autem assumenda culpa!</div>
+					</div>
+				</div>
+				<!-- Item 3 -->
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-three">
+							What do I need to know before purchase?
+						</button>
+					</h2>
+					<div id="question-three" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+						<div class="accordion-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, harum quod voluptas quo exercitationem accusantium sapiente alias quibusdam iure architecto, itaque maiores pariatur soluta eius ex, vel laudantium libero incidunt beatae inventore voluptatibus. Voluptatum ullam sed ea excepturi recusandae, saepe molestias amet dolor voluptate possimus minima maxime autem assumenda culpa!</div>
+					</div>
+				</div>
+				<!-- Item 4 -->
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-four">
+							Can we add more than one team for the project?
+						</button>
+					</h2>
+					<div id="question-four" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+						<div class="accordion-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, harum quod voluptas quo exercitationem accusantium sapiente alias quibusdam iure architecto, itaque maiores pariatur soluta eius ex, vel laudantium libero incidunt beatae inventore voluptatibus. Voluptatum ullam sed ea excepturi recusandae, saepe molestias amet dolor voluptate possimus minima maxime autem assumenda culpa!</div>
+					</div>
+				</div>
+				<!-- Item 5 -->
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-five">
+							What are the target industries for this software?
+						</button>
+					</h2>
+					<div id="question-five" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+						<div class="accordion-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, harum quod voluptas quo exercitationem accusantium sapiente alias quibusdam iure architecto, itaque maiores pariatur soluta eius ex, vel laudantium libero incidunt beatae inventore voluptatibus. Voluptatum ullam sed ea excepturi recusandae, saepe molestias amet dolor voluptate possimus minima maxime autem assumenda culpa!</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Recomendations -->
+	<section id="recomendations" style="background: #ED820E" class="p-5">
+		<div class="container">
+			<h2 class="text-center text-white fw-bold">What Our Custommers Said About Us</h2>
+			<p class="lead fw-bold text-center text-white mb-5">
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor deserunt, quae optio veritatis earum!
+			</p>
+			<div class="row g-4">
+				<div class="col-md-6 col-lg-3">
+					<div class="card bg-light">
+						<div class="card-body text-center">
+							<img src="https://randomuser.me/api/portraits/men/17.jpg" class="rounded-circle mb-3" alt="">
+							<h3 class="card-title mb-3">Jack Kowalski</h3>
+							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur similique quam mollitia iste. Maiores, quia.</p>
+							<a href="" class="i bi bi-twitter text-dark mx-1"></a>
+							<a href="" class="i bi bi-facebook text-dark mx-1"></a>
+							<a href="" class="i bi bi-linkedin text-dark mx-1"></a>
+							<a href="" class="i bi bi-instagram text-dark mx-1"></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3">
+					<div class="card bg-light">
+						<div class="card-body text-center">
+							<img src="https://randomuser.me/api/portraits/women/15.jpg" class="rounded-circle mb-3" alt="">
+							<h3 class="card-title mb-3">Ann Lorem</h3>
+							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur similique quam mollitia iste. Maiores, quia.</p>
+							<a href="" class="i bi bi-twitter text-dark mx-1"></a>
+							<a href="" class="i bi bi-facebook text-dark mx-1"></a>
+							<a href="" class="i bi bi-linkedin text-dark mx-1"></a>
+							<a href="" class="i bi bi-instagram text-dark mx-1"></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3">
+					<div class="card bg-light">
+						<div class="card-body text-center">
+							<img src="https://randomuser.me/api/portraits/women/8.jpg" class="rounded-circle mb-3" alt="">
+							<h3 class="card-title mb-3">Caroline Lopez</h3>
+							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur similique quam mollitia iste. Maiores, quia.</p>
+							<a href="" class="i bi bi-twitter text-dark mx-1"></a>
+							<a href="" class="i bi bi-facebook text-dark mx-1"></a>
+							<a href="" class="i bi bi-linkedin text-dark mx-1"></a>
+							<a href="" class="i bi bi-instagram text-dark mx-1"></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3">
+					<div class="card bg-light">
+						<div class="card-body text-center">
+							<img src="https://randomuser.me/api/portraits/men/10.jpg" class="rounded-circle mb-3" alt="">
+							<h3 class="card-title mb-3">Matt Checalski</h3>
+							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur similique quam mollitia iste. Maiores, quia.</p>
+							<a href="" class="i bi bi-twitter text-dark mx-1"></a>
+							<a href="" class="i bi bi-facebook text-dark mx-1"></a>
+							<a href="" class="i bi bi-linkedin text-dark mx-1"></a>
+							<a href="" class="i bi bi-instagram text-dark mx-1"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+<!-- Footer -->
+<footer class="p-5 bg-dark text-white text text-center position-relative">
+	<div class="container">
+		<p>Copyright &copy: 2023 WebTask Master</p>
+		<a href="" class="position-absolute bottom-0 end-0 p-5">
+			<i class="bi bi-arrow-up-circle h1 text-warning"></i>
+		</a>
+	</div>
+</footer>
 
 
 @section Scripts{
