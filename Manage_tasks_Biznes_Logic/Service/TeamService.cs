@@ -292,9 +292,11 @@ public class TeamService : ITeamService
             throw new InvalidOperationException("Team do not exist.");
         }
 
-        if (team.Leader.Id != dto.EditorId)
+        if (team.Leader.Id != dto.EditorId
+            && dto.RemoveMemberIds.Count == 1
+            && dto.RemoveMemberIds.First() != dto.EditorId)
         {
-            throw new UnauthorizedAccessException("Only the team leader can remove members from the team.");
+            throw new UnauthorizedAccessException("Member can remove themselves not others. Leader can remove other members.");
         }
 
         if (team.Leader is not null && dto.RemoveMemberIds.Contains(team.Leader.Id))

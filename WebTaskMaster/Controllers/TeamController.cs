@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Humanizer;
 using Manage_tasks_Biznes_Logic.Dtos.Team;
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -269,5 +270,27 @@ public class TeamController : Controller
         TempData.SetSuccessToastMessage("Members removed.");
 
         return RedirectToAction("Details", new { model.TeamId });
+    }
+
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> LeaveTeam(Guid teamId)
+    {
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        var dto = new TeamRemoveMembersDto
+        {
+            TeamId = teamId,
+            EditorId = userId,
+            RemoveMemberIds = new[] { userId }
+        };
+
+        await _teamService.RemoveTeamMembers(dto);
+
+        TempData.SetSuccessToastMessage("Left the team.");
+
+        return RedirectToAction("List");
     }
 }

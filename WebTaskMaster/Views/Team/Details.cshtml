@@ -123,6 +123,18 @@
             </div>
         </div>
     }
+    else
+    {
+        <div class="row justify-content-end">
+            @* Leave Team Modal button  *@
+            <div class="col-12 col-md-3 col-lg-2 d-grid mt-1">
+                <button type="button" class="btn btn-danger"
+                        data-bs-toggle="modal" data-bs-target="#leaveTeamModal">
+                    Leave team
+                </button>
+            </div>
+        </div>
+    }
 </div>
 
 @if (Model.CanEditTeam)
@@ -150,13 +162,38 @@
         </div>
     </div>
 }
+else
+{
+    @* Leave Team Modal *@
+    <div id="leaveTeamModal" class="modal fade text-dark">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Delete team</h1>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Are you sure you want to leave this team?</p>
+                    <p class="text-danger">You will lose access to the team and its projects.</p>
+                    <p class="text-danger">This action cannot be undone.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <a class="btn btn-danger px-5 mx-5" asp-action="LeaveTeam" asp-route-teamId="@Model.TeamId">Yes</a>
+                    <button class="btn btn-primary px-5 mx-5" type="button" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 <partial name="_ToastPartial" />
 
 @section Scripts
     {
 
-    @* show toast for team edit response *@
+    @* show toast response *@
     @if (TempData.ContainsToastMessage())
     {
         <script type="text/javascript">
