@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Humanizer;
 using Manage_tasks_Biznes_Logic.Dtos.Team;
 using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Database.Context;
@@ -169,19 +167,11 @@ public class TeamService : ITeamService
 
     public async Task<ICollection<TeamMemberDto>> GetAvailableTeamLeaders(Guid teamId)
     {
-        var team = await _dbContext.TeamEntities
-            .Include(t => t.Leader)
-            .Include(t => t.Members)
-            .FirstOrDefaultAsync(t => t.Id == teamId);
+        var availableUsersQuery = _dbContext.UserEntities
+            .Where(u => u.Teams.Any(t => t.Id == teamId))
+            .Where(u => u.TeamsLeader.All(t => t.Id != teamId));
 
-        if (team is null)
-        {
-            throw new InvalidOperationException("Team do not exist.");
-        }
-
-        var availableMembers = team.Members.Where(m => m.Id != team.LeaderId);
-
-        var dto = _mapper.Map<IEnumerable<UserEntity>, ICollection<TeamMemberDto>>(availableMembers);
+        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToArrayAsync();
 
         return dto;
     }
@@ -220,12 +210,10 @@ public class TeamService : ITeamService
 
     public async Task<ICollection<TeamMemberDto>> GetAvailableTeamMembers(Guid teamId)
     {
-        var users = await _dbContext.UserEntities
-            .Include(u => u.Teams)
-            .Where(u => u.Teams.All(t => t.Id != teamId))
-            .ToArrayAsync();
+        var availableUsersQuery = _dbContext.UserEntities
+            .Where(u => u.Teams.All(t => t.Id != teamId));
 
-        var dto = _mapper.Map<IEnumerable<UserEntity>, ICollection<TeamMemberDto>>(users);
+        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToArrayAsync();
 
         return dto;
     }
@@ -268,14 +256,11 @@ public class TeamService : ITeamService
 
     public async Task<ICollection<TeamMemberDto>> GetAvailableTeamRemoveMembers(Guid teamId)
     {
-        var team = await _dbContext.TeamEntities
-            .Include(t => t.Leader)
-            .Include(t => t.Members)
-            .FirstAsync(t => t.Id == teamId);
+        var availableUsersQuery = _dbContext.UserEntities
+            .Where(u => u.Teams.Any(t => t.Id == teamId))
+            .Where(u => u.TeamsLeader.All(t => t.Id != teamId));
 
-        var availableRemoveMembers = team.Members.Where(m => m.Id != team.LeaderId);
-
-        var dto = _mapper.Map<IEnumerable<UserEntity>, ICollection<TeamMemberDto>>(availableRemoveMembers);
+        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToArrayAsync();
 
         return dto;
     }
@@ -284,7 +269,8 @@ public class TeamService : ITeamService
     {
         var team = await _dbContext.TeamEntities
             .Include(t => t.Leader)
-            .Include(t => t.Members)
+            .Include(t => t.Members
+                .Where(u => dto.RemoveMemberIds.Any(id => id == u.Id)))
             .FirstOrDefaultAsync(t => t.Id == dto.TeamId);
 
         if (team is null)
@@ -296,20 +282,20 @@ public class TeamService : ITeamService
             && dto.RemoveMemberIds.Count == 1
             && dto.RemoveMemberIds.First() != dto.EditorId)
         {
-            throw new UnauthorizedAccessException("Member can remove themselves not others. Leader can remove other members.");
+            throw new UnauthorizedAccessException("Member can remove only themselves. Leader can remove other members.");
         }
 
-        if (team.Leader is not null && dto.RemoveMemberIds.Contains(team.Leader.Id))
+        if (dto.RemoveMemberIds.Contains(team.Leader.Id))
         {
             throw new InvalidOperationException("One of the members to be removed is the leader.");
         }
 
-        var membersToRemove = team.Members.IntersectBy(dto.RemoveMemberIds, m => m.Id);
-
-        foreach (var member in membersToRemove)
+        if (team.Members.Count < dto.RemoveMemberIds.Count)
         {
-            team.Members.Remove(member);
+            throw new InvalidOperationException("Some members are not part of the team.");
         }
+
+        team.Members.Clear();
 
         await _dbContext.SaveChangesAsync();
     }
