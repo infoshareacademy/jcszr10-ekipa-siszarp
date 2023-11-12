@@ -27,7 +27,10 @@
                 
             }
             
-            edit(data);
+            var disabledElements = document.getElementsByClassName("disabled-" + data);
+            for (var i = 0; i < disabledElements.length; i++) {
+                disabledElements[i].removeAttribute("disabled");
+            }
             ev.target.appendChild(document.getElementById(data));
             document.getElementById("form-" + data).submit();
             
