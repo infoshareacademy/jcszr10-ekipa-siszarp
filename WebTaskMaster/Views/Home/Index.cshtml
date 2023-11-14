@@ -8,7 +8,7 @@
 </div> *@
 
 <!--  Navbar -->
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark py-4 fixed-top">
+<nav class="navbar navbar-expand-lg sideBarColor navbar-dark py-4 fixed-top">
 	<div class="container">
 		<a class="navbar-brand" asp-controller="Home" asp-action="Index">WebTask Master</a>
 		<button class="navbar-toggler"
@@ -27,7 +27,7 @@
 					<a href="#questions" class="nav-link">Questions</a>
 				</li>
 				<li class="nav-item">
-					<a href="#recomendations" class="nav-link">About Us</a>
+					<a href="#aboutUs" class="nav-link">About Us</a>
 				</li>
 				<li class="nav-item h3">
 					<a href="https://facebook.com" class="text-warning i bi bi-facebook mx-1"></a>
@@ -41,7 +41,7 @@
 </nav>
 
 <!-- Showcase -->
-		<section class="bg-dark text-light p-4 p-lg-0 pt-lg-5 text-center text-sm-start">
+<section class="sideBarColor text-light p-4 pb-1 p-lg-0 pt-lg-5 text-center text-sm-start">
 			<div class="container">
 				<div class="d-sm-flex align-items-center justify-content-between m-5">
 					<div>
@@ -54,7 +54,7 @@
 						</p>
 						<a class="btn btn-warning btn-lg rounded-5" asp-area="" asp-controller="Account" asp-action="Login">Get started</a>
 					</div>
-				<img class="img-fluid d-none d-lg-block" style= "height:500px"src="image/completed_tasks_orange.svg" alt="">
+				<img class="img-fluid d-none d-lg-block" style= "height:500px"src="image/Connected.svg" alt="">
 				</div>
 			</div>
 		</section>
@@ -69,27 +69,27 @@
 				<div class="col-lg p-5">
 					<h2>Collaboration becomes a lot more easy when the work is in one place. </h2>
 					<p class="lead">
-						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati reprehenderit, consectetur excepturi est accusamus delectus?
+					Customize how your team’s work flows with only one tool.
 					</p>
 					<p>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ex dicta, illo, nisi distinctio eos quasi similique reiciendis explicabo molestiae, cumque minus dolor debitis ipsam tempora facere ad odio amet.
+					Set up, clean up, and automate even the most complicated project workflows and keep your daily work simple. Save your colleagues' time and your company's money with us.
 					</p>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section id="read" class="p-5 bg-dark text-light">
+	<section id="read" class="p-5 sideBarColor text-light">
 		<div class="container">
 			<div class="row align-items-center justify-content-between">
 				<div class="col-lg p-5">
 					<h2>Move fast, stay aligned, and build better - together</h2>
 					<p class="lead">
-						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati reprehenderit, consectetur excepturi est accusamus delectus?
+					Stay on track – even when the track changes.
 					</p>
 					<p>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ex dicta, illo, nisi distinctio eos quasi similique reiciendis explicabo molestiae, cumque minus dolor debitis ipsam tempora facere ad odio amet.
-					</p>
+					Use diffrent view to map out the big picture, communicate updates to stakeholders, and ensure your team stays on the same page.
+				</p>
 				</div>
 				<div class="col-md">
 					<img src="image/team-black-orange.jpg" class="img-fluid" alt="">
@@ -101,49 +101,51 @@
 	<!-- Boxes -->
 	<section class="p-5">
 		<div class="container">
-			<div class="row text-center g-4">
+			<div class="row text-center g-4 px-5">
 				<div class="col-md">
-					<div class="card bg-dark text-light">
+				<div class="card bg-dark-subtle py-3">
 						<div class="card-body text-center">
 							<div class="h1 mb-3">
 								<i class="bi bi-laptop"></i>
 							</div>
 							<h3 class="card-title mb-3">
-								Virtual
+								Simple
 							</h3>
-							<p class="cart-text">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ex dicta, illo, nisi distinctio eos quasi similique reiciendis explicabo molestiae, cumque minus dolor debitis ipsam tempora facere ad odio amet.
-							</p>
+							<p class="cart-text">What’s special about this tool?</p>
+						<p class="cart-text">
+							WebTask is an all-in-one solution which means you can say goodbye to the chaos of having data scattered around multiple applications, worksheets and emails.
+						</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-md">
-					<div class="card text-light" style="background: orange;">
+					<div class="card text-dark bg-warning py-3" >
 						<div class="card-body text-center">
 							<div class="h1 mb-3">
 								<i class="bi bi-person-square"></i>
 							</div>
 							<h3 class="card-title mb-3">
-								Hybrid
+								Personal
 							</h3>
-							<p class="cart-text">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ex dicta, illo, nisi distinctio eos quasi similique reiciendis explicabo molestiae, cumque minus dolor debitis ipsam tempora facere ad odio amet.
-							</p>
+						<p class="cart-text">What’s special about this tool?</p>
+						<p class="cart-text">
+							WebTask Manager gives you good view to the tasks required beeing completed and those which done, so you can track your weekly and monthly productivity.
+						</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-md">
-					<div class="card bg-dark text-light">
+					<div class="card bg-dark-subtle py-3">
 						<div class="card-body text-center">
 							<div class="h1 mb-3">
 								<i class="bi bi-people"></i>
 							</div>
 							<h3 class="card-title mb-3">
-								In person
+								In Team
 							</h3>
-							<p class="cart-text">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus ex dicta, illo, nisi distinctio eos quasi similique reiciendis explicabo molestiae, cumque minus dolor debitis ipsam tempora facere ad odio amet.
-							</p>
+						<p class="cart-text">What’s special about this tool?</p>
+						<p class="cart-text">
+							Diffrent tracking tasks and projects assigned to the members make application a great option for team collaboration.</p>
 						</div>
 					</div>
 				</div>
@@ -217,72 +219,65 @@
 		</div>
 	</section>
 
-	<!-- Recomendations -->
-	<section id="recomendations" style="background: #ED820E" class="p-5">
+	<!-- About Us -->
+	<section id="aboutUs" class="p-5 bg-warning bg-gradient bg-opacity-75">
 		<div class="container">
-			<h2 class="text-center text-white fw-bold">What Our Custommers Said About Us</h2>
-			<p class="lead fw-bold text-center text-white mb-5">
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus dolor deserunt, quae optio veritatis earum!
+			<h2 class="text-center fw-bold">A Few Words About Us</h2>
+			<p class="lead fw-semibold text-center mb-5 mt-2">
+			We designed this app as a learning project proceed during Bootcamp. We challenged ourselves and did well.
+			Let's be welcome to see the results of our work.
 			</p>
 			<div class="row g-4">
 				<div class="col-md-6 col-lg-3">
-					<div class="card bg-light">
+					<div class="card bg-light shadow">
 						<div class="card-body text-center">
-							<img src="https://randomuser.me/api/portraits/men/17.jpg" class="rounded-circle mb-3" alt="">
-							<h3 class="card-title mb-3">Jack Kowalski</h3>
+						<img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Bandit" class="rounded-circle mb-3 w-50" alt="">
+							<h3 class="card-title mb-3">Vlad Bezuhlyi</h3>
 							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur similique quam mollitia iste. Maiores, quia.</p>
-							<a href="" class="i bi bi-twitter text-dark mx-1"></a>
-							<a href="" class="i bi bi-facebook text-dark mx-1"></a>
-							<a href="" class="i bi bi-linkedin text-dark mx-1"></a>
-							<a href="" class="i bi bi-instagram text-dark mx-1"></a>
+							<a href="https://github.com/SparkPino" class="i bi bi-github text-dark mx-1"></a>
+							<a href="" class="i bi bi-linkedin text-dark mx-1 disabled"></a>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-6 col-lg-3">
-					<div class="card bg-light">
+					<div class="card bg-light shadow">
 						<div class="card-body text-center">
-							<img src="https://randomuser.me/api/portraits/women/15.jpg" class="rounded-circle mb-3" alt="">
-							<h3 class="card-title mb-3">Ann Lorem</h3>
+						<img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Boo" class="rounded-circle mb-3 w-50" alt="">
+							<h3 class="card-title mb-3">Rafał Pujer</h3>
 							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur similique quam mollitia iste. Maiores, quia.</p>
-							<a href="" class="i bi bi-twitter text-dark mx-1"></a>
-							<a href="" class="i bi bi-facebook text-dark mx-1"></a>
-							<a href="" class="i bi bi-linkedin text-dark mx-1"></a>
-							<a href="" class="i bi bi-instagram text-dark mx-1"></a>
+						<a href="https://github.com/Rafal00Pujer" class="i bi bi-github text-dark mx-1"></a>
+						<a href="https://www.linkedin.com/in/rafal-pujer/" class="i bi bi-linkedin text-dark mx-1"></a>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-6 col-lg-3">
-					<div class="card bg-light">
+					<div class="card bg-light shadow">
 						<div class="card-body text-center">
-							<img src="https://randomuser.me/api/portraits/women/8.jpg" class="rounded-circle mb-3" alt="">
-							<h3 class="card-title mb-3">Caroline Lopez</h3>
+						<img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Cali" class="rounded-circle mb-3 w-50" alt="">
+							<h3 class="card-title mb-3">Oskar Pawłowski</h3>
 							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur similique quam mollitia iste. Maiores, quia.</p>
-							<a href="" class="i bi bi-twitter text-dark mx-1"></a>
-							<a href="" class="i bi bi-facebook text-dark mx-1"></a>
-							<a href="" class="i bi bi-linkedin text-dark mx-1"></a>
-							<a href="" class="i bi bi-instagram text-dark mx-1"></a>
+						<a href="https://github.com/Hurfix" class="i bi bi-github text-dark mx-1"></a>
+							<a href="" class="i bi bi-linkedin text-dark mx-1 disabled"></a>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6 col-lg-3">
-					<div class="card bg-light">
-						<div class="card-body text-center">
-							<img src="https://randomuser.me/api/portraits/men/10.jpg" class="rounded-circle mb-3" alt="">
-							<h3 class="card-title mb-3">Matt Checalski</h3>
-							<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur similique quam mollitia iste. Maiores, quia.</p>
-							<a href="" class="i bi bi-twitter text-dark mx-1"></a>
-							<a href="" class="i bi bi-facebook text-dark mx-1"></a>
-							<a href="" class="i bi bi-linkedin text-dark mx-1"></a>
-							<a href="" class="i bi bi-instagram text-dark mx-1"></a>
-						</div>
+			<div class="col-md-6 col-lg-3">
+				<div class="card bg-light shadow">
+					<div class="card-body text-center">
+						<img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Precious" class="rounded-circle mb-3 w-50" alt="">
+						<h3 class="card-title mb-3">Karolina Duczek</h3>
+						<p class="card-text">Civil engeneer by profession. I'm currently into programming field. I'm already at the end of .Net Bootcamp. </p>
+						<a href="https://github.com/KarolinaDuczek" class="i bi bi-github text-dark mx-1"></a>
+						<a href="https://www.linkedin.com/in/karolina-duczek/" class="i bi bi-linkedin text-dark mx-1"></a>
 					</div>
 				</div>
+			</div>
 			</div>
 		</div>
 	</section>
 
 <!-- Footer -->
-<footer class="p-5 bg-dark text-white text text-center position-relative">
+<footer class="p-5 sideBarColor text-white text text-center position-relative">
 	<div class="container">
 		<p>Copyright &copy: 2023 WebTask Master</p>
 		<a href="" class="position-absolute bottom-0 end-0 p-5">
