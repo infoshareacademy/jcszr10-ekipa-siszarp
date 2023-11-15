@@ -29,13 +29,13 @@ namespace WebTaskMaster.Controllers
             return View(model);
         }
 
-        // GET: ProjectController/Create
+        // GET: ProjectController/Add
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ProjectController/Create
+        // POST: ProjectController/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProjectModel model)

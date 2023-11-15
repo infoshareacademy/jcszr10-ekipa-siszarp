@@ -1,12 +1,8 @@
-﻿@model Manage_tasks_Biznes_Logic.Dtos.User.UserDetailsDto
+﻿@using WebTaskMaster.Extensions
+@model WebTaskMaster.Models.User.UserDetailsModel
 
 @{
     ViewData["Title"] = "User details";
-
-    if (Model.ChangesSaved)
-    {
-        TempData["ToastMessage"] = "Changes saved.";
-    }
 }
 
 <div class="container">
@@ -52,7 +48,7 @@
     </div>
 
     <div class="row justify-content-end">
-        <a type="button" class="btn btn-danger col-12 col-sm-2" asp-controller="Account" asp-action="DeleteAccount">Delete account</a>
+        <a type="button" class="btn btn-danger col-12 col-sm-2" asp-controller="Account" asp-action="Delete">Delete account</a>
     </div>
 </div>
 
@@ -65,7 +61,7 @@
     }
 
     @* show toast for user edit response *@
-    @if (TempData["ToastMessage"] is not null)
+    @if (TempData.ContainsToastMessage())
     {
         <script type="text/javascript">
             bootstrap.Toast.getOrCreateInstance(document.getElementById('toast')).show();

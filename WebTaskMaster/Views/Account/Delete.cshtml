@@ -1,10 +1,10 @@
-﻿@model Manage_tasks_Biznes_Logic.Dtos.Account.DeleteAccountDto
+﻿@model WebTaskMaster.Models.Account.DeleteAccountModel
 @{
     ViewData["Title"] = "Delete account";
 }
 
 <div class="container">
-    <form class="row justify-content-start needs-validation" asp-action="DeleteAccount">
+    <form class="row justify-content-start needs-validation" asp-action="Delete">
         <input hidden="true" asp-for="UserId" />
 
         <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
@@ -15,7 +15,7 @@
             <span class="text-danger" asp-validation-for="Password"></span>
         </div>
 
-        @if (Model is not null && Model.DeleteAccountFailed && Model.WrongPassword)
+        @if (Model is not null && Model.DeleteAccountFailed)
         {
             <div>
                 <p class="text-danger">Invalid password.</p>

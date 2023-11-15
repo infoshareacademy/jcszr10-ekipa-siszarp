@@ -37,7 +37,12 @@ namespace Manage_tasks_Database.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid?>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Projects", (string)null);
                 });
@@ -124,7 +129,7 @@ namespace Manage_tasks_Database.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<Guid?>("LeaderId")
+                    b.Property<Guid>("LeaderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -195,6 +200,16 @@ namespace Manage_tasks_Database.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("Manage_tasks_Database.Entities.ProjectEntity", b =>
+                {
+                    b.HasOne("Manage_tasks_Database.Entities.UserEntity", "Owner")
+                        .WithMany("OwnedProjects")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("Manage_tasks_Database.Entities.ProjectTeamEntity", b =>
                 {
                     b.HasOne("Manage_tasks_Database.Entities.ProjectEntity", null)
@@ -214,11 +229,13 @@ namespace Manage_tasks_Database.Migrations
                 {
                     b.HasOne("Manage_tasks_Database.Entities.UserEntity", "AssignedUser")
                         .WithMany("Tasks")
-                        .HasForeignKey("AssignedUserId");
+                        .HasForeignKey("AssignedUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Manage_tasks_Database.Entities.TaskListEntity", "TaskList")
                         .WithMany("Tasks")
-                        .HasForeignKey("TaskListId");
+                        .HasForeignKey("TaskListId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("AssignedUser");
 
@@ -240,7 +257,9 @@ namespace Manage_tasks_Database.Migrations
                 {
                     b.HasOne("Manage_tasks_Database.Entities.UserEntity", "Leader")
                         .WithMany("TeamsLeader")
-                        .HasForeignKey("LeaderId");
+                        .HasForeignKey("LeaderId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
 
                     b.Navigation("Leader");
                 });
@@ -272,6 +291,8 @@ namespace Manage_tasks_Database.Migrations
 
             modelBuilder.Entity("Manage_tasks_Database.Entities.UserEntity", b =>
                 {
+                    b.Navigation("OwnedProjects");
+
                     b.Navigation("Tasks");
 
                     b.Navigation("TeamsLeader");

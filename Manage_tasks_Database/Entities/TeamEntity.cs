@@ -12,9 +12,9 @@ public class TeamEntity
 
     public string? Description { get; set; }
 
-    public Guid? LeaderId { get; set; }
+    public Guid LeaderId { get; set; }
 
-    public virtual UserEntity? Leader { get; set; }
+    public virtual UserEntity Leader { get; set; }
 
     public virtual ICollection<UserEntity> Members { get; set; }
 
