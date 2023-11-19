@@ -1,18 +1,62 @@
 ﻿@model WebTaskMaster.Models.Project.ProjectDetailsModel
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
 
+    function drag(ev) {
+        ev.dataTransfer.setData("task", ev.target.id);
+    }
+
+    function drop(ev) {     
+        if (ev.target.id == "drop-0" || ev.target.id == "drop-1" || ev.target.id == "drop-2") {
+            ev.preventDefault();
+            
+            var data = ev.dataTransfer.getData("task");
+
+            switch (ev.target.id) {
+                case "drop-0":
+                    document.getElementById("newStatus-" + data).value = 0;
+                    break;
+                case "drop-1":
+                    document.getElementById("newStatus-" + data).value = 1;
+                    break;
+                case "drop-2":
+                    document.getElementById("newStatus-" + data).value = 2;
+                    break;
+                
+            }
+            
+            var disabledElements = document.getElementsByClassName("disabled-" + data);
+            for (var i = 0; i < disabledElements.length; i++) {
+                disabledElements[i].removeAttribute("disabled");
+            }
+            ev.target.appendChild(document.getElementById(data));
+            document.getElementById("form-" + data).submit();
+            
+        }
+        else {
+            
+        }
+        
+    }
+</script>
 
 <div class="container text-center">
     <div class="row align-items-start">
-        <div class="col">
-            @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[0],statusId = 0})
+        <div class="col" id="drop-0" ondrop="drop(event)" ondragover="allowDrop(event)">
+            Do zrobienia
+            @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[0],statusId = 0,teamId = Model.ProjectTeam.Id})
 
             @await Component.InvokeAsync("NewTask", new {tasksListId = Model.Tasks[0].Id})
         </div>
-        <div class="col">
-            @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[0],statusId = 1})
+        <div class="col" id="drop-1" ondrop="drop(event)" ondragover="allowDrop(event)">
+            W trakcie
+            @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[0],statusId = 1,teamId = Model.ProjectTeam.Id})
         </div>
-        <div class="col">
-            @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[0],statusId = 2})
+        <div class="col" id="drop-2" ondrop="drop(event)" ondragover="allowDrop(event)">
+            Skończone
+            @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[0],statusId = 2,teamId = Model.ProjectTeam.Id})
         </div>
     </div>
 </div>
