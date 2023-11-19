@@ -1,24 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Drawing.Printing;
-using WebTaskMaster.Models.User;
 
-namespace WebTaskMaster.Models.Team
+namespace WebTaskMaster.Models.Team;
+
+public class TeamDetailsModel
 {
-    public class TeamDetailsModel
-    {
-        public Guid TeamId { get; set; }
+    public Guid TeamId { get; set; }
 
-        [Display(Name = "Name")]
-        public TeamNameModel NameModel { get; set; }
+    [Display(Name = "Name")]
+    public string Name { get; set; }
 
-        [Display(Name = "Leader")]
-        public TeamMemberModel? Leader { get; set; }
+    [Display(Name = "Description")]
+    public string? Description { get; set; }
 
-        [Display(Name = "Members")]
-        public List<TeamMemberModel> Members { get; set; }
+    [Display(Name = "Leader")]
+    public TeamMemberModel Leader { get; set; }
 
-        public TeamAddMembersModel AddMembersModel { get; set; }
+    [Display(Name = "Members")]
+    public ICollection<TeamMemberModel> Members { get; set; }
 
-        public TeamChangeLeaderModel ChangeLeaderModel { get; set; }
-    }
+    public bool CanEditTeam { get; set; }
+
+    public bool CanChangeLeader => Members.Count > 1;
+
+    public bool CanRemoveMembers => Members.Count > 1;
 }

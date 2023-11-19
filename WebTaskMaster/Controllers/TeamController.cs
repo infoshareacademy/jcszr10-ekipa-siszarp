@@ -1,283 +1,296 @@
-﻿using Manage_tasks_Biznes_Logic.Model;
+﻿using AutoMapper;
+using Humanizer;
+using Manage_tasks_Biznes_Logic.Dtos.Team;
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebTaskMaster.Extensions;
 using WebTaskMaster.Models.Team;
 
-namespace WebTaskMaster.Controllers
+namespace WebTaskMaster.Controllers;
+
+[Authorize(Roles = "User")]
+public class TeamController : Controller
 {
-	[Authorize(Roles = "User")]
-	public class TeamController : Controller
+    private readonly ITeamService _teamService;
+    private readonly IMapper _mapper;
+
+    public TeamController(ITeamService teamService, IMapper mapper)
     {
-        private readonly ITeamService _teamService;
-        private readonly IUserService _userService;
+        _teamService = teamService;
+        _mapper = mapper;
+    }
 
-        public TeamController(ITeamService teamService, IUserService userService)
+    [Route("team")]
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> List()
+    {
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
         {
-            _teamService = teamService;
-            _userService = userService;
-        }
-        [Route("team")]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> Index()
-		
-        {
-            var models = await CreateBasicModels();
-
-            return View(models);
+            return RedirectToAction("Index", "Home");
         }
 
+        var dto = await _teamService.GetTeamListForUser(userId);
 
-        [HttpPost]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> Create(TeamNameModel model)
+        var model = _mapper.Map<TeamListForUserDto, TeamListModel>(dto);
+
+        return View(model);
+    }
+
+    [Authorize(Roles = "User")]
+    public IActionResult Add()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> Add(TeamAddModel model)
+    {
+        if (!ModelState.IsValid)
         {
-            if (!ModelState.IsValid)
-            {
-                ViewData["ActivateModal"] = nameof(Create);
-
-                var models = await CreateBasicModels();
-
-                return View("Index", models);
-            }
-
-            model.Description ??= string.Empty;
-
-            await _teamService.CreateTeam(model.Name, model.Description);
-
-            TempData["ToastMessage"] = "Team added.";
-
-            return RedirectToAction("Index");
+            return View(model);
         }
 
-        private async Task<IEnumerable<TeamIndexModel>> CreateBasicModels()
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
         {
-            var teams = await _teamService.GetAllTeams();
-
-            List<TeamIndexModel> teamsModels = new();
-
-            foreach (var team in teams)
-            {
-                var nameModel = new TeamNameModel
-                {
-                    Name = team.Name,
-                    Description = team.Description
-                };
-
-                TeamMemberModel? leaderModel = null;
-
-                if (team.Leader is not null)
-                {
-                    leaderModel = new TeamMemberModel
-                    {
-                        Id = team.Leader.Id,
-                        FirstName = team.Leader.FirstName,
-                        LastName = team.Leader.LastName
-                    };
-                }
-
-                var numOfMembers = team.Members.Count;
-
-                teamsModels.Add(new TeamIndexModel
-                {
-                    Id = team.Id,
-                    NameModel = nameModel,
-                    LeaderModel = leaderModel,
-                    NumOfMembers = numOfMembers
-                });
-            }
-
-            return teamsModels;
-        }
-		[Route("team/{teamId:Guid}/details")]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> Details(Guid teamId)
-        {
-            var team = await _teamService.GetTeamById(teamId);
-
-            if (team is null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            var teamModel = await CreateDetailsModel(team);
-
-            return View(teamModel);
+            return RedirectToAction("Index", "Home");
         }
 
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> Delete(Guid teamId)
+        var dto = _mapper.Map<TeamAddModel, TeamAddDto>(model);
+        dto.LeaderId = userId;
+
+        await _teamService.AddTeam(dto);
+
+        TempData.SetSuccessToastMessage("Team added.");
+
+        return RedirectToAction("List");
+    }
+
+    [Route("team/{teamId:Guid}/details")]
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> Details(Guid teamId)
+    {
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
         {
-            await _teamService.DeleteTeam(teamId);
-
-            TempData["ToastMessage"] = "Team deleted.";
-
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> Edit(TeamNameModel model, Guid teamId)
+        var dto = await _teamService.GetTeamDetailsForUser(teamId, userId);
+
+        var model = _mapper.Map<TeamDetailsForUserDto, TeamDetailsModel>(dto);
+
+        return View(model);
+    }
+
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> Delete(Guid teamId)
+    {
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
         {
-            if (!ModelState.IsValid)
-            {
-                ViewData["ActivateModal"] = nameof(Edit);
+            return RedirectToAction("Index", "Home");
+        }
 
-                var team = await _teamService.GetTeamById(teamId);
+        await _teamService.DeleteTeam(teamId, userId);
 
-                if (team is null)
-                {
-                    return RedirectToAction("Index");
-                }
+        TempData.SetSuccessToastMessage("Team deleted.");
 
-                var teamModel = await CreateDetailsModel(team);
+        return RedirectToAction("List");
+    }
 
-                return View("Details", teamModel);
-            }
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> Edit(Guid teamId)
+    {
+        var dto = await _teamService.GetTeamBasic(teamId);
 
-            var newDescription = model.Description ?? string.Empty;
+        var model = _mapper.Map<TeamBasicDto, TeamEditModel>(dto);
 
-            await _teamService.EditNameAndDescription(teamId, model.Name, newDescription);
+        return View(model);
+    }
 
-            TempData["ToastMessage"] = "Changes saved.";
+    [HttpPost]
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> Edit(TeamEditModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        var dto = _mapper.Map<TeamEditModel, TeamNameEditDto>(model);
+        dto.EditorId = userId;
+
+        await _teamService.EditTeam(dto);
+
+        TempData.SetSuccessToastMessage("Name and description changed.");
+
+        return RedirectToAction("Details", new { model.TeamId });
+    }
+
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> ChangeLeader(Guid teamId)
+    {
+        var dto = await _teamService.GetAvailableTeamLeaders(teamId);
+
+        if (dto.Count == 0)
+        {
+            throw new InvalidOperationException($"There are no available leaders for the team. Team Id: {teamId}");
+        }
+
+        var model = new TeamChangeLeaderModel
+        {
+            TeamId = teamId
+        };
+
+        _mapper.Map(dto, model);
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> ChangeLeader(TeamChangeLeaderModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            _mapper.Map(await _teamService.GetAvailableTeamLeaders(model.TeamId), model);
+
+            return View(model);
+        }
+
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        var dto = _mapper.Map<TeamChangeLeaderModel, TeamChangeLeaderDto>(model);
+        dto.EditorId = userId;
+
+        await _teamService.ChangeTeamLeader(dto);
+
+        TempData.SetSuccessToastMessage("Leader changed.");
+
+        return RedirectToAction("Details", new { dto.TeamId });
+    }
+
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> AddMembers(Guid teamId)
+    {
+        var dto = await _teamService.GetAvailableTeamMembers(teamId);
+
+        if (dto.Count == 0)
+        {
+            TempData.SetDangerToastMessage("No available members.");
 
             return RedirectToAction("Details", new { teamId });
         }
 
-        [HttpPost]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddMembers(TeamAddMembersModel model, Guid teamId)
+        var model = new TeamAddMembersModel
         {
-            if (!ModelState.IsValid)
-            {
-                ViewData["ActivateModal"] = nameof(AddMembers);
+            TeamId = teamId
+        };
 
-                var team = await _teamService.GetTeamById(teamId);
+        _mapper.Map(dto, model);
 
-                if (team is null)
-                {
-                    return RedirectToAction("Index");
-                }
+        return View(model);
+    }
 
-                var teamModel = await CreateDetailsModel(team);
+    [HttpPost]
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> AddMembers(TeamAddMembersModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            _mapper.Map(await _teamService.GetAvailableTeamMembers(model.TeamId), model);
 
-                return View("Details", teamModel);
-            }
+            return View(model);
+        }
 
-            await _teamService.AddMembersToTeam(teamId, model.MembersIdsToAdd);
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+        {
+            return RedirectToAction("Index", "Home");
+        }
 
-            TempData["ToastMessage"] = "Team member added";
+        var dto = _mapper.Map<TeamAddMembersModel, TeamAddMembersDto>(model);
+        dto.EditorId = userId;
 
+        await _teamService.AddTeamMembers(dto);
+
+        TempData.SetSuccessToastMessage("Members added.");
+
+        return RedirectToAction("Details", new { model.TeamId });
+    }
+
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> RemoveMembers(Guid teamId)
+    {
+        var dto = await _teamService.GetAvailableTeamRemoveMembers(teamId);
+
+        if (dto.Count == 0)
+        {
             return RedirectToAction("Details", new { teamId });
         }
 
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> DeleteMember(Guid teamId, Guid memberId)
+        var model = new TeamRemoveMembersModel
         {
-            await _teamService.DeleteMemberFromTeam(teamId, memberId);
+            TeamId = teamId
+        };
 
-            TempData["ToastMessage"] = "Team member removed.";
+        _mapper.Map(dto, model);
 
-            return RedirectToAction("Details", new { teamId });
+        return View(model);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> RemoveMembers(TeamRemoveMembersModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            _mapper.Map(await _teamService.GetAvailableTeamRemoveMembers(model.TeamId), model);
+
+            return View(model);
         }
 
-        [HttpPost]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> ChangeLeader(TeamChangeLeaderModel model, Guid teamId)
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
         {
-            if (!ModelState.IsValid)
-            {
-                ViewData["ActivateModal"] = nameof(ChangeLeader);
-
-                var team = await _teamService.GetTeamById(teamId);
-
-                if (team is null)
-                {
-                    return RedirectToAction("Index");
-                }
-
-                var teamModel = await CreateDetailsModel(team);
-
-                return View("Details", teamModel);
-            }
-
-            await _teamService.ChangeTeamLeader(teamId, model.NewLeaderId);
-
-            TempData["ToastMessage"] = "Leader changed.";
-
-            return RedirectToAction("Details", new { teamId });
+            return RedirectToAction("Index", "Home");
         }
 
-        private async Task<TeamDetailsModel> CreateDetailsModel(Team team)
+        var dto = _mapper.Map<TeamRemoveMembersModel, TeamRemoveMembersDto>(model);
+        dto.EditorId = userId;
+
+        await _teamService.RemoveTeamMembers(dto);
+
+        TempData.SetSuccessToastMessage("Members removed.");
+
+        return RedirectToAction("Details", new { model.TeamId });
+    }
+
+    [Authorize(Roles = "User")]
+    public async Task<IActionResult> LeaveTeam(Guid teamId)
+    {
+        if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
         {
-            var members = team.Members.Select(m => new TeamMemberModel
-            {
-                Id = m.Id,
-                FirstName = m.FirstName,
-                LastName = m.LastName,
-            })
-                .ToList();
-
-            var leader = team.Leader is not null
-                ? members.First(m => m.Id == team.Leader.Id)
-                : null;
-
-            var addMembersModel = await CreateAddMembersModel(members);
-
-            var changeLeaderModel = CreateChangeLeaderModel(leader, members);
-
-            var nameModel = new TeamNameModel
-            {
-                Name = team.Name,
-                Description = team.Description
-            };
-
-            var teamModel = new TeamDetailsModel
-            {
-                TeamId = team.Id,
-                NameModel = nameModel,
-                Leader = leader,
-                Members = members,
-                AddMembersModel = addMembersModel,
-                ChangeLeaderModel = changeLeaderModel
-            };
-
-            return teamModel;
+            return RedirectToAction("Index", "Home");
         }
 
-        private static TeamChangeLeaderModel CreateChangeLeaderModel(TeamMemberModel? leader, IEnumerable<TeamMemberModel> members)
+        var dto = new TeamRemoveMembersDto
         {
-            var availableLeaders = leader is not null
-                ? members.Where(m => m.Id != leader.Id)
-                : members;
+            TeamId = teamId,
+            EditorId = userId,
+            RemoveMemberIds = new[] { userId }
+        };
 
-            var availableLeadersList = availableLeaders.ToList();
+        await _teamService.RemoveTeamMembers(dto);
 
-            var changeLeaderModel = new TeamChangeLeaderModel
-            {
-                AvailableLeaders = availableLeadersList
-            };
+        TempData.SetSuccessToastMessage("Left the team.");
 
-            return changeLeaderModel;
-        }
-
-        private async Task<TeamAddMembersModel> CreateAddMembersModel(IEnumerable<TeamMemberModel> members)
-        {
-            var availableMembers = (await _userService.GetAllUsers())
-                .ExceptBy(members.Select(m1 => m1.Id), m2 => m2.Id)
-                .Select(m => new TeamMemberModel
-                {
-                    Id = m.Id,
-                    FirstName = m.FirstName,
-                    LastName = m.LastName,
-                })
-                .ToList();
-
-            var addMembersModel = new TeamAddMembersModel
-            {
-                AvailableMembers = availableMembers
-            };
-            return addMembersModel;
-        }
+        return RedirectToAction("List");
     }
 }

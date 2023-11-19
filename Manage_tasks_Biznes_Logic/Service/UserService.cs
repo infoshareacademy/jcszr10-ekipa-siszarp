@@ -50,36 +50,25 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<UserDetailsDto?> GetUserDetails(Guid userId)
+    public async Task<UserDetailsDto> GetUserDetails(Guid userId)
     {
-        var user = await _dbContext.UserEntities.FindAsync(userId);
-
-        if (user is null)
-        {
-            return null;
-        }
-
-        var dto = new UserDetailsDto
-        {
-            UserId = user.Id,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Position = user.Position,
-            DateOfBirth = user.DateOfBirth
-        };
+        var dto = await _dbContext.UserEntities
+            .Where(u => u.Id == userId)
+            .Select(u => new UserDetailsDto
+            {
+                UserId = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Position = u.Position,
+                DateOfBirth = u.DateOfBirth
+            }).FirstAsync();
 
         return dto;
     }
 
     public async Task EditUserDetails(UserDetailsDto dto)
     {
-        var user = await _dbContext.UserEntities.FindAsync(dto.UserId);
-
-        if (user is null)
-        {
-            dto.ChangesSaved = false;
-            return;
-        }
+        var user = await _dbContext.UserEntities.FirstAsync(u => u.Id == dto.UserId);
 
         user.FirstName = dto.FirstName;
         user.LastName = dto.LastName;
@@ -87,7 +76,5 @@ public class UserService : IUserService
         user.DateOfBirth = dto.DateOfBirth;
 
         await _dbContext.SaveChangesAsync();
-
-        dto.ChangesSaved = true;
     }
 }

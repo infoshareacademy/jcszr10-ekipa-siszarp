@@ -1,15 +1,35 @@
-﻿using Manage_tasks_Biznes_Logic.Model;
+﻿using Manage_tasks_Biznes_Logic.Dtos.Team;
+using Manage_tasks_Biznes_Logic.Model;
 
 namespace Manage_tasks_Biznes_Logic.Service;
 
 public interface ITeamService
 {
     Task<Team?> GetTeamById(Guid id);
-    Task<Guid> CreateTeam(string name, string description);
-    Task DeleteTeam(Guid id);
+
     Task<List<Team>> GetAllTeams();
-    Task AddMembersToTeam(Guid teamId, IEnumerable<Guid> newMembersIds);
-    Task DeleteMemberFromTeam(Guid teamId, Guid memberIdToDelete);
-    Task EditNameAndDescription(Guid teamId, string newName, string newDescription);
-    Task ChangeTeamLeader(Guid teamId, Guid newLeaderId);
+
+    Task<TeamListForUserDto> GetTeamListForUser(Guid userId);
+
+    Task AddTeam(TeamAddDto dto);
+
+    Task DeleteTeam(Guid teamId, Guid editorId);
+
+    Task<TeamDetailsForUserDto> GetTeamDetailsForUser(Guid teamId, Guid userId);
+
+    Task<TeamBasicDto> GetTeamBasic(Guid teamId);
+
+    Task EditTeam(TeamNameEditDto dto);
+
+    Task<ICollection<TeamMemberDto>> GetAvailableTeamLeaders(Guid teamId);
+
+    Task ChangeTeamLeader(TeamChangeLeaderDto dto);
+
+    Task<ICollection<TeamMemberDto>> GetAvailableTeamMembers(Guid teamId);
+
+    Task AddTeamMembers(TeamAddMembersDto dto);
+
+    Task<ICollection<TeamMemberDto>> GetAvailableTeamRemoveMembers(Guid teamId);
+
+    Task RemoveTeamMembers(TeamRemoveMembersDto dto);
 }

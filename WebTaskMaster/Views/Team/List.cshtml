@@ -1,0 +1,118 @@
+﻿@using Humanizer
+@using WebTaskMaster.Extensions
+
+@model WebTaskMaster.Models.Team.TeamListModel
+
+@{
+    ViewData["Title"] = "Teams";
+}
+
+<div class="container text-center">
+    <div class="row justify-content-center">
+        <h1 class="col-12 col-md-6 offset-md-3 col-xxl-8 offset-xxl-2">Teams</h1>
+
+        <div class="col-12 col-md-3 col-xxl-2 d-grid">
+            <a class="btn btn-primary fs-5" asp-action="Add">Add team</a>
+        </div>
+    </div>
+
+    @if (Model.TeamsLeader.Count > 0)
+    {
+        <div class="row row-cols-1 mt-2 text-wrap text-break text-dark bg-white rounded">
+            <h2 class="col my-2">You are the leader of these teams</h2>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 justify-content-start">
+                @foreach (var team in Model.TeamsLeader)
+                {
+                    <div class="col my-2">
+                        <div class="card h-100 border-primary border-2">
+                            <h5 class="card-header">@team.Name</h5>
+
+                            @if (team.Description is not null)
+                            {
+                                <div class="card-body">
+                                    <p class="card-text">@team.Description.Truncate(100)</p>
+                                </div>
+                            }
+
+                            @* <div class="card-body">
+                                <p class="card-text">
+                                    <label asp-for="@team.NumberOfMembers"></label>
+                                    <span>-</span>
+                                    <span>@team.NumberOfMembers</span>
+                                </p>
+                            </div> *@
+
+                            <div class="card-footer">
+                                <a class="btn btn-primary" asp-action="Details" asp-route-teamId="@team.TeamId">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    @if (Model.TeamsMember.Count > 0)
+    {
+        <div class="row row-cols-1 mt-2 text-wrap text-break text-dark bg-white rounded">
+            <h2 class="col my-2">You are a member of these teams</h2>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 justify-content-start">
+                @foreach (var team in Model.TeamsMember)
+                {
+                    var leader = team.Leader;
+
+                    <div class="col my-2">
+                        <div class="card h-100 border-primary border-2">
+                            <h5 class="card-header">@team.Name</h5>
+
+                            @if (team.Description is not null)
+                            {
+                                <div class="card-body">
+                                    <p class="card-text">@team.Description.Truncate(100)</p>
+                                </div>
+                            }
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <label asp-for="@team.Leader"></label>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <span>@leader.FirstName</span>
+                                    <span>@leader.LastName</span>
+                                </li>
+                            </ul>
+
+                            @* <div class="card-body">
+                                <p class="card-text">
+                                    <label asp-for="@team.NumberOfMembers"></label>
+                                    <span>-</span>
+                                    <span>@team.NumberOfMembers</span>
+                                </p>
+                            </div> *@
+
+                            <div class="card-footer">
+                                <a class="btn btn-primary" asp-action="Details" asp-route-teamId="@team.TeamId">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<partial name="_ToastPartial" />
+
+@section Scripts
+    {
+    @* show toast for team add response *@
+    @if (TempData.ContainsToastMessage())
+    {
+        <script type="text/javascript">
+            bootstrap.Toast.getOrCreateInstance(document.getElementById('toast')).show();
+        </script>
+    }
+    }

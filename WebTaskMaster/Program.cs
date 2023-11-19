@@ -13,19 +13,22 @@ builder.Services.AddDbContext<DataBaseContext>(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
         options.SlidingExpiration = true;
         options.AccessDeniedPath = "/Account/Forbidden/";
         options.LoginPath = "/Account/Login";
     });
 
 
-//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Add services to the container.
 builder.Services
     .AddControllersWithViews()
     .AddRazorRuntimeCompilation();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddScoped<ITasksListService, TasksListService>();
 builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
@@ -42,6 +45,16 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    using var scope = app.Services.CreateScope();
+
+    var dbContext = scope.ServiceProvider.GetRequiredService<DataBaseContext>();
+    dbContext.Database.Migrate();
+
+    var mapperConf = scope.ServiceProvider.GetRequiredService<AutoMapper.IConfigurationProvider>();
+    mapperConf.AssertConfigurationIsValid();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -50,12 +63,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var autorizationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationUserDbContext>();
-//    autorizationDbContext.Database.Migrate();
-//}
 
 app.MapControllerRoute(
     name: "default",
