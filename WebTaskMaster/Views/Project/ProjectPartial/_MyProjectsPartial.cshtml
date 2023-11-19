@@ -1,0 +1,90 @@
+﻿@using WebTaskMaster.Models.Project
+@model ProjectOwnerAndMember
+
+ 
+
+		<ul class="section">
+			@{
+				if (Model.owner.Count > 0)
+				{
+					var memberCounter1 = 0;
+
+
+					<div class="containeR">
+						@foreach (var project in Model.owner)
+						{
+							memberCounter1++;
+						<li class="item_wrap male online">
+							<div class="item">
+								<div class="item_left">
+									<div class="card">
+										<h2>@memberCounter1 </h2>
+										<h3>@project.Name</h3>
+										<div id="myProgress">
+											<div id="myBar">100%</div>
+										</div>
+										<div class="content">
+											 
+											<a asp-action="Details" asp-route-projectId="@project.Id"
+											   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Project details">Open</a>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</li>
+
+						}
+			</div>
+
+
+				}
+			}
+
+
+			@{
+				if (Model.member.Count > 0)
+				{
+					var memberCounter2 = 0;
+
+
+			<div class="containeR">
+						@foreach (var project in Model.member)
+						{
+
+							@if (!Model.owner.Any(a => a.Id == project.Id))
+							{
+								memberCounter2++;
+						<li class="item_wrap female online">
+							<div class="item">
+								<div class="item_left">
+									<div class="card">
+										<h2>@memberCounter2 </h2>
+										<h3>@project.Name</h3>
+										<div id="myProgress">
+											<div id="myBar">100%</div>
+										</div>
+										<div class="content">
+											
+											<a asp-action="Details" asp-route-projectId="@project.Id"
+											   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Project details">Open</a>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</li>
+							}
+
+
+
+						}
+			</div>
+
+
+				}
+			}
+
+		</ul>
+@*</div>*@
+ 

@@ -39,7 +39,7 @@ namespace Manage_tasks_Biznes_Logic.Service
             var project = ConvertProjectEntity(projectEntity);
             return project;
         }
-        public async Task<Guid> CreateProject (string name, string description)
+        public async Task<Guid> CreateProject (string name, string description , Guid ownerId)
         {
             var projectId = Guid.NewGuid();
             var project = new ProjectEntity
@@ -47,6 +47,7 @@ namespace Manage_tasks_Biznes_Logic.Service
                 Id = projectId,
                 Name = name,
                 Description = description,
+                OwnerId = ownerId
                 
             };
             await _dbContext.ProjectEntities.AddAsync(project);
@@ -122,6 +123,7 @@ namespace Manage_tasks_Biznes_Logic.Service
                     Id = u.Id,
                     Name = u.Name,
                     Description = u.Description ?? string.Empty
+
                 }).ToList();
             
             var project = new Project
@@ -130,7 +132,8 @@ namespace Manage_tasks_Biznes_Logic.Service
                 Name = projectEntity.Name,
                 Description = projectEntity.Description ?? string.Empty,
                 ProjectTeams = teams,
-                Tasks = projectEntity.TaskLists.Select(_tasksListService.EntityToModel).ToList()    
+                Tasks = projectEntity.TaskLists.Select(_tasksListService.EntityToModel).ToList() ,   
+                OwnerId = projectEntity.OwnerId,
             };
 
             return project;

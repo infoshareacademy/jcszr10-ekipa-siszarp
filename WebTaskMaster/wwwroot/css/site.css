@@ -1,5 +1,20 @@
+﻿:root {
+    --progress: -n+25;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    list-style: none;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
@@ -16,6 +31,17 @@ html {
 .body {
     margin-bottom: 60px;
 }
+
+.lnr {
+    display: inline-block;
+    fill: currentColor;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    font-size: 1.5em;
+}
+
+
 .colorMenu {
     background-color: rgb(123, 104, 238);
 }
@@ -34,15 +60,28 @@ html {
 }
 
 .btn-orange {
-    background-color: orange;
+    background-color: #5071c7;
+    box-shadow: 5px 5px 15px rgba(89, 136, 255,1);
+    color: #8aabff;
+    width: 100px;
+    height: 70px;
+    border: none !important;
 }
 
     .btn-orange:hover {
-        background-color: #fdbe00;
+        background-color: #557ee5;
+        box-shadow: 5px 5px 15px orange;
+    }
+
+    .btn-orange:active {
+        background-color: #648efa !important;
+        box-shadow: 5px 5px 15px rgba(89, 136, 255,1) !important;
+        border: none !important;
     }
 
 .img-background {
-    background-image: url('../12324.jpg');
+    /*background-image: url('../12324.jpg');*/
+    background: #38609c;
     background-size: cover;
 }
 
@@ -62,6 +101,208 @@ html {
 .navbar-brand:hover {
     transform: scale(1.15)
 }
+
 .noWrap {
     white-space: nowrap;
+}
+
+.containeR {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 1200px;
+    flex-wrap: wrap;
+    z-index: 1;
+    right: -150px;
+}
+
+    .containeR .card {
+        position: relative;
+        width: 280px;
+        height: 270px;
+        margin: 20px;
+        box-shadow: 20px 20px 50px rgba(0,0,0,0.5);
+        border-radius: 15px;
+        background: rgba(255,255,255,0.1);
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top: 1px solid rgba(255,255,255,0.5);
+        border-left: 1px solid rgba(255,255,255,0.5);
+        backdrop-filter: blur(5px);
+        flex: 0 0 250px;
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+        .containeR .card .content {
+            padding: 20px;
+            text-align: center;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: 0.5s;
+        }
+
+        .containeR .card:hover .content {
+            transform: translateY(0px);
+            opacity: 1;
+        }
+
+        .containeR .card h2 {
+            position: absolute;
+            top: 100px;
+            right: 30px;
+            font-size: 8em;
+            color: #8aabff;
+            text-shadow: 0 0 10px rgba(89, 136, 255,1);
+            pointer-events: none;
+        }
+
+        .containeR .card .content h3 {
+            font-size: 1.8em;
+            color: #fff;
+            z-index: 1;
+        }
+
+        .containeR .card .content p {
+            font-size: 1em;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        .containeR .card .content a {
+            position: relative;
+            display: inline-block;
+            padding: 8px 20px;
+            margin-top: 15px;
+            background: #fff;
+            color: #000;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+#myProgress {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+#myBar {
+    width: var(--progress);
+    height: 30px;
+    background: #38609c;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+}
+
+@media screen and (max-width: 600px) {
+    .containeR .card {
+        width: 60%;
+        margin: 15px 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+.newWrapper {
+    width: 100%;
+    height: 100%;
+    margin: 15px auto 0;
+}
+
+    .newWrapper .title {
+        padding: 30px 20px;
+        text-align: center;
+        font-size: 40px;
+        font-weight: 700;
+    }
+
+    .newWrapper .tabs_wrap {
+        padding: 20px;
+        border-bottom: 1px solid #5071c7;
+    }
+
+       
+        .newWrapper .tabs_wrap ul {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+        }
+
+            .newWrapper .tabs_wrap ul li {
+                width: 250px;
+                text-align: center;
+                background: #e9ecf1;
+                border-right: 1px solid #5071c7;
+                padding: 13px 15px;
+                cursor: pointer;
+                -webkit-transition: all 0.2s ease;
+                -o-transition: all 0.2s ease;
+                transition: all 0.2s ease;
+                background: #2e2e48; /* цвет кнопок в спокойном состоянии */
+            }
+
+                .newWrapper .tabs_wrap ul li:first-child {
+                    border-top-left-radius: 25px;
+                    border-bottom-left-radius: 25px;
+                }
+
+                .newWrapper .tabs_wrap ul li:last-child {
+                    border-right: 0px;
+                    border-top-right-radius: 25px;
+                    border-bottom-right-radius: 25px;
+                }
+
+      
+
+        .newWrapper .tabs_wrap ul li:hover,
+        .newWrapper .tabs_wrap ul li.active {
+            background: #5071c7;
+            color: #fff;
+            box-shadow: 5px 5px 15px rgba(89, 136, 255,1);
+        }
+
+    .newWrapper .section .item_wrap {
+        padding: 10px 20px;
+        cursor: pointer;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        width: calc(25% - 20px);
+        margin-bottom: 20px;
+    }
+
+
+
+    .newWrapper .section .item {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+    }
+
+.item .item_left {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
 }

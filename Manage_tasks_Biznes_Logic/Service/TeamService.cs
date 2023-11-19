@@ -47,6 +47,8 @@ public class TeamService : ITeamService
 
         return teams;
     }
+    // Функция которая обращаеться к teamuser , вытаскивает все тимы где я учасник и возвращает id этих команд , потом я ищу проекты с этой командой и возвращаю их .
+
 
     public async Task<TeamListForUserDto> GetTeamListForUser(Guid userId)
     {
@@ -69,6 +71,15 @@ public class TeamService : ITeamService
         return dto;
     }
 
+    public async Task<List<Guid>> GetAllTeamIdUserPartOfAsync(Guid userId)
+    {
+	    var UserPartOfteamListId = await _dbContext.TeamUserEntities
+		    .Where(a => a.UserId == userId).Select(a => a.TeamId).ToListAsync();
+
+
+	    return UserPartOfteamListId;
+
+    }
     public async Task AddTeam(TeamAddDto dto)
     {
         var team = _mapper.Map<TeamAddDto, TeamEntity>(dto);
@@ -313,7 +324,7 @@ public class TeamService : ITeamService
 
         var team = new Team
         {
-            Id = teamEntity.Id,
+            Id = teamEntity.Id, 
             Name = teamEntity.Name,
             Description = teamEntity.Description ?? string.Empty,
             Members = members

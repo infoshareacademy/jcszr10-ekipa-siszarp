@@ -9,7 +9,7 @@
         public string Description { get; set; }
         public List<Team> ProjectTeams { get; set; }
         public Guid ProjectTeamId { get; set; }
-
+        public Guid? OwnerId { get; set; }
         public List<TasksList> Tasks { get; set; }
 
         public int OutID { get; set; }
