@@ -31,7 +31,7 @@
             for (var i = 0; i < disabledElements.length; i++) {
                 disabledElements[i].removeAttribute("disabled");
             }
-            ev.target.appendChild(document.getElementById(data));
+            ev.target.appendChild(document.getElementById("submit-" + data));
             document.getElementById("form-" + data).submit();
             
         }
@@ -42,20 +42,33 @@
     }
 </script>
 
+<ul class="pagination">
+    @{
+        var listQuantity = Model.Tasks.Count();
+        var last = listQuantity - 1;
+        for (int i = 0; i < listQuantity - 1; i++)
+        {
+            <li class="page-item"><a class="page-link" href="#@i">@Model.Tasks[i].TasksListName</a></li>
+        }
+        <li class="page-item active"><a class="page-link" href="#@last">@Model.Tasks[last].TasksListName</a></li>
+        <li class="page-item"><a class="page-link" href="#">New</a></li>
+    }       
+</ul>
+
 <div class="container text-center">
-    <div class="row align-items-start">
+    <div class="row ">
         <div class="col" id="drop-0" ondrop="drop(event)" ondragover="allowDrop(event)">
-            Do zrobienia
+            To Do
             @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[0],statusId = 0,teamId = Model.ProjectTeam.Id})
 
             @await Component.InvokeAsync("NewTask", new {tasksListId = Model.Tasks[0].Id})
         </div>
         <div class="col" id="drop-1" ondrop="drop(event)" ondragover="allowDrop(event)">
-            W trakcie
+            In Progress
             @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[0],statusId = 1,teamId = Model.ProjectTeam.Id})
         </div>
         <div class="col" id="drop-2" ondrop="drop(event)" ondragover="allowDrop(event)">
-            Skończone
+            Done
             @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[0],statusId = 2,teamId = Model.ProjectTeam.Id})
         </div>
     </div>

@@ -1,14 +1,23 @@
-﻿@model WebTaskMaster.Models.Task.NewTaskModel
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@model WebTaskMaster.Models.Task.NewTaskModel
 @*
     newtask
 *@
+@{
+    var url = Context.Request.GetEncodedUrl();
+}
 <div class="card" style="width: 18rem;">
     <div class="card-body">
     <form asp-controller="Task" asp-action="CreateNewTask">
-        <input asp-for="Name" />
-        <input asp-for="Description" />
+        <label>Task Name</label>
+            <input asp-for="Name" class="card-title form-control" draggable="false" />
+        <label>Task Description</label>
+            <textarea asp-for="@Model.Description" class="card-text form-control" draggable="false" rows="4" cols="50">
+
+            </textarea>
             <input asp-for="TasksListId" readonly style="display: none;" />
             <input asp-for="ProjectId" readonly style="display: none;" />
-        <button type="submit">Stwórz</button>
+            <button type="submit" class="btn btn-success">Create</button>
+            <input asp-for="url" readonly style="display: none;" value="@url" />
     </form>
     </div></div>

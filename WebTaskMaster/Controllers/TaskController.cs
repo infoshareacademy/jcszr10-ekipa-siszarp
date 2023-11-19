@@ -6,6 +6,7 @@ using Manage_tasks_Biznes_Logic.Model;
 using Microsoft.CodeAnalysis;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace WebTaskMaster.Controllers
 {
@@ -32,22 +33,24 @@ namespace WebTaskMaster.Controllers
         public async Task<IActionResult> CreateNewTask(NewTaskModel model)
         {
             await _tasksListService.AddNewTask(model.Name, model.Description, model.TasksListId);
-            string url = Url.Action("Details", "Project", new { projectId = model.ProjectId });
-            return Redirect(url);
+            
+            return Redirect(model.url);
         }       
         [HttpPost]
         public async Task<IActionResult> EditTask(WebTaskModel model)
-        {           
+        {
+            
+            model.newValues[1] = HttpContext.Request.Form["Description"];
             await _tasksListService.EditTask(model.newValues, model.ProjectTask);
-            string url = Url.Action("Details", "Project", new { projectId = model.ProjectId });
-            return Redirect(url);
+            
+            return Redirect(model.url);
         }
         [HttpPost]
         public async Task<IActionResult> DeleteTask(WebTaskModel model)
         {
             await _tasksListService.DeleteTask(model.ProjectTask.Id);
-            string url = Url.Action("Details", "Project", new { projectId = model.ProjectId });
-            return Redirect(url);
+            
+            return Redirect(model.url);
         }
     }
 }

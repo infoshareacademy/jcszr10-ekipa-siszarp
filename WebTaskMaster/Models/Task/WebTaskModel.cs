@@ -13,6 +13,7 @@ namespace WebTaskMaster.Models.Task
         {
             newValues = new string[5];
         }
+        public string url { get; set; }
 
     }
 }
