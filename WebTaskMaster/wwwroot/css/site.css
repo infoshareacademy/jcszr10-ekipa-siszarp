@@ -1,5 +1,6 @@
 ﻿:root {
     --progress: -n+25;
+    --progress2: -n+25;
 }
 
 * {
@@ -188,7 +189,11 @@ html {
     bottom: 0;
     width: 100%;
 }
-
+#myProgress2 {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
 #myBar {
     width: var(--progress);
     height: 30px;
@@ -197,7 +202,14 @@ html {
     line-height: 30px;
     color: white;
 }
-
+#myBar2 {
+    width: var(--progress2);
+    height: 30px;
+    background: #38609c;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+}
 @media screen and (max-width: 600px) {
     .containeR .card {
         width: 60%;

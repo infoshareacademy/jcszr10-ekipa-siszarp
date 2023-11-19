@@ -4,12 +4,16 @@ tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tool
 
 
 var paragraphElement = document.getElementById('myBar');
+var paragraphElement2 = document.getElementById('myBar2');
 
 if (paragraphElement) {
     var textInsideParagraph = paragraphElement.innerText;
     document.documentElement.style.setProperty('--progress', textInsideParagraph);
 }
-
+if (paragraphElement2) {
+	var textInsideParagraph = paragraphElement.innerText;
+	document.documentElement.style.setProperty('--progress2', textInsideParagraph);
+}
 
  
  
