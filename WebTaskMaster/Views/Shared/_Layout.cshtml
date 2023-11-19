@@ -1,5 +1,5 @@
 @using WebTaskMaster.Models.User;
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,10 +25,11 @@
 			<div class="sideBarColor col-auto  col-sm-4 col-md-4 col-lg-3 col-xl-2 min-vh-100 d-flex flex-column justify-content-between">
 				<div class="sideBarColor p-2">
 					<a class="d-flex text-decoration-none mt-1 align-items-center text-white">
-						<span class="fs-4 d-none d-sm-inline">Menu</span>
+						<span class="fs-4 d-none d-sm-inline">Menu </span>
+						<p>@User.Identity.Name</p>
 					</a>
 					<ul class="nav nav-pills flex-column mt-4">
-
+						 
 						<li class="nav-item py-2 py-sm-0">
 							<a asp-area="" asp-controller="Project" asp-action="Index" class="nav-link text-white" aria-current="page">
 								<i class="fs-5 fa-solid fa-folder-tree" style="color: #ffffff;"></i><span class="fs-4 ms-3 d-none d-sm-inline">Project</span>
@@ -46,7 +47,11 @@
 								<i class="fs-5 fa-solid fa-right-from-bracket" style="color: #ffffff;"></i><span class="fs-4 ms-3 d-none d-sm-inline">Logout</span>
 							</a>
 						</li>
-
+						<li class="nav-item py-2 py-sm-0 ">
+							<a asp-area="" asp-controller="Project" asp-action="TestViewToDeleteLetter" class="nav-link text-white" aria-current="page">
+								<i class="fs-5 fa-solid fa-right-from-bracket" style="color: #ffffff;"></i><span class="fs-4 ms-3 d-none d-sm-inline">Test</span>
+							</a>
+						</li>
 
 					</ul>
 				</div>

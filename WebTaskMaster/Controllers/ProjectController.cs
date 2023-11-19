@@ -65,7 +65,12 @@ namespace WebTaskMaster.Controllers
 
 			return View(finalyModel);
 		}
-
+		//[Route("project/{Id:Guid}/details")]
+		//public IActionResult TestViewToDeleteLetter(Guid Id)
+		//{
+		//	var project = _projectService.GetProjectById(Id);
+		//	return View();
+		//}
 		// GET: ProjectController/Add
 		public ActionResult Create()
 		{
