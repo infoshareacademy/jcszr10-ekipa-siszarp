@@ -50,7 +50,7 @@ namespace WebTaskMaster.Controllers
                 new ClaimsPrincipal(resultDto.ClaimsIdentity),
                 resultDto.AuthProp);
 
-            return RedirectToAction("index", "Home");
+            return RedirectToAction("index", "Project");
         }
 
         [AllowAnonymous]

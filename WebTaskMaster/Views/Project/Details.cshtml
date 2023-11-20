@@ -6,65 +6,101 @@
 	ViewData["projectId"] = Model.Id;
 }
 
-<div class="container text-center text-wrap text-break">
-	<div class="row justify-content-center px-2 py-2 mb-2  bg-opacity-25">
-		<h1 class="col-12 col-sm-11 order-first">@Model.Name</h1>
+<!--  Project Description -->
+<div class="container text-center text-wrap text-break border border-light border-1 rounded-2 bg-light">
+	<div class="row justify-content-center align-items-center py-5 mb-2 text-start">
+		<p class="col-12 col-sm-8 order-first h2 text-dark display-4 border-bottom border-3 border-warning-subtle border-opacity-50 pb-1">@Model.Name
 
 		@if (!string.IsNullOrWhiteSpace(Model.Description))
 		{
-			<p class="fs-4 col-12 order-sm-last ">@Model.Description</p>
+			<span class="fs-4 fst-italic fw-lighter d-block my-1">@Model.Description</span>
 		}
+		</p>
 
 		@* Edit project name and description modal button *@
-		<button class="btn btn-orange col-12 order-last col-sm-1 order-sm-2"
+		<button class="btn btn-outline-warning col-12 col-sm-1 rounded-5"
 				data-bs-toggle="modal" data-bs-target="#editProjectModal"
 				data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+			</svg>
+			Edit
 			<span class="lnr lnr-pencil"></span>
 		</button>
-	</div>
-	<div class="row justify-content-center px-2 py-2 mb-2   bg-opacity-25">
 
+		@* Delete Project Modal button  *@
+		<button type="button" class="btn btn-outline-danger col-12 col-sm-1 rounded-5"
+				data-bs-toggle="modal" data-bs-target="#deleteProjectModal"
+				data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete project">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+				<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+			</svg>
+			Delete
+		</button>
+	</div>
+
+
+	<!--  Team Description -->
+	<div class="row justify-content-end text-start px-2 mb-2 border-start border-primary border-opacity-75 border-5 rounded-2 mx-5 m-bottom-5 shadow p-3 mb-5 bg-body rounded">
+		<p class="h-1 text-uppercase text-primary text-opacity-75 fw-bold px-5">Project Team</p>
 		@{
-			var teamLinkClass = "btn btn-outline-secondary fs-5 col-12 col-sm-12 col-xl-3 order-first  ";
+			var teamLinkClass = "btn btn-outline-primary btn-sm col-12 col-sm-2 rounded-5 justify-content-end fs-6";
 		}
 
 		@for (var index = 0; index < Model.Teams.Count; index++)
 		{
 			var team = Model.Teams[index];
 
-			<div class="col-md-12 mt-2 col-xl-11 ">
-				<div class="row justify-content-center px-3 py-2 mx-1 mb-3 color-blue bg-opacity-25">
-					<a class=" @teamLinkClass "
-					   asp-controller="Team" asp-action="Details" asp-route-teamId="@team.Id"
-					   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Team details">
-						<label asp-for="ProjectTeam">Team @(index + 1)</label>
-					</a>
+			<p class="fs-3 col-12 col-sm-12 align-content-end text-start text-uppercase px-5 "> @team.Name</p>
+			@*<p class="fs-4 col-12 order-sm-last col-lg-6 col-xl-5">@team.Leader</p>*@
 
-					<p class="fs-4  col-12 order-sm-last col-lg-6 col-xl-5">@team.Name</p>
-					@*<p class="fs-4 col-12 order-sm-last col-lg-6 col-xl-5">@team.Leader</p>*@
+			<a class=" @teamLinkClass"
+			   asp-controller="Team" asp-action="Details" asp-route-teamId="@team.Id"
+			   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Team details">
+				<label asp-for="ProjectTeam"><i class="bi bi-people"></i> Details</label>
 
+			</a>
 
-					@* Delete Team Modal button *@
-					<button class="btn btn-danger col-12 order-last col-sm-2 order-sm-2 col-xl-1 order-xl-last" type="button"
-							data-bs-toggle="modal" data-bs-target="#deleteTeamModal" data-bs-link-id="link@(index)"
-							data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team">
-						<span class="lnr lnr-pencil"></span>
-					</button>
+			@* Add Team Modal button *@
+			<button id="addTeamModalBtn" class="btn btn-outline-warning btn-sm col-12 justify-content-end col-sm-1 rounded-5" type="button"
+					data-bs-toggle="modal" data-bs-target="#addTeamModal"
+					data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Add team">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+					<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+				</svg>
+				Change
+			</button>
 
-					@* hidden link for modal *@
-					<a id="link@(index)" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@team.Id"></a>
-				</div>
-			</div>
+			@* Delete Team Modal button *@
+			<button class="btn btn-outline-danger btn-sm col-12 col-sm-1 rounded-5 justify-content-end" type="button"
+					data-bs-toggle="modal" data-bs-target="#deleteTeamModal" data-bs-link-id="link@(index)"
+					data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+					<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+					<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+				</svg>
+				Delate
+				<span class="lnr lnr-pencil"></span>
+			</button>
+
+			@* hidden link for modal *@
+			<a id="link@(index)" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@team.Id"></a>
 		}
 		<br />
 		@* Add Team Modal button *@
 		<button id="addTeamModalBtn" class="btn btn-orange col-12 justify-content-end col-sm-1 col-xl-2" type="button"
 				data-bs-toggle="modal" data-bs-target="#addTeamModal"
 				data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Add team">
-			<span class="lnr lnr-pencil"></span>
-		</button>
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+			</svg>
+
+	<!--  Task Description -->
+	<div class="row justify-content-end text-start px-2 mb-2 border-start border-success border-opacity-75 border-5 rounded-2 mx-5 m-bottom-5 shadow = p-3 mb-5 bg-body rounded">
+		<p class="h-1 text-uppercase text-success text-opacity-75 fw-bold px-5">Project Tasks</p>
 	</div>
-	 
+
     @* <div class="row justify-content-center px-2 py-2 mb-2 bg-primary bg-opacity-10">
         @* <h5 class="col-12 col-sm-11 order-first">Zadania</h5> *@
         @* <label class="fs-5 col-12 col-sm-11 order-first" asp-for="Tasks"></label> *@
@@ -77,25 +113,17 @@
                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
             </svg>
         </button>
-    </div> *@ 
+    </div> *@
+	</div>
+
+
     @*Tasks*@
     <partial name="_TasksList" model="Model"/>
-
-    <div class="row justify-content-end">
-        @* Delete Project Modal button  *@
-        <button type="button" class="btn btn-danger col-12 col-sm-2"
-                data-bs-toggle="modal" data-bs-target="#deleteProjectModal"
-                data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete project">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-            </svg>
-        </button>
-    </div>
     @* Edit team name and description modal *@
     <partial name="_EditPartial" model="Model.ProjectEditModel" />
     @* Add Team Modal *@
     <partial name="_ChangeTeamPartial" model="Model.ProjectAddTeamModel" />
+</div>
 
 	@* Delete Team from Project Modal *@
 	<div id="deleteTeamModal" class="modal fade text-dark">

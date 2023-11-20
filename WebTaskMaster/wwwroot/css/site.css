@@ -318,3 +318,8 @@ html {
     -ms-flex-align: center;
     align-items: center;
 }
+@media(min-width: 768px) {
+    .news-input {
+        width: 50%;
+    }
+}
