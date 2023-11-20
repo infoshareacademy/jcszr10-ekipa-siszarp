@@ -6,7 +6,7 @@ namespace WebTaskMaster.Models.Project
     public class ProjectAddTeamModel
     {
         [Required(ErrorMessage = "Select assigned team.")]
-        public List<Guid> TeamsIdsToAdd { get; set; }
+        public Guid TeamIdToAdd { get; set; }
 
         [Display(Name = "Available teams")]
         public List<ProjectTeamModel>? AvailableTeams { get; set; }

@@ -2,6 +2,7 @@
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Plugins;
 using WebTaskMaster.Models.Project;
 
 namespace WebTaskMaster.Controllers
@@ -90,13 +91,14 @@ namespace WebTaskMaster.Controllers
 
         private async Task<ProjectDetailsModel> CreateDetailsModel(Project project)
         {
-            var teams = project.ProjectTeams.Select(t => new ProjectTeamModel
+            var team = new ProjectTeamModel
             {
-                Id = t.Id,
-                Name = t.Name
-            })
-                .ToList();
-            var addTeamModel = new ProjectAddTeamModel
+                Id = project.ProjectTeam.Id,
+                Name = project.ProjectTeam.Name,
+                //Leader = project.ProjectTeam.Leader
+            };
+
+			var addTeamModel = new ProjectAddTeamModel
             {
                 AvailableTeams = (await _teamService.GetAllTeams())
                         .Select(t => new ProjectTeamModel
@@ -112,7 +114,7 @@ namespace WebTaskMaster.Controllers
                 Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
-                Teams = teams,
+                ProjectTeam = team,
                 Tasks = project.Tasks,
                 ProjectAddTeamModel = addTeamModel
             };
@@ -125,11 +127,11 @@ namespace WebTaskMaster.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddTeam(ProjectAddTeamModel model, Guid projectId)
+        public async Task<IActionResult> ChangeTeam(ProjectAddTeamModel model, Guid projectId)
         {
             if (!ModelState.IsValid)
             {
-                ViewData["ActivateModal"] = nameof(AddTeam);
+                ViewData["ActivateModal"] = nameof(ChangeTeam);
 
                 var project = await _projectService.GetProjectById(projectId);
 
@@ -143,24 +145,24 @@ namespace WebTaskMaster.Controllers
                 return View("Details", projectModel);
             }
 
-            await _projectService.AddTeamToProject(projectId, model.TeamsIdsToAdd);
+            await _projectService.ChangeProjectTeam(projectId, model.TeamIdToAdd);
 
             TempData["ToastMessage"] = "Team added.";
 
             return RedirectToAction("Details", new { projectId });
         }
 
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
 
-        [Route("project/{projectId:Guid}/details/deleteTeam/{teamId:Guid}")]
-        public async Task<IActionResult> DeleteTeam(Guid projectId, Guid teamId)
-        {
-            await _projectService.DeleteTeamFromProject(projectId, teamId);
+        //[Route("project/{projectId:Guid}/details/deleteTeam/{teamId:Guid}")]
+        //public async Task<IActionResult> DeleteTeam(Guid projectId, Guid teamId)
+        //{
+        //    await _projectService.DeleteTeamFromProject(projectId, teamId);
 
-            TempData["ToastMessage"] = "Team removed.";
+        //    TempData["ToastMessage"] = "Team removed.";
 
-            return RedirectToAction("Details", new { projectId });
-        }
+        //    return RedirectToAction("Details", new { projectId });
+        //}
 
         [HttpPost]
         [Authorize(Roles = "User")]

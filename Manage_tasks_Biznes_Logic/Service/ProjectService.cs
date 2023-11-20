@@ -1,258 +1,174 @@
-﻿using Manage_tasks_Biznes_Logic.Model;
+﻿using Manage_tasks_Biznes_Logic.Dtos.Team;
+using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Database.Context;
 using Manage_tasks_Database.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 
 
-namespace Manage_tasks_Biznes_Logic.Service
+namespace Manage_tasks_Biznes_Logic.Service;
+
+public class ProjectService : IProjectService
 {
-    public class ProjectService : IProjectService
+    private readonly DataBaseContext _dbContext;
+    private readonly ITasksListService _tasksListService;
+    private readonly ITeamService _teamService;
+    public ProjectService(DataBaseContext dbContext, ITasksListService tasksListService, ITeamService teamService)
     {
-        private readonly DataBaseContext _dbContext;
-        private readonly ITasksListService _tasksListService;
-        public ProjectService(DataBaseContext dbContext, ITasksListService tasksListService)
+        _dbContext = dbContext;
+        _tasksListService = tasksListService;
+        _teamService = teamService;
+    }
+    public async Task<List<Project>> GetAllProjects()
+    {
+        var projectEntities = await _dbContext.ProjectEntities
+            .Include(p => p.Team)
+            .Include(p => p.TaskLists)
+            .ToListAsync();
+        var projects = projectEntities.Select(p => new Project
         {
-            _dbContext = dbContext;
-            _tasksListService = tasksListService;
-        }
-        public async Task<List<Project>> GetAllProjects()
-        {
-            var projectEntities = await _dbContext.ProjectEntities
-                .Include(p => p.Teams)
-                .Include(p => p.TaskLists)
-                .ToListAsync();
-            var projects = projectEntities.Select(ConvertProjectEntity).ToList();
-            return projects;
-        }
-        public async Task<Project?> GetProjectById(Guid id)
-        {
-            var projectEntity = await _dbContext.ProjectEntities
-                .Include(p => p.Teams)
-                .Include(p => p.TaskLists).ThenInclude(t => t.Tasks)
-                .FirstOrDefaultAsync(p => p.Id == id);
-            if (projectEntity == null)
+            Name = p.Name,
+            Description = p.Description,
+            ProjectTeam = new Team
             {
-                return null;
-            }
-            var project = ConvertProjectEntity(projectEntity);
-            return project;
-        }
-        public async Task<Guid> CreateProject (string name, string description)
-        {
-            var projectId = Guid.NewGuid();
-            var project = new ProjectEntity
-            {
-                Id = projectId,
-                Name = name,
-                Description = description,
-                
-            };
-            await _dbContext.ProjectEntities.AddAsync(project);
-            await _tasksListService.CreateTasksList("Backlog", projectId);
-            await _dbContext.SaveChangesAsync();
-            return project.Id;
-        }
-        public async Task RemoveProject(Guid id)
-        {
-            var project = await _dbContext.ProjectEntities.FindAsync(id);
-            if(project is null)
-            {
-                return;
-            }
-            _dbContext.ProjectEntities.Remove(project);
-            await _dbContext.SaveChangesAsync();
-        }
-        public async Task EditNameAndDescription(Guid projectId, string newName, string newDescription)
-        {
-            var project = await _dbContext.ProjectEntities.FirstOrDefaultAsync(p => p.Id == projectId);
-            if (project == null)
-            {
-                return;
-            }
-            project.Name = newName;
-            project.Description = newDescription;
-            await _dbContext.SaveChangesAsync();
-        }
-        public async Task AddTeamToProject(Guid projectId, IEnumerable<Guid> newTeamsIds)
-        {
-            var project = await _dbContext.ProjectEntities
-                .Include(p => p.Teams)
-                .FirstOrDefaultAsync(p =>p.Id == projectId);
-            if (project is null)
-            {
-                return;
-            }
-            var possibleTeams = newTeamsIds.Except(project.Teams.Select(t => t.Id));
+                Id = p.Team.Id,
+                Name = p.Team.Name,
+                Description = p.Team.Description
+            },
+            Tasks = new List<TasksList> ()
+        }).ToList();
+        return projects;
+    }
+    public async Task<Project?> GetProjectById(Guid id)
+    {
+        var projectEntity = await _dbContext.ProjectEntities
+            .Include(p => p.Team)
+            .Include(p => p.TaskLists).ThenInclude(t => t.Tasks)
+            .FirstOrDefaultAsync(p => p.Id == id);
 
-            var teamEntities = await _dbContext.TeamEntities.ToListAsync();
+        var teamEntity = await _dbContext.TeamEntities
+            .Include(t => t.Leader)
+            .Include(t => t.Members)
+            .FirstOrDefaultAsync(t => t.Id == id);
 
-            var teamsToAdd = teamEntities.IntersectBy(possibleTeams, t => t.Id).ToList();
-
-            foreach (var team in teamsToAdd)
-            {
-                project.Teams.Add(team);
-            }
-
-            await _dbContext.SaveChangesAsync();
-        }
-        public async Task DeleteTeamFromProject(Guid projectId, Guid teamIdToDelete)
+        if (projectEntity == null || teamEntity == null)
         {
-            var project = await _dbContext.ProjectEntities
-                .Include(p => p.Teams)
-                .FirstOrDefaultAsync(p => p.Id == projectId);
-            if (project is null)
-            {
-                return;
-            }
-            var teamToRemove = project.Teams.FirstOrDefault(t => t.Id == teamIdToDelete);
-            if(teamToRemove is null)
-            {
-                return;
-            }
-            project.Teams.Remove(teamToRemove);
-            await _dbContext.SaveChangesAsync();
-        }
-        private  Project ConvertProjectEntity(ProjectEntity projectEntity)
-        {
-            var teams = projectEntity.Teams
-                .Select(u => new Team
-                {
-                    Id = u.Id,
-                    Name = u.Name,
-                    Description = u.Description ?? string.Empty
-                }).ToList();
-            
-            var project = new Project
-            {
-                Id = projectEntity.Id,
-                Name = projectEntity.Name,
-                Description = projectEntity.Description ?? string.Empty,
-                ProjectTeams = teams,
-                Tasks = projectEntity.TaskLists.Select(_tasksListService.EntityToModel).ToList()    
-            };
-
-            return project;
+            return null;
         }
 
-        //private static List<Project> Projects = new();
+        var project = ConvertProjectEntity(projectEntity, teamEntity);
+        return project;
+    }
+    public async Task<Guid> CreateProject(string name, string description)
+    {
+        var projectId = Guid.NewGuid();
+        var project = new ProjectEntity
+        {
+            Id = projectId,
+            Name = name,
+            Description = description,
 
-        //const string _nameJsonFile = "ListaProjectow.json";
+        };
+        await _dbContext.ProjectEntities.AddAsync(project);
+        await _tasksListService.CreateTasksList("Backlog", projectId);
+        await _dbContext.SaveChangesAsync();
+        return project.Id;
+    }
+    public async Task RemoveProject(Guid id)
+    {
+        var project = await _dbContext.ProjectEntities.FindAsync(id);
+        if (project is null)
+        {
+            return;
+        }
+        _dbContext.ProjectEntities.Remove(project);
+        await _dbContext.SaveChangesAsync();
+    }
+    public async Task EditNameAndDescription(Guid projectId, string newName, string newDescription)
+    {
+        var project = await _dbContext.ProjectEntities.FirstOrDefaultAsync(p => p.Id == projectId);
+        if (project == null)
+        {
+            return;
+        }
+        project.Name = newName;
+        project.Description = newDescription;
+        await _dbContext.SaveChangesAsync();
+    }
+    //public async Task<ICollection<Team>> GetAvailableProjectTeams(Guid projectId)
+    //{
+    //    var availableProjectTeams = await _dbContext.TeamEntities
+    //        .Where(u => u.Projects.Any(t => t.Id == projectId))
+    //        .ToListAsync();
 
-        //public void SaveProjectToJson()
-        //{
+    //    return (ICollection<Team>)availableProjectTeams;
+    //}
+    public async Task ChangeProjectTeam(Guid projectId, Guid newTeamId)
+    {
+        var project = await _dbContext.ProjectEntities
+            .Include(p => p.Team)
+            .FirstOrDefaultAsync(p => p.Id == projectId);
 
-        //    string objectSerialized = JsonSerializer.Serialize(Projects);
-        //    File.WriteAllText(_nameJsonFile, objectSerialized);
-        //}
+        if (project is null || project.TeamId == newTeamId)
+        {
+            return;
+        }
 
-        //public List<Project> LoadProjectsFromJson()
-        //{
-        //    if (!File.Exists(_nameJsonFile))
-        //    {
-        //        Projects = new List<Project>();
-        //    }
+        var newTeam = await _dbContext.TeamEntities.FindAsync(newTeamId);
 
-        //    Projects = JsonSerializer.Deserialize<List<Project>>(File.ReadAllText(_nameJsonFile));
+        if (newTeam is null)
+        {
+            return;
+        }
 
-        //    return Projects;
-        //}
+        project.Team = newTeam;
+        project.TeamId = newTeam.Id;
+        project.Team.Leader = newTeam.Leader;
 
-        //public List<Project> GetAllProjects()
-        //{
-        //    return LoadProjectsFromJson();
-        //}
+        await _dbContext.SaveChangesAsync();
+    }
 
-        //public Project GetProjectById(Guid projectId)
-        //{
-        //    try
-        //    {
-        //        return GetAllProjects().FirstOrDefault(p => p.Id == projectId);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Project ExceptionProject = new Project();
-        //        ExceptionProject.Crash();
-        //        return ExceptionProject;
+     //public async Task DeleteTeamFromProject(Guid projectId, Guid teamIdToDelete)
+     //   {
+     //       var project = await _dbContext.ProjectEntities
+     //           .Include(p => p.Teams)
+     //           .FirstOrDefaultAsync(p => p.Id == projectId);
+     //       if (project is null)
+     //       {
+     //           return;
+     //       }
+     //       var teamToRemove = project.Teams.FirstOrDefault(t => t.Id == teamIdToDelete);
+     //       if(teamToRemove is null)
+     //       {
+     //           return;
+     //       }
+     //       project.Teams.Remove(teamToRemove);
+     //       await _dbContext.SaveChangesAsync();
+     //   }
 
-        //    }
-        //}
-
-        //public void RemoveProject(Guid id)
-        //{
-        //    var projects = GetAllProjects();
-
-        //    var projectInDatabase = projects.FirstOrDefault(p => p.Id == id);
-
-        //    if (projectInDatabase is null)
-        //    {
-        //        return;
-        //    }
-
-        //    projects.Remove(projectInDatabase);
-
-        //    SaveProjectToJson();
-        //}
-
-        //public void CreateProject(string name, string description)
-        //{
-        //    Projects.Add(new Project(name, description));
-        //    SaveProjectToJson();
-        //}
-
-        //public void UpdateProject(Project project)
-        //{
-        //    var projects = GetAllProjects();
-
-        //    var projectInDatabase = projects.FirstOrDefault(u => u.Id == project.Id);
-
-        //    if (projectInDatabase is not null)
-        //    {
-        //        projects.Remove(projectInDatabase);
-        //    }
-        //    else
-        //    {
-        //        project.Id = Guid.NewGuid();
-        //    }
-
-        //    projects.Add(project);
-
-        //    SaveProjectToJson();
-        //}
-        //public void EditNameAndDescription(Guid projectId, string newName, string newDescription)
-        //{
-        //    var projects = GetAllProjects();
-        //    var projectInDataBase = GetProjectById(projectId);
-
-        //    if (projectInDataBase is null)
-        //    {
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        projectInDataBase.Name = newName;
-        //        projectInDataBase.Description = newDescription;
-        //    }
-
-        //    projects.Add(projectInDataBase);
-        //    SaveProjectToJson();
-        //}
-        //public void ChangeTeam(Guid projectId, Guid newProjectTeamId)
-        //{
-        //    var projects = GetAllProjects();
-        //    var projectInDataBase = GetProjectById(projectId);
-        //    if (projectInDataBase is null)
-        //    {
-        //        projectInDataBase.Id = new Guid();
-        //        projectInDataBase.ProjectTeamId = newProjectTeamId;
-        //    }
-        //    else
-        //    {
-        //        projectInDataBase.ProjectTeamId = newProjectTeamId;
-        //    }
-        //    projects.Add(projectInDataBase);
-        //    SaveProjectToJson();
-        //}
+    private Project ConvertProjectEntity(ProjectEntity projectEntity, TeamEntity teamEntity)
+    {
+        var team = new Team
+        {
+            Id = teamEntity.Id,
+            Name = teamEntity.Name,
+            Description = teamEntity.Description ?? string.Empty,
+            Leader = new User
+            {
+                Id = teamEntity.Leader.Id,
+                FirstName = teamEntity.Leader.FirstName,
+                LastName = teamEntity.Leader.LastName,
+            },
+        };
+        var project = new Project
+        {
+            Id = projectEntity.Id,
+            Name = projectEntity.Name,
+            Description = projectEntity.Description ?? string.Empty,
+            ProjectTeam = team,
+            Tasks = projectEntity.TaskLists.Select(_tasksListService.EntityToModel).ToList()
+        };
+        return project;
     }
 }
+

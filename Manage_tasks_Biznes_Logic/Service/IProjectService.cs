@@ -9,7 +9,7 @@ namespace Manage_tasks_Biznes_Logic.Service
         Task<Guid> CreateProject(string name, string description);
         Task RemoveProject(Guid id);
         Task EditNameAndDescription(Guid projectId, string newName, string newDescription);
-        Task AddTeamToProject(Guid projectId, IEnumerable<Guid> newTeamsIds);
-        Task DeleteTeamFromProject(Guid projectId, Guid teamIdToDelete);
+        Task ChangeProjectTeam(Guid projectId, Guid newTeamId);
+        //Task DeleteTeamFromProject(Guid projectId, Guid teamIdToDelete);
     }
 }

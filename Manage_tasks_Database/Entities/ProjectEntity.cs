@@ -18,8 +18,10 @@ public class ProjectEntity
 #warning Disallow nullable on Owner property.
     public virtual UserEntity? Owner { get; set; }
 
-    public virtual ICollection<TeamEntity> Teams { get; set; }
+	public Guid? TeamId { get; set; }
 
-    public virtual ICollection<TaskListEntity> TaskLists { get; set; }
+	public virtual TeamEntity? Team { get; set; }
+
+	public virtual ICollection<TaskListEntity> TaskLists { get; set; }
 }
 

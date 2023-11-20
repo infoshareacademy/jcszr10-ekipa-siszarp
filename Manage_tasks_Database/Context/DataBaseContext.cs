@@ -14,15 +14,13 @@ namespace Manage_tasks_Database.Context
 
 		public DbSet<ProjectEntity> ProjectEntities { get; set; }
 
-		public DbSet<ProjectTeamEntity> ProjectTeamEntities { get; set; }
-
 		public DbSet<TaskListEntity> TaskListEntities { get; set; }
 
 		public DbSet<TaskEntity> TaskEntities { get; set; }
 
-		public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)  
+		public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
 		{
-			
+
 		}
 
 	}

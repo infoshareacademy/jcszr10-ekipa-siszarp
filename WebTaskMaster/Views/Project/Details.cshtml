@@ -9,7 +9,7 @@
 <!--  Project Description -->
 <div class="container text-center text-wrap text-break border border-light border-1 rounded-2 bg-light">
 	<div class="row justify-content-center align-items-center py-5 mb-2 text-start">
-		<p class="col-12 col-sm-8 order-first h2 text-dark display-4 border-bottom border-3 border-warning-subtle border-opacity-50 pb-1">@Model.Name
+		<p class="col-12 col-sm-8 order-first h2 text-dark display-4 border-bottom border-3 border-warning-subtle pb-1">@Model.Name
 
 		@if (!string.IsNullOrWhiteSpace(Model.Description))
 		{
@@ -18,7 +18,7 @@
 		</p>
 
 		@* Edit project name and description modal button *@
-		<button class="btn btn-outline-warning col-12 col-sm-1 rounded-5"
+		<button class="btn btn-lg btn-outline-warning col-12 col-sm-1 rounded-5"
 				data-bs-toggle="modal" data-bs-target="#editProjectModal"
 				data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -28,7 +28,7 @@
 		</button>
 
 		@* Delete Project Modal button  *@
-		<button type="button" class="btn btn-outline-danger col-12 col-sm-1 rounded-5"
+		<button type="button" class="btn btn-lg btn-outline-danger col-12 col-sm-1 rounded-5"
 				data-bs-toggle="modal" data-bs-target="#deleteProjectModal"
 				data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete project">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -41,8 +41,8 @@
 
 
 	<!--  Team Description -->
-	<div class="row justify-content-end text-start px-2 mb-2 border-start border-primary border-opacity-75 border-5 rounded-2 mx-5 m-bottom-5 shadow p-3 mb-5 bg-body rounded">
-		<p class="h-1 text-uppercase text-primary text-opacity-75 fw-bold px-5">Project Team</p>
+	<div class="row justify-content-end text-start px-2 mb-2 border-start border-primary border-5 rounded-2 mx-5 m-bottom-5 shadow p-3 mb-5 bg-body rounded">
+		<p class="h-1 text-uppercase text-primary fw-bold px-5">Project Team</p>
 		@{
 			var teamLinkClass = "btn btn-outline-primary btn-sm col-12 col-sm-2 rounded-5 justify-content-end fs-6";
 		}
@@ -89,8 +89,8 @@
 	</div>
 
 	<!--  Task Description -->
-	<div class="row justify-content-end text-start px-2 mb-2 border-start border-success border-opacity-75 border-5 rounded-2 mx-5 m-bottom-5 shadow = p-3 mb-5 bg-body rounded">
-		<p class="h-1 text-uppercase text-success text-opacity-75 fw-bold px-5">Project Tasks</p>
+	<div class="row justify-content-end text-start px-2 mb-2 border-start border-success border-5 rounded-2 mx-5 m-bottom-5 shadow = p-3 mb-5 bg-body rounded">
+		<p class="h-1 text-uppercase text-success fw-bold px-5">Project Tasks</p>
     @* <div class="row justify-content-center px-2 py-2 mb-2 bg-primary bg-opacity-10">
         @* <h5 class="col-12 col-sm-11 order-first">Zadania</h5> *@
         @* <label class="fs-5 col-12 col-sm-11 order-first" asp-for="Tasks"></label> *@
