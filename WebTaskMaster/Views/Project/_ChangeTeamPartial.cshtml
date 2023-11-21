@@ -11,7 +11,7 @@
                 <form asp-action="AddTeam" asp-route-projectId="@ViewData["projectId"]">
 
                     <label class="form-label col-12" asp-for="AvailableTeams"></label>
-                    <select class="form-select col-12" asp-for="TeamsIdsToAdd">
+                    <select class="form-select col-12" asp-for="TeamIdToAdd">
                         @foreach (var team in Model.AvailableTeams!)
                         {
                             <option value="@team.Id">@team.Name</option>
@@ -21,7 +21,7 @@
                         <span class="text-warning">Ctr + click</span>
                         <span class="text-info">- select multiple members.</span>
                     </div>
-                    <span class="col-12 text-danger" asp-validation-for="TeamsIdsToAdd"></span>
+                    <span class="col-12 text-danger" asp-validation-for="TeamIdToAdd"></span>
 
                     <button class="btn btn-primary col-12 my-2" type="submit">Add</button>
                 </form>

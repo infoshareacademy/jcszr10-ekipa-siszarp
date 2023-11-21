@@ -46,16 +46,15 @@
 		@{
 			var teamLinkClass = "btn btn-outline-primary btn-sm col-12 col-sm-2 rounded-5 justify-content-end fs-6";
 		}
+		@{
+			var team = Model.ProjectTeam;
+		}
 
-		@for (var index = 0; index < Model.Teams.Count; index++)
-		{
-			var team = Model.Teams[index];
-
-			<p class="fs-3 col-12 col-sm-12 align-content-end text-start text-uppercase px-5 "> @team.Name</p>
-			@*<p class="fs-4 col-12 order-sm-last col-lg-6 col-xl-5">@team.Leader</p>*@
+		<p class="fs-3 col-12 col-sm-12 align-content-end text-start text-uppercase px-5 "> @team.Name</p>
+		@*<p class="fs-4 col-12 order-sm-last col-lg-6 col-xl-5">@team.Leader</p>*@
 
 			<a class=" @teamLinkClass"
-			   asp-controller="Team" asp-action="Details" asp-route-teamId="@team.Id"
+		   asp-controller="Team" asp-action="Details" asp-route-teamId="@team.Id"
 			   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Team details">
 				<label asp-for="ProjectTeam"><i class="bi bi-people"></i> Details</label>
 
@@ -70,10 +69,10 @@
 				</svg>
 				Change
 			</button>
-
-			@* Delete Team Modal button *@
+@*
+			@*Delete Team Modal button
 			<button class="btn btn-outline-danger btn-sm col-12 col-sm-1 rounded-5 justify-content-end" type="button"
-					data-bs-toggle="modal" data-bs-target="#deleteTeamModal" data-bs-link-id="link@(index)"
+					data-bs-toggle="modal" data-bs-target="#deleteTeamModal" data-bs-link-id="link"
 					data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team">
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 					<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
@@ -82,10 +81,9 @@
 				Delate
 			</button>
 
-			@* hidden link for modal *@
-			<a id="link@(index)" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@team.Id"></a>
-		}
-
+			@* hidden link for modal
+		<a id="link" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@Model.ProjectTeam.Id"></a>
+ *@
 	</div>
 
 	<!--  Task Description -->

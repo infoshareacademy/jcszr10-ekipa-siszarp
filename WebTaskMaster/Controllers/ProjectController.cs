@@ -127,11 +127,11 @@ namespace WebTaskMaster.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> ChangeTeam(ProjectAddTeamModel model, Guid projectId)
+        public async Task<IActionResult> AddTeam(ProjectAddTeamModel model, Guid projectId)
         {
             if (!ModelState.IsValid)
             {
-                ViewData["ActivateModal"] = nameof(ChangeTeam);
+                ViewData["ActivateModal"] = nameof(AddTeam);
 
                 var project = await _projectService.GetProjectById(projectId);
 
