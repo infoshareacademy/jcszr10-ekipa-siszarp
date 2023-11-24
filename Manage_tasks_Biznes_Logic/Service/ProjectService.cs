@@ -28,6 +28,7 @@ public class ProjectService : IProjectService
         var projects = projectEntities
             .Select(p => new Project
         {
+            Id = p.Id,
             Name = p.Name,
             Description = p.Description,
         })
@@ -132,18 +133,23 @@ public class ProjectService : IProjectService
     }
     private Project ConvertProjectEntity(ProjectEntity projectEntity)
     {
-			var team = new Team
-			{
-				Id = projectEntity.Team.Id,
-				Name = projectEntity.Team.Name,
-				Description = projectEntity.Team.Description ?? string.Empty,
-				Leader = new User
-				{
-					Id = projectEntity.Team.Leader.Id,
-					FirstName = projectEntity.Team.Leader.FirstName,
-					LastName = projectEntity.Team.Leader.LastName,
-				},
-			};
+        Team team = null!;
+
+        //if(projectEntity.Team is not null)
+        //{
+        //    team = new Team
+        //    {
+        //        Id = projectEntity.Team.Id,
+        //        Name = projectEntity.Team.Name,
+        //        Description = projectEntity.Team.Description ?? string.Empty,
+        //        Leader = new User
+        //        {
+        //            Id = projectEntity.Team.Leader.Id,
+        //            FirstName = projectEntity.Team.Leader.FirstName,
+        //            LastName = projectEntity.Team.Leader.LastName,
+        //        },
+        //    };
+        //}
 
 		var project = new Project
         {

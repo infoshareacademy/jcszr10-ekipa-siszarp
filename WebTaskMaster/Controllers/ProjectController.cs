@@ -91,12 +91,17 @@ namespace WebTaskMaster.Controllers
 
         private async Task<ProjectDetailsModel> CreateDetailsModel(Project project)
         {
-            var team = new ProjectTeamModel
+            ProjectTeamModel team = null!;
+
+            if(project.ProjectTeam is not null)
             {
-                Id = project.ProjectTeam.Id,
-                Name = project.ProjectTeam.Name,
-                //Leader = project.ProjectTeam.Leader
-            };
+                team = new ProjectTeamModel
+                {
+                    Id = project.ProjectTeam.Id,
+                    Name = project.ProjectTeam.Name,
+                    //Leader = project.ProjectTeam.Leader
+                };
+            }
 
 			var addTeamModel = new ProjectAddTeamModel
             {
