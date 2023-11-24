@@ -17,7 +17,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
         options.AccessDeniedPath = "/Account/Forbidden/";
         options.LoginPath = "/Account/Login";
-    });
+		 
+	});
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

@@ -4,6 +4,7 @@ using Manage_tasks_Biznes_Logic.Dtos.Team;
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using WebTaskMaster.Extensions;
 using WebTaskMaster.Models.Team;
 
@@ -40,6 +41,7 @@ public class TeamController : Controller
     [Authorize(Roles = "User")]
     public IActionResult Add()
     {
+	     
         return View();
     }
 

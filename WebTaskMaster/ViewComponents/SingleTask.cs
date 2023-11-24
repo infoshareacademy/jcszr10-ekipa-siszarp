@@ -7,16 +7,17 @@ namespace WebTaskMaster.ViewComponents
     public class SingleTask : ViewComponent
     {
         private readonly ITaskService _taskService;
-        public SingleTask(ITaskService service)
+        private readonly ITeamService _teamService;
+        public SingleTask(ITaskService taskService, ITeamService teamService)
         {
-            _taskService = service;
+            _taskService = taskService;
+            _teamService = teamService;
         }
-        public async Task<IViewComponentResult> InvokeAsync(Guid taskGuid)
-       {
-            
-                  
+        public async Task<IViewComponentResult> InvokeAsync(Guid taskGuid, Guid teamGuid)
+       {                  
             var taskModel = new WebTaskModel();
             taskModel.ProjectTask = await _taskService.GetTaskByGuid(taskGuid);
+            taskModel.Team = await _teamService.GetTeamById(teamGuid);
             return View(taskModel);
        }
     }

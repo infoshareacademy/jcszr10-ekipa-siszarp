@@ -1,93 +1,138 @@
-﻿using Manage_tasks_Biznes_Logic.Model;
+﻿using AutoMapper;
+using Manage_tasks_Biznes_Logic.Dtos.Team;
+using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using WebTaskMaster.Extensions;
 using NuGet.Protocol.Plugins;
 using WebTaskMaster.Models.Project;
+using WebTaskMaster.Models.Team;
 
 namespace WebTaskMaster.Controllers
 {
 	[Authorize(Roles = "User")]
 	public class ProjectController : Controller
-    {
-        private readonly IProjectService _projectService;
-        private readonly ITeamService _teamService;
+	{
+		private readonly IProjectService _projectService;
+		private readonly ITeamService _teamService;
+		private readonly IMapper _mapper;
 
-        public ProjectController(IProjectService projectService, ITeamService teamService)
-        {
-            _projectService = projectService;
-            _teamService = teamService;
-        }
 
-        // GET: ProjectController
-        [Route("project")]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> Index()
-        {
-            var user = User.Claims;
+		public ProjectController(IProjectService projectService, ITeamService teamService, IMapper mapper)
+		{
+			_projectService = projectService;
+			_teamService = teamService;
+			_mapper = mapper;
+		}
 
-            var model = await CreateProjectModels();
-            return View(model);
-        }
+		// GET: ProjectController
+		[Route("project")]
+		[Authorize(Roles = "User")]
+		public async Task<IActionResult> Index()
+		{
 
-        // GET: ProjectController/Add
-        public ActionResult Create()
-        {
-            return View();
-        }
+			if (!HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId))
+			{
+				return RedirectToAction("Index", "Home");
+			}
 
-        // POST: ProjectController/Add
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProjectModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                ViewData["ActivateModal"] = nameof(Create);
+			var userPartOfTeam = await _teamService.GetAllTeamIdUserPartOfAsync(userId);   
 
-                var models = CreateProjectModels();
+			var projects = await _projectService.GetAllProjects();
+			
 
-                return View("Index", models);
-            }
-            model.Description ??= string.Empty;
-            await _projectService.CreateProject(model.Name, model.Description);
+			var ownerProjectList = projects
+				.Where(a => a.OwnerId == userId)
+				.Select(a => new ProjectModel() { Id = a.Id, Name = a.Name, Description = a.Description }).ToList();
 
-            TempData["ToastMessage"] = "Project added.";
+			var memberProjectList = projects
+				.Where(a => a.ProjectTeams
+					.Select(team => team.Id)
+					.Any(teamId => userPartOfTeam
+						.Contains(teamId)))
+				.Select(a => new ProjectModel() { Id = a.Id, Description = a.Description, Name = a.Name })
+				.ToList();
 
-            return RedirectToAction("Index");
-        }
-        private async Task<IEnumerable<ProjectModel>> CreateProjectModels()
-        {
-            var projects = await _projectService.GetAllProjects();
-            List<ProjectModel> projectModels = new();
-            foreach (var project in projects)
-            {
-                var projectModel = new ProjectModel
-                {
-                    Id = project.Id,
-                    Name = project.Name,
-                    Description = project.Description
-                };
-                projectModels.Add(projectModel);
-            }
-            return projectModels;
-        }
+			 
 
-        // GET: ProjectController/Details/5
-        [Route("project/{projectId:Guid}/details")]
-        public async Task<IActionResult> Details(Guid projectId)
-        {
-            var project = await _projectService.GetProjectById(projectId);
+			var finalyModel = new ProjectOwnerAndMember()
+			{
+				owner = ownerProjectList,
+				member = memberProjectList
 
-            if (project is null)
-            {
-                return RedirectToAction("Index");
-            }
+			};
 
-            var projectModel = await CreateDetailsModel(project);
+			return View(finalyModel);
+		}
+		//[Route("project/{Id:Guid}/details")]
+		//public IActionResult TestViewToDeleteLetter(Guid Id)
+		//{
+		//	var project = _projectService.GetProjectById(Id);
+		//	return View();
+		//}
+		// GET: ProjectController/Add
+		public ActionResult Create()
+		{
+			return View();
+		}
 
-            return View(projectModel);
-        }
+		// POST: ProjectController/Add
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(ProjectModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				ViewData["ActivateModal"] = nameof(Create);
+
+				var models = CreateProjectModels();
+
+				return View("Index", models);
+			}
+
+			HttpContext.User.Claims.TryGetAuthenticatedUserId(out var UserId);
+
+			model.Description ??= string.Empty;
+			await _projectService.CreateProject(model.Name, model.Description, UserId);
+
+			TempData["ToastMessage"] = "Project added.";
+
+			return RedirectToAction("Index");
+		}
+		private async Task<IEnumerable<ProjectModel>> CreateProjectModels()
+		{
+			var projects = await _projectService.GetAllProjects();
+			List<ProjectModel> projectModels = new();
+			foreach (var project in projects)
+			{
+				var projectModel = new ProjectModel
+				{
+					Id = project.Id,
+					Name = project.Name,
+					Description = project.Description
+				};
+				projectModels.Add(projectModel);
+			}
+			return projectModels;
+		}
+
+		// GET: ProjectController/Details/5
+		[Route("project/{projectId:Guid}/details")]
+		public async Task<IActionResult> Details(Guid projectId)
+		{
+			var project = await _projectService.GetProjectById(projectId);
+
+			if (project is null)
+			{
+				return RedirectToAction("Index");
+			}
+
+			var projectModel = await CreateDetailsModel(project);
+
+			return View(projectModel);
+		}
 
         private async Task<ProjectDetailsModel> CreateDetailsModel(Project project)
         {
@@ -130,32 +175,32 @@ namespace WebTaskMaster.Controllers
             return projectModel;
         }
 
-        [HttpPost]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddTeam(ProjectAddTeamModel model, Guid projectId)
-        {
-            if (!ModelState.IsValid)
-            {
-                ViewData["ActivateModal"] = nameof(AddTeam);
+		[HttpPost]
+		[Authorize(Roles = "User")]
+		public async Task<IActionResult> AddTeam(ProjectAddTeamModel model, Guid projectId)
+		{
+			if (!ModelState.IsValid)
+			{
+				ViewData["ActivateModal"] = nameof(AddTeam);
 
-                var project = await _projectService.GetProjectById(projectId);
+				var project = await _projectService.GetProjectById(projectId);
 
-                if (project is null)
-                {
-                    return RedirectToAction("Index");
-                }
+				if (project is null)
+				{
+					return RedirectToAction("Index");
+				}
 
-                var projectModel = await CreateDetailsModel(project);
+				var projectModel = await CreateDetailsModel(project);
 
-                return View("Details", projectModel);
-            }
+				return View("Details", projectModel);
+			}
 
             await _projectService.ChangeProjectTeam(projectId, model.TeamIdToAdd);
 
-            TempData["ToastMessage"] = "Team added.";
+			TempData["ToastMessage"] = "Team added.";
 
-            return RedirectToAction("Details", new { projectId });
-        }
+			return RedirectToAction("Details", new { projectId });
+		}
 
         //[Authorize(Roles = "User")]
 
@@ -169,44 +214,44 @@ namespace WebTaskMaster.Controllers
         //    return RedirectToAction("Details", new { projectId });
         //}
 
-        [HttpPost]
-        [Authorize(Roles = "User")]
-        [Route("project/{projectId:Guid}/edit")]
-        public async Task<IActionResult> Edit(ProjectModel model, Guid projectId)
-        {
-            if (!ModelState.IsValid)
-            {
-                ViewData["ActivateModal"] = nameof(Edit);
+		[HttpPost]
+		[Authorize(Roles = "User")]
+		[Route("project/{projectId:Guid}/edit")]
+		public async Task<IActionResult> Edit(ProjectModel model, Guid projectId)
+		{
+			if (!ModelState.IsValid)
+			{
+				ViewData["ActivateModal"] = nameof(Edit);
 
-                var project = await _projectService.GetProjectById(projectId);
+				var project = await _projectService.GetProjectById(projectId);
 
-                if (project is null)
-                {
-                    return RedirectToAction("Index");
-                }
+				if (project is null)
+				{
+					return RedirectToAction("Index");
+				}
 
-                var projectModel = await CreateDetailsModel(project);
+				var projectModel = await CreateDetailsModel(project);
 
-                return View("Details", projectModel);
-            }
+				return View("Details", projectModel);
+			}
 
-            var newDescription = model.Description ?? string.Empty;
+			var newDescription = model.Description ?? string.Empty;
 
-            await _projectService.EditNameAndDescription(projectId, model.Name, newDescription);
+			await _projectService.EditNameAndDescription(projectId, model.Name, newDescription);
 
-            TempData["ToastMessage"] = "Changes saved.";
+			TempData["ToastMessage"] = "Changes saved.";
 
-            return RedirectToAction("Details", new { projectId });
-        }
+			return RedirectToAction("Details", new { projectId });
+		}
 
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> Delete(Guid projectId)
-        {
-            await _projectService.RemoveProject(projectId);
+		[Authorize(Roles = "User")]
+		public async Task<IActionResult> Delete(Guid projectId)
+		{
+			await _projectService.RemoveProject(projectId);
 
-            TempData["ToastMessage"] = "Project deleted.";
+			TempData["ToastMessage"] = "Project deleted.";
 
-            return RedirectToAction("Index");
-        }
-    }
+			return RedirectToAction("Index");
+		}
+	}
 }

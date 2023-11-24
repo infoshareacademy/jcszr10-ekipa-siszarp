@@ -25,6 +25,7 @@
 				<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
 			</svg>
 			Edit
+			<span class="lnr lnr-pencil"></span>
 		</button>
 
 		@* Delete Project Modal button  *@
@@ -79,16 +80,27 @@
 					<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
 				</svg>
 				Delate
+				<span class="lnr lnr-pencil"></span>
 			</button>
 
 			@* hidden link for modal
 		<a id="link" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@Model.ProjectTeam.Id"></a>
  *@
 	</div>
+	<br />
+@* Add Team Modal button *@
+<button id="addTeamModalBtn" class="btn btn-orange col-12 justify-content-end col-sm-1 col-xl-2" type="button"
+		data-bs-toggle="modal" data-bs-target="#addTeamModal"
+		data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Add team">
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+		<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+	</svg>
 
 	<!--  Task Description -->
-	<div class="row justify-content-end text-start px-2 mb-2 border-start border-success border-5 rounded-2 mx-5 m-bottom-5 shadow = p-3 mb-5 bg-body rounded">
-		<p class="h-1 text-uppercase text-success fw-bold px-5">Project Tasks</p>
+	@* <div class="row justify-content-end text-start px-2 mb-2 border-start border-success border-opacity-75 border-5 rounded-2 mx-5 m-bottom-5 shadow = p-3 mb-5 bg-body rounded">
+		<p class="h-1 text-uppercase text-success text-opacity-75 fw-bold px-5">Project Tasks</p>
+	</div> *@
+
     @* <div class="row justify-content-center px-2 py-2 mb-2 bg-primary bg-opacity-10">
         @* <h5 class="col-12 col-sm-11 order-first">Zadania</h5> *@
         @* <label class="fs-5 col-12 col-sm-11 order-first" asp-for="Tasks"></label> *@

@@ -87,7 +87,7 @@ public class AccountService : IAccountService
     {
         var user = await _dbContext.UserEntities
             .Where(u => u.Email == dto.Email)
-            .Select(u => new { u.Id, u.PasswordHash, u.PasswordSalt })
+            .Select(u => new { u.Id, u.PasswordHash, u.PasswordSalt, name = $"{u.FirstName} {u.LastName}" })
             .FirstOrDefaultAsync();
 
         var resultDto = new LoginResultDto();
@@ -100,7 +100,7 @@ public class AccountService : IAccountService
         }
 
         resultDto.LoginWasSuccessful = true;
-        resultDto.ClaimsIdentity = GetClaimsIdentity(user.Id);
+        resultDto.ClaimsIdentity = GetClaimsIdentity(user.Id, user.name);
         resultDto.AuthProp = GetAuthProp(dto.RememberMe);
 
         return resultDto;
@@ -221,11 +221,12 @@ public class AccountService : IAccountService
         return Convert.ToBase64String(hash);
     }
 
-    private static ClaimsIdentity GetClaimsIdentity(Guid userId)
+    private static ClaimsIdentity GetClaimsIdentity(Guid userId, string name)
     {
         var claims = new List<Claim>
         {
             new(ClaimTypes.Role, "User"),
+            new(ClaimTypes.Name, name),
             new("UserId", userId.ToString())
         };
 

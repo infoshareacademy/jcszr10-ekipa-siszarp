@@ -26,18 +26,8 @@ public class ProjectService : IProjectService
             .ToListAsync();
 
         var projects = projectEntities
-            .Select(p => new Project
-        {
-            Id = p.Id,
-            Name = p.Name,
-            Description = p.Description,
-        })
+            .Select(ConvertProjectEntity)
             .ToList();
-
-		if (projects == null)
-		{
-			return new List<Project>();
-		}
 
 		return projects;
     }
@@ -56,7 +46,7 @@ public class ProjectService : IProjectService
         var project = ConvertProjectEntity(projectEntity);
         return project;
     }
-    public async Task<Guid> CreateProject(string name, string description)
+    public async Task<Guid> CreateProject(string name, string description, Guid ownerId)
     {
         var projectId = Guid.NewGuid();
         var project = new ProjectEntity
@@ -64,7 +54,7 @@ public class ProjectService : IProjectService
             Id = projectId,
             Name = name,
             Description = description,
-
+            OwnerId = ownerId
         };
         await _dbContext.ProjectEntities.AddAsync(project);
         await _tasksListService.CreateTasksList("Backlog", projectId);
@@ -92,7 +82,27 @@ public class ProjectService : IProjectService
         project.Description = newDescription;
         await _dbContext.SaveChangesAsync();
     }
-    public async Task<List<Team>> GetAvailableProjectTeams(Guid projectId)
+    //public async Task AddTeamToProject(Guid projectId, IEnumerable<Guid> newTeamsIds)
+    //{
+    //    var project = await _dbContext.ProjectEntities
+    //        .Include(p => p.Teams)
+    //        .FirstOrDefaultAsync(p => p.Id == projectId);
+    //    if (project is null)
+    //    {
+    //        return;
+    //    }
+    //    var possibleTeams = newTeamsIds.Except(project.Teams.Select(t => t.Id));
+
+    //    var teamEntities = await _dbContext.TeamEntities.ToListAsync();
+
+    //    var teamsToAdd = teamEntities.IntersectBy(possibleTeams, t => t.Id).ToList();
+
+    //    foreach (var team in teamsToAdd)
+    //    {
+    //        project.Teams.Add(team);
+    //    }
+    //}
+        public async Task<List<Team>> GetAvailableProjectTeams(Guid projectId)
     {
         var availableProjectTeams = await _dbContext.TeamEntities
             .Where(u => u.Projects.Any(t => t.Id == projectId))

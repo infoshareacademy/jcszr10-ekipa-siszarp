@@ -1,26 +1,35 @@
-﻿@model WebTaskMaster.Models.Task.WebTaskModel;
+﻿@using Microsoft.AspNetCore.Http.Extensions
 
+@model WebTaskMaster.Models.Task.WebTaskModel;
+@{
+            var url = Context.Request.GetEncodedUrl();
+}
 <script>    
     function edit(element)
     {
         document.getElementById("reset-" + element).style.display = "initial";
-        document.getElementById(element).style.display = "initial";
+        document.getElementById("submit-" + element).style.display = "initial";
         document.getElementById("edit-" + element).style.display = "none";
         var disabledElements = document.getElementsByClassName("disabled-" + element);
         for (var i = 0; i < disabledElements.length; i++)
         {
             disabledElements[i].removeAttribute("disabled");
-        }
+        }                            
+        document.getElementById(element).setAttribute("draggable", "false");   
+        document.getElementById("url-" + element).value = window.location.href;
     }
     function reset(element) 
     { 
         document.getElementById("reset-" + element).style.display = "none";
-        document.getElementById(element).style.display = "none";
+        document.getElementById("submit-" + element).style.display = "none";
         document.getElementById("edit-" + element).style.display = "initial";
         var disabledElements = document.getElementsByClassName("disabled-" + element);
-        for (var i = 0; i < disabledElements.length; i++) {
+        for (var i = 0; i < disabledElements.length; i++) 
+        {
             disabledElements[i].setAttribute("disabled", "true");
         }
+        
+        document.getElementById(element).setAttribute("draggable", "true");
     }
     function deleteConfirmation() 
     { 
@@ -28,42 +37,55 @@
     }
     
    
+
 </script>
-<div class="card" style="width: 18rem;">
-  <div class="card-body">
-        <form asp-controller="Task" asp-action="DeleteTask" onsubmit="return deleteConfirmation();">
+<div class="card" id="@Model.ProjectTask.Id" style="width: 18rem;" draggable="true" ondragstart="drag(event)">
+  <div class="card-body">      
+        <form asp-controller="Task" asp-action="DeleteTask" onsubmit="return deleteConfirmation();" >
             <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;" />
             <input asp-for="TasksListId" readonly style="display: none;" />
             <input asp-for="ProjectId" readonly style="display: none;" />
-            <button type="submit" class="btn-close" aria-label="Close" style="float: right"></button></form>
-        <form asp-controller="Task"  asp-action="EditTask">
+            <button type="submit" class="btn-close" aria-label="Close" style="float: right"></button>
+            <input asp-for="url" readonly style="display: none;" value="@url" />
+        </form>
+
+
+        
+        <form asp-controller="Task" asp-action="EditTask" id="form-@Model.ProjectTask.Id">
           <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;"/>
           <input asp-for="@Model.ProjectTask.FinishDate" readonly style="display: none;" />
             <input asp-for="TasksListId" readonly style="display: none;" />
             <input asp-for="ProjectId" readonly style="display: none;" />
-            <input asp-for="@Model.newValues[0]" value="@Model.ProjectTask.TaskName" class="card-title disabled-@Model.ProjectTask.Id" disabled />
-            <input asp-for="@Model.newValues[1]" value="@Model.ProjectTask.TaskDescription" class="card-text disabled-@Model.ProjectTask.Id" disabled />
-            
+            <input asp-for="url" readonly id="url-@Model.ProjectTask.Id" style="display: none;" value="@url"/>
+                <label>Task Name</label>
+                <input asp-for="@Model.newValues[0]" value="@Model.ProjectTask.TaskName" class="card-title form-control disabled-@Model.ProjectTask.Id" disabled draggable="false" />
+                      
+            <label>Task Description</label>
+            <textarea asp-for="@Model.ProjectTask.TaskDescription" name="Description" class="card-text form-control disabled-@Model.ProjectTask.Id" disabled draggable="false" rows="4" cols="50">
+                
+            </textarea>
+            <input asp-for="@Model.newValues[1]" style="display: none"/>
             <div class="collapse" id="taskDetails-@Model.ProjectTask.Id">
-                <select asp-for="@Model.newValues[2]" class="card-text form-select disabled-@Model.ProjectTask.Id" disabled>
+                <label>Task Status</label>
+                <select asp-for="@Model.newValues[2]" class="card-text form-select disabled-@Model.ProjectTask.Id" disabled id="newStatus-@Model.ProjectTask.Id" draggable="false">
                     @{
                         var statusNumber = @Model.ProjectTask.Status.StatusID();
                         string[] statusMsg = new string[]
                         {
-                        "Do zrobienia",
-                        "W trakcie",
-                        "Zrobiony"
+                        "To do",
+                        "in Progress",
+                        "Done"
                         };
 
                         for(int i = 0; i < 3; i++)
                         {
                             if(i == statusNumber)
                             {
-                                                        <option value="@statusNumber" selected>@statusMsg[statusNumber]</option>
+                                                            <option value="@statusNumber" selected>@statusMsg[statusNumber]</option>
                             }
                             else
                             {
-                                                        <option value="@i">@statusMsg[i]</option>
+                                                            <option value="@i">@statusMsg[i]</option>
                             }
                         }
                     }
@@ -81,13 +103,32 @@
                     
 
                 }
-                <input asp-for="@Model.newValues[3]" value="@finishDate" type="date" class="card-text disabled-@Model.ProjectTask.Id" disabled />
-                <br />
+                <label>Task Finish Date</label>
+                <input asp-for="@Model.newValues[3]" value="@finishDate" type="date" class="card-text form-control disabled-@Model.ProjectTask.Id" disabled draggable="false" />
                 
-                <button type="button" id="edit-@Model.ProjectTask.Id">Edytuj</button>
+                <label>Assigned User</label>
+                <select asp-for="@Model.newValues[4]" class="card-text form-select disabled-@Model.ProjectTask.Id" disabled disableddraggable="false">
+                    <option value="">none</option>
+                    @{
+                        if(Model.Team is null)
+                        {
+
+                        }
+                        else
+                        {                        
+                            foreach(var member in Model.Team.Members)
+                            {
+                                    <option value="@member.Id">@member.FirstName @member.LastName</option>
+                            }
+                        }
+                        }
+                </select>
+              
+                <br />
+                <button type="button" id="edit-@Model.ProjectTask.Id" class="btn-orange btn">Edit</button>
                     
-                <button type="reset" id="reset-@Model.ProjectTask.Id" style="display: none">Anuluj</button>
-                <button type="submit" id="@Model.ProjectTask.Id" style="display: none">Zapisz</button>
+                <button type="reset" id="reset-@Model.ProjectTask.Id" style="display: none" class="btn-orange btn">Cancel</button>
+                <button type="submit" id="submit-@Model.ProjectTask.Id" style="display: none" class="btn btn-success">Save</button>
       </form>
             
         </div>

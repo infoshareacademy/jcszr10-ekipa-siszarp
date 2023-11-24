@@ -1,13 +1,13 @@
-﻿@model Manage_tasks_Biznes_Logic.Model.TasksList;
+﻿@model WebTaskMaster.Models.Task.WebTasksList;
 @{
     if (Model.Tasks == null)
     {
     }
     else
     {
-        foreach (var task in Model.Tasks)
+        foreach (var task in Model.Tasks.Tasks)
         {
-            @await Component.InvokeAsync("SingleTask", task.Id)
+            @await Component.InvokeAsync("SingleTask", new{taskGuid = task.Id,teamGuid = Model.TeamId})
         }
     }
     

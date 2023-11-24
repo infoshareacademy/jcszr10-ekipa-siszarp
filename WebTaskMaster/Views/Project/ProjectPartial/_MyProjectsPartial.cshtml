@@ -1,0 +1,99 @@
+﻿@using WebTaskMaster.Models.Project
+@model ProjectOwnerAndMember
+
+
+
+<ul class="section">
+	@{
+		if (Model.owner.Count > 0)
+		{
+			var memberCounter1 = 0;
+			int progress = 25;
+
+			<div class="containeR">
+				@foreach (var project in Model.owner)
+				{
+					memberCounter1++;
+					progress += 10;
+					string lolka = progress.ToString();
+					lolka += "%";
+					 
+
+				<li class="item_wrap male online">
+					<div class="item">
+						<div class="item_left">
+							<div class="card">
+								<h2>@memberCounter1 </h2>
+								<h3>@project.Name</h3>
+								<div id="myProgress">
+									<div id="myBar" style="width: @Html.Raw(lolka)">@lolka</div>
+								</div>
+								<div class="content">
+
+									<a asp-action="Details" asp-route-projectId="@project.Id"
+									   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Project details">Open</a>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</li>
+
+				}
+			</div>
+
+
+		}
+	}
+
+
+	@{
+		if (Model.member.Count > 0)
+		{
+			var memberCounter2 = 0;
+			int secondProgress = 55;
+
+			<div class="containeR">
+				@foreach (var project in Model.member)
+				{
+
+					@if (!Model.owner.Any(a => a.Id == project.Id))
+					{
+
+						memberCounter2++;
+						secondProgress+=5;
+
+						string lol = secondProgress.ToString();
+						lol += "%";
+					<li class="item_wrap female online">
+						<div class="item">
+							<div class="item_left">
+								<div class="card">
+									<h2>@memberCounter2 </h2>
+									<h3>@project.Name</h3>
+									<div id="myProgress2">
+										<div id="myBar2" style="width:@Html.Raw(lol)"> @lol  </div>
+									</div>
+									<div class="content">
+
+										<a asp-action="Details" asp-route-projectId="@project.Id"
+										   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Project details">Open</a>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</li>
+					}
+
+
+
+				}
+			</div>
+
+
+		}
+	}
+
+</ul>
+
