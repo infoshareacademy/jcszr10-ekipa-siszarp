@@ -38,26 +38,27 @@ namespace WebTaskMaster.Controllers
 				return RedirectToAction("Index", "Home");
 			}
 
-			var userPartOfTeam = await _teamService.GetAllTeamIdUserPartOfAsync(userId);   
+			var userPartOfTeam = await _teamService.GetAllTeamIdUserPartOfAsync(userId);
 
 			var projects = await _projectService.GetAllProjects();
-			
+
 
 			var ownerProjectList = projects
 				.Where(a => a.OwnerId == userId)
 				.Select(a => new ProjectModel() { Id = a.Id, Name = a.Name, Description = a.Description }).ToList();
 
 			var memberProjectList = projects
-				.Where(a => a.ProjectTeams
-					.Select(team => team.Id)
-					.Any(teamId => userPartOfTeam
-						.Contains(teamId)))
+				.Where(a => a.ProjectTeam.Members.Any(x => x.Id == userId))
 				.Select(a => new ProjectModel() { Id = a.Id, Description = a.Description, Name = a.Name })
-				.ToList();
+                .ToList();
 
-			 
+            //	.Select(team => team.Id)
+            //	.Any(teamId => userPartOfTeam
+            //		.Contains(teamId)))
 
-			var finalyModel = new ProjectOwnerAndMember()
+
+
+            var finalyModel = new ProjectOwnerAndMember()
 			{
 				owner = ownerProjectList,
 				member = memberProjectList
