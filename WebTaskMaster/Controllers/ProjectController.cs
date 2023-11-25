@@ -45,11 +45,11 @@ namespace WebTaskMaster.Controllers
 
 			var ownerProjectList = projects
 				.Where(a => a.OwnerId == userId)
-				.Select(a => new ProjectModel() { Id = a.Id, Name = a.Name, Description = a.Description }).ToList();
+				.Select(a => new ProjectModel() { Id = a.Id, Name = a.Name, Description = a.Description, Team = new TeamBasicModel() }).ToList();
 
 			var memberProjectList = projects
-				.Where(a => a.ProjectTeam.Members.Any(x => x.Id == userId))
-				.Select(a => new ProjectModel() { Id = a.Id, Description = a.Description, Name = a.Name })
+				.Where(a => a.ProjectTeam is not null && a.ProjectTeam.Members.Any(x => x.Id == userId))
+				.Select(a => new ProjectModel() { Id = a.Id, Description = a.Description, Name = a.Name, Team = new TeamBasicModel() })
                 .ToList();
 
             //	.Select(team => team.Id)

@@ -21,7 +21,8 @@ public class ProjectService : IProjectService
     public async Task<List<Project>> GetAllProjects()
     {
         var projectEntities = await _dbContext.ProjectEntities
-            .Include(p => p.Team)
+            .Include(p => p.Team).ThenInclude(t => t.Leader)
+            .Include(p => p.Team).ThenInclude(t => t.Members)
             .Include(p => p.TaskLists)
             .ToListAsync();
 

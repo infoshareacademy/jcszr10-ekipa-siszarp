@@ -7,7 +7,7 @@
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public Team ProjectTeam { get; set; }
+        public Team? ProjectTeam { get; set; }
         public Guid ProjectTeamId { get; set; }
         public Guid? OwnerId { get; set; }
         public List<TasksList> Tasks { get; set; }
