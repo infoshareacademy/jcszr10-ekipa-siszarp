@@ -85,11 +85,6 @@
 										<p class="h-1 text-start col-md-6 text-uppercase text-white text-opacity-100 fw-bold px-5">@Ekipa.Name</p>
 										<div class="col-md-6 d-flex justify-content-end align-items-center mt-2">
 											<a asp-controller="Team" asp-action="Details" asp-route-teamId="@Ekipa.Id" class="btn btn-info btn-sm mx-1" data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Details"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
-											<button class="btn btn-warning btn-sm mx-1"
-											        data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description"
-											>
-												<i class="bi bi-sliders"></i>
-											</button>
 											<button class="btn btn-danger btn-sm mx-1"
 											        data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team"
 													data-bs-toggle="modal" data-bs-target="#deleteTeamModal" data-bs-link-id="link@(counter)">
