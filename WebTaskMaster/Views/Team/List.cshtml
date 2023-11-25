@@ -36,12 +36,12 @@
                             }
 
                             @* <div class="card-body">
-                                <p class="card-text">
-                                    <label asp-for="@team.NumberOfMembers"></label>
-                                    <span>-</span>
-                                    <span>@team.NumberOfMembers</span>
-                                </p>
-                            </div> *@
+                    <p class="card-text">
+                    <label asp-for="@team.NumberOfMembers"></label>
+                    <span>-</span>
+                    <span>@team.NumberOfMembers</span>
+                    </p>
+                    </div> *@
 
                             <div class="card-footer">
                                 <a class="btn btn-primary" asp-action="Details" asp-route-teamId="@team.TeamId">Details</a>
@@ -86,12 +86,12 @@
                             </ul>
 
                             @* <div class="card-body">
-                                <p class="card-text">
-                                    <label asp-for="@team.NumberOfMembers"></label>
-                                    <span>-</span>
-                                    <span>@team.NumberOfMembers</span>
-                                </p>
-                            </div> *@
+                    <p class="card-text">
+                    <label asp-for="@team.NumberOfMembers"></label>
+                    <span>-</span>
+                    <span>@team.NumberOfMembers</span>
+                    </p>
+                    </div> *@
 
                             <div class="card-footer">
                                 <a class="btn btn-primary" asp-action="Details" asp-route-teamId="@team.TeamId">Details</a>
@@ -102,12 +102,47 @@
             </div>
         </div>
     }
+
+    @* New UI *@
+    <div class="row justify-content-center">
+        <nav>
+            <div class="nav nav-pills" id="pills-tab" role="tablist">
+                <a class="col-12 d-grid nav-link" asp-action="Add">Add team</a>
+
+                <button class="nav-link active col-12 d-grid" id="pills-home-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                        aria-selected="true">
+                    Home
+                </button>
+
+                <button class="nav-link col-12 d-grid" id="pills-profile-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                        aria-selected="false">
+                    Profile
+                </button>
+
+                <button class="nav-link col-12 d-none d-grid" id="pills-contact-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact"
+                        aria-selected="false">
+                    Contact
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">Home</div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">Profile</div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">Contact</div>
+    </div>
+
+
 </div>
 
 <partial name="_ToastPartial" />
 
 @section Scripts
-    {
+{
     @* show toast for team add response *@
     @if (TempData.ContainsToastMessage())
     {
@@ -115,4 +150,9 @@
             bootstrap.Toast.getOrCreateInstance(document.getElementById('toast')).show();
         </script>
     }
-    }
+}
+
+@section Style
+{
+    <link href="@Url.Content("~/Css/Team/List.css")" rel="stylesheet" type="text/css" />
+}
