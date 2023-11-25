@@ -2,7 +2,18 @@
     --progress: -n+25;
     --progress2: -n+25;
 }
+body::-webkit-scrollbar {
+    width: 1em;
+}
 
+body::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
 * {
     margin: 0;
     padding: 0;
@@ -46,7 +57,9 @@ html {
 .colorMenu {
     background-color: rgb(123, 104, 238);
 }
-
+.size-team-block{
+  width: 300px;
+}
 .nav-pills li a:hover {
     background-color: orange;
 }
@@ -58,16 +71,20 @@ html {
 .project-info-dashboard {
     background: #4c70a6;
     border-radius: 25px;
-
+    
 }
-    .project-info-dashboard .team-style lol{
-
-    }
+.test{
+    background:white;
+}
     .project-info-dashboard .team-style p {
         color: #8aabff;
-        border-bottom: 2px solid #547de9;
-         
     }
+.team-style {
+    background: #ffffff0f;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+  
 
 .sideBarColor {
     background-color: #2e2e48;
@@ -88,7 +105,35 @@ html {
     height: 70px;
     border: none !important;
 }
+.team-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 20px;
+    background: rgba(71,93,156,1);
+    box-shadow: inset 3px -3px 15px rgba(0, 0, 0,0.5);
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 25px;
+     
+}
+    .team-list::-webkit-scrollbar {
+        width: 0.5em;
+        
+    }
 
+     
+.custom-list-block {
+    background: #465c9a;
+    
+}
+
+.item_list {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 193, 7,1);
+    border-radius: 15px;
+    background: rgba(44, 65, 118,0.8);
+}
+
+ 
     .btn-orange:hover {
         background-color: #557ee5;
         box-shadow: 5px 5px 15px orange;
