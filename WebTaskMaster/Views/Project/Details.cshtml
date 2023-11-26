@@ -35,8 +35,8 @@
 
 						<div>
 							<button class="btn btn-warning m-1 rounded-5"
-									data-bs-toggle="modal" data-bs-target="#editProjectModal"
-									data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description">
+							        data-bs-toggle="modal" data-bs-target="#editProjectModal"
+							        data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 									<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
 								</svg>
@@ -44,8 +44,8 @@
 							</button>
 
 							<button type="button" class="btn btn-danger m-1 ml-auto rounded-5"
-									data-bs-toggle="modal" data-bs-target="#deleteProjectModal"
-									data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete project">
+							        data-bs-toggle="modal" data-bs-target="#deleteProjectModal"
+							        data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete project">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 									<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
 									<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
@@ -53,9 +53,24 @@
 								Delete
 							</button>
 						</div>
-					</div>
-				</div>
 
+					</div>
+					 
+						<div class="accordion accordion-flush  col-md-12 py-3 mb-2  " id="accordionFlushExample">
+							<div class="accordion-item">
+								<h2 class="accordion-header" id="flush-headingOne">
+									<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+										Accordion Item #1
+									</button>
+								</h2>
+								<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+									<div class="accordion-body">@Model.Description</div>
+								</div>
+							</div>
+						</div>
+						 
+				</div>
+				
 
 
 
@@ -72,81 +87,123 @@
 								</button>
 							</div>
 						</div>
-						<div class="row col-md-4  justify-content-start align-items-lg-start overflow-auto team-list">
-							<div class="container">
-								
-								@foreach (var Ekipa in Model.Teams)
-								{
-									counter++;
-									<div class="p-1 " >
-										
+						<div class="container">
+							<div class="row">
+								<div class="row col-md-4  justify-content-start align-items-lg-start overflow-auto team-list">
+									<div class="container" style="margin-bottom: 20px;  margin-top: 20px;">
+
+										@foreach (var Ekipa in Model.Teams)
+										{
+											counter++;
+											<div class="p-1 ">
+											</div>
+											<div class="row text-start border-opacity-50 border-5 mx-2 mb-1   p-3  item_list">
+												<p class="h-1 text-start col-md-6 text-uppercase text-white text-opacity-100 fw-bold px-5">@Ekipa.Name</p>
+												<div class="col-md-6 d-flex justify-content-end align-items-center mt-2">
+													<a asp-controller="Team" asp-action="Details" asp-route-teamId="@Ekipa.Id" class="btn btn-info btn-sm mx-1" data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Details"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
+													<button class="btn btn-danger btn-sm mx-1"
+															data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team"
+															data-bs-toggle="modal" data-bs-target="#deleteTeamModal" data-bs-link-id="link@(counter)">
+														<i class="fa-solid fa-trash" style="color: #fcfcfc;"></i>
+													</button>
+													@* hidden link for modal *@
+													<a id="link@(counter)" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@Ekipa.Id"></a>
+												</div>
+											</div>
+										}
 									</div>
-									<div   class="row text-start border-opacity-50 border-5 mx-2 mb-1   p-3  item_list" >
-										<p class="h-1 text-start col-md-6 text-uppercase text-white text-opacity-100 fw-bold px-5">@Ekipa.Name</p>
-										<div class="col-md-6 d-flex justify-content-end align-items-center mt-2">
-											<a asp-controller="Team" asp-action="Details" asp-route-teamId="@Ekipa.Id" class="btn btn-info btn-sm mx-1" data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Details"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
-											<button class="btn btn-danger btn-sm mx-1"
-											        data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team"
-													data-bs-toggle="modal" data-bs-target="#deleteTeamModal" data-bs-link-id="link@(counter)">
-												<i class="fa-solid fa-trash" style="color: #fcfcfc;"></i>
-											</button>
-											@* hidden link for modal *@
-											<a id="link@(counter)" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@Ekipa.Id"></a>
+
+								</div>
+							</div>
+						</div>
+
+						<!-- info about tasks-->
+						<div class=" col-md-3  progress-bar offset-md-4">
+
+							<div class="container ">
+
+								<div class="row">
+									<h2 class="h-1  text-uppercase text-white text-opacity-75 fw-bold   align-self-center">Progress</h2>
+									<div class="progress-bar-row">
+										<div class="col justify-content-center">
+
+											<div class="col block-progress-inProgress ">
+												<h3 class="text-center text-white text-opacity-75 fw-bold ">To do</h3>
+												<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="10" data-progress-color="rgb(255 193 7)" data-bg-color="#374979">
+													<div class="inner-circle"></div>
+													<p class="percentage">0%</p>
+												</div>
+											</div>
+
+											<div class="col block-progress-inProgress">
+												<h3 class="text-center text-white text-opacity-75 fw-bold ">In progress</h3>
+												<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="20" data-progress-color="#5786e9" data-bg-color="#374979">
+													<div class="inner-circle"></div>
+													<p class="percentage">0%</p>
+												</div>
+											</div>
+
+
+											<div class="  block-progress-inProgress">
+												<div class="  block-progress-Done">
+													<h3 class="text-center text-white text-opacity-75 fw-bold ">Done</h3>
+													<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="30" data-progress-color="rgb(114 255 7)" data-bg-color="#374979">
+														<div class="inner-circle"></div>
+														<p class="percentage">0%</p>
+													</div>
+												</div>
+
+											</div>
 										</div>
+
 									</div>
-								}
+								</div>
 							</div>
 
-							<div style="margin-top: 20px;"></div>
+							
+						</div>
+					</div>
+
+
+
+
+
+
+
+
+					@* Edit team name and description modal *@
+					<partial name="_EditPartial" model="Model.ProjectEditModel" />
+					@* Add Team Modal *@
+					<partial name="_ChangeTeamPartial" model="Model.ProjectAddTeamModel" />
+				</div>
+
+				@* Delete Team from Project Modal *@
+				<div id="deleteTeamModal" class="modal fade text-dark">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5">Delete team</h1>
+								<button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+							</div>
+							<div class="modal-body">
+								<span>Are you sure you want to remove a team from current project?</span>
+							</div>
+							<div class="modal-footer">
+								@* Href will be set on modal activation. *@
+								<a id="confirmTeamDeleteBtn" class="btn btn-danger px-5 mx-5">Yes</a>
+
+								<button class="btn btn-primary px-5 mx-5" type="button" data-bs-dismiss="modal">No</button>
+							</div>
 						</div>
 					</div>
 				</div>
 
-				
+				<!--  and   -->
 
 
 
 
-
-
-				@* Edit team name and description modal *@
-				<partial name="_EditPartial" model="Model.ProjectEditModel" />
-				@* Add Team Modal *@
-				<partial name="_ChangeTeamPartial" model="Model.ProjectAddTeamModel" />
 			</div>
-
-			@* Delete Team from Project Modal *@
-			<div id="deleteTeamModal" class="modal fade text-dark">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5">Delete team</h1>
-							<button class="btn-close" type="button" data-bs-dismiss="modal"></button>
-						</div>
-						<div class="modal-body">
-							<span>Are you sure you want to remove a team from current project?</span>
-						</div>
-						<div class="modal-footer">
-							@* Href will be set on modal activation. *@
-							<a id="confirmTeamDeleteBtn" class="btn btn-danger px-5 mx-5">Yes</a>
-
-							<button class="btn btn-primary px-5 mx-5" type="button" data-bs-dismiss="modal">No</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-
-
-			<!--  and   -->
-			<!-- team and button to add new team-->
-			<!-- info about tasks-->
-			<div class="block-progress-toDo">toDo</div>
-			<div class="block-progress-inProgress">inProgress</div>
-			<div class="block-progress-Done">Done</div>
-			<!--  and   -->
-
-
 		</li>
 		<li class="item_wrapNew task online">
 			<div class="item">
