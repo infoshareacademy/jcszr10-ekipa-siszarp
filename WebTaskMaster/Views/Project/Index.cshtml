@@ -1,75 +1,52 @@
 ﻿@using WebTaskMaster.Models.Project
-@model ProjectOwnerAndMember
+@model ProjectIndexModel
 
 @{
-	ViewData["Title"] = "Projects List:";
+    ViewData["Title"] = "Projects List:";
 }
 
 
-	
-
-	<div class="newWrapper ">
-		<div class="title">
-			Project`s
-		</div>
-		<div class="tabs_wrap">
-			<ul>
-			<li data-tabs="myproject">
-				<a type="button"
-				            data-bs-toggle="modal" data-bs-target="#createProjectModal">
-					Create new project
-				</a></li>
-				<li data-tabs="male">My project`s</li>
-				<li data-tabs="female">Projects with my involvement</li>
-				<li data-tabs="both" class="active">Both </li>
-
-			</ul>
-			 
-		</div>
-	<partial name="ProjectPartial/_MyProjectsPartial" />
-	</div>
 
 
-	<partial name="_CreatePartial" model="new ProjectModel()" />
+<div class="newWrapper ">
+    <div class="title">
+        Project`s
+    </div>
+    <div class="tabs_wrap">
+        <ul>
+            <li data-tabs="myproject"><a asp-action="Create">Create new project</a></li>
+            <li data-tabs="male">My project`s</li>
+            <li data-tabs="female">Projects with my involvement</li>
+            <li data-tabs="both" class="active">Both </li>
 
-	<partial name="_ToastPartial" />
+        </ul>
 
-	@section Scripts
-		{
-		@{
-			var modalBtnId = ViewData["ActivateModal"] switch
-			{
-				"Create" => "createProjectModal",
-				_ => null
-			};
+    </div>
+    <partial name="ProjectPartial/_MyProjectsPartial" />
+</div>
 
-			await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<partial name="_ToastPartial" />
 
-			<script>
-				VanillaTilt.init(document.querySelectorAll(".card")
-					, {
-						max: 25,
-						speed: 300
-					});
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
 
-			</script>
+        <script>
+            VanillaTilt.init(document.querySelectorAll(".card")
+                , {
+                    max: 25,
+                    speed: 300
+                });
 
-		}
+        </script>
 
-		@if (modalBtnId is not null)
-		{
-			<script type="text/javascript">
-				$(document).ready(function () {
-					document.getElementById("@modalBtnId").click();
-				});
-			</script>
-		}
+    }
 
-		<script type="text/javascript">
-			tooltipTriggerList = document.querySelectorAll('[data-bs-toggle-tooltip="tooltip"]');
-			tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-		</script>
-	}
+    <script type="text/javascript">
+        tooltipTriggerList = document.querySelectorAll('[data-bs-toggle-tooltip="tooltip"]');
+        tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    </script>
+}
 
 
- 

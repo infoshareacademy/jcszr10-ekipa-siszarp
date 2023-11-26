@@ -57,7 +57,7 @@ public class TeamService : ITeamService
             .Include(t => t.Members)
             .Where(t => t.Members.Any(m => m.Id == userId));
 
-        var userTeams = await _mapper.ProjectTo<TeamBasicDto>(teamsQuery).ToArrayAsync();
+        var userTeams = await _mapper.ProjectTo<TeamBasicDto>(teamsQuery).ToListAsync();
 
         var teamsLeader = userTeams.Where(t => t.Leader.MemberId == userId).ToList();
         var teamsMember = userTeams.Except(teamsLeader).ToList();
@@ -182,7 +182,7 @@ public class TeamService : ITeamService
             .Where(u => u.Teams.Any(t => t.Id == teamId))
             .Where(u => u.TeamsLeader.All(t => t.Id != teamId));
 
-        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToArrayAsync();
+        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToListAsync();
 
         return dto;
     }
@@ -224,7 +224,7 @@ public class TeamService : ITeamService
         var availableUsersQuery = _dbContext.UserEntities
             .Where(u => u.Teams.All(t => t.Id != teamId));
 
-        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToArrayAsync();
+        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToListAsync();
 
         return dto;
     }
@@ -253,9 +253,9 @@ public class TeamService : ITeamService
 
         var users = await _dbContext.UserEntities
             .Where(u => dto.NewMemberIds.Any(nmId => nmId == u.Id))
-            .ToArrayAsync();
+            .ToListAsync();
 
-        if (users.Length < dto.NewMemberIds.Count)
+        if (users.Count < dto.NewMemberIds.Count)
         {
             throw new InvalidOperationException("Some members do not exist.");
         }
@@ -271,7 +271,7 @@ public class TeamService : ITeamService
             .Where(u => u.Teams.Any(t => t.Id == teamId))
             .Where(u => u.TeamsLeader.All(t => t.Id != teamId));
 
-        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToArrayAsync();
+        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToListAsync();
 
         return dto;
     }

@@ -1,11 +1,11 @@
-﻿using AutoMapper.Execution;
+﻿using AutoMapper;
+using Manage_tasks_Biznes_Logic.Dtos.Project;
 using Manage_tasks_Biznes_Logic.Dtos.Team;
 using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Database.Context;
 using Manage_tasks_Database.Entities;
 using Microsoft.EntityFrameworkCore;
-
-
+using TaskStatus = Manage_tasks_Database.TaskStatus;
 
 namespace Manage_tasks_Biznes_Logic.Service;
 
@@ -13,16 +13,21 @@ public class ProjectService : IProjectService
 {
     private readonly DataBaseContext _dbContext;
     private readonly ITasksListService _tasksListService;
-    public ProjectService(DataBaseContext dbContext, ITasksListService tasksListService)
+    private readonly IMapper _mapper;
+    public ProjectService(DataBaseContext dbContext, ITasksListService tasksListService, IMapper mapper)
     {
         _dbContext = dbContext;
         _tasksListService = tasksListService;
+        _mapper = mapper;
     }
+
     public async Task<List<Project>> GetAllProjects()
     {
         var projectEntities = await _dbContext.ProjectEntities
-            .Include(p => p.Team).ThenInclude(t => t.Leader)
-            .Include(p => p.Team).ThenInclude(t => t.Members)
+            .Include(p => p.Team)
+            .ThenInclude(t => t.Leader)
+            .Include(p => p.Team)
+            .ThenInclude(t => t.Members)
             .Include(p => p.TaskLists)
             .ToListAsync();
 
@@ -30,13 +35,16 @@ public class ProjectService : IProjectService
             .Select(ConvertProjectEntity)
             .ToList();
 
-		return projects;
+        return projects;
     }
+
     public async Task<Project?> GetProjectById(Guid id)
     {
         var projectEntity = await _dbContext.ProjectEntities
             .Include(p => p.Team)
-            .Include(p => p.TaskLists).ThenInclude(t => t.Tasks)
+                .ThenInclude(t => t.Leader)
+            .Include(p => p.TaskLists)
+                .ThenInclude(t => t.Tasks)
             .FirstOrDefaultAsync(p => p.Id == id);
 
         if (projectEntity == null)
@@ -47,21 +55,30 @@ public class ProjectService : IProjectService
         var project = ConvertProjectEntity(projectEntity);
         return project;
     }
-    public async Task<Guid> CreateProject(string name, string description, Guid ownerId)
+
+    public async Task<Guid> CreateProject(string name, string description, Guid teamId)
     {
-        var projectId = Guid.NewGuid();
+        var teamEntity = await _dbContext.TeamEntities.FindAsync(teamId);
+
+        if (teamEntity is null)
+        {
+            throw new InvalidOperationException("Team do not exist.");
+        }
+
         var project = new ProjectEntity
         {
-            Id = projectId,
             Name = name,
             Description = description,
-            OwnerId = ownerId
+            Team = teamEntity
         };
+
         await _dbContext.ProjectEntities.AddAsync(project);
-        await _tasksListService.CreateTasksList("Backlog", projectId);
+        await _tasksListService.CreateTasksList("Backlog", project.Id);
         await _dbContext.SaveChangesAsync();
+
         return project.Id;
     }
+
     public async Task RemoveProject(Guid id)
     {
         var project = await _dbContext.ProjectEntities.FindAsync(id);
@@ -72,6 +89,7 @@ public class ProjectService : IProjectService
         _dbContext.ProjectEntities.Remove(project);
         await _dbContext.SaveChangesAsync();
     }
+
     public async Task EditNameAndDescription(Guid projectId, string newName, string newDescription)
     {
         var project = await _dbContext.ProjectEntities.FirstOrDefaultAsync(p => p.Id == projectId);
@@ -83,27 +101,8 @@ public class ProjectService : IProjectService
         project.Description = newDescription;
         await _dbContext.SaveChangesAsync();
     }
-    //public async Task AddTeamToProject(Guid projectId, IEnumerable<Guid> newTeamsIds)
-    //{
-    //    var project = await _dbContext.ProjectEntities
-    //        .Include(p => p.Teams)
-    //        .FirstOrDefaultAsync(p => p.Id == projectId);
-    //    if (project is null)
-    //    {
-    //        return;
-    //    }
-    //    var possibleTeams = newTeamsIds.Except(project.Teams.Select(t => t.Id));
 
-    //    var teamEntities = await _dbContext.TeamEntities.ToListAsync();
-
-    //    var teamsToAdd = teamEntities.IntersectBy(possibleTeams, t => t.Id).ToList();
-
-    //    foreach (var team in teamsToAdd)
-    //    {
-    //        project.Teams.Add(team);
-    //    }
-    //}
-        public async Task<List<Team>> GetAvailableProjectTeams(Guid projectId)
+    public async Task<List<Team>> GetAvailableProjectTeams(Guid projectId)
     {
         var availableProjectTeams = await _dbContext.TeamEntities
             .Where(u => u.Projects.Any(t => t.Id == projectId))
@@ -111,13 +110,14 @@ public class ProjectService : IProjectService
 
         var availableTeams = availableProjectTeams.Select(t => new Team
         {
-                Id = t.Id,
-                Name = t.Name,
-                //Leader = t.Leader,
+            Id = t.Id,
+            Name = t.Name,
+            //Leader = t.Leader,
         }).ToList();
 
-		return availableTeams;
-	}
+        return availableTeams;
+    }
+
     public async Task ChangeProjectTeam(Guid projectId, Guid newTeamId)
     {
         var project = await _dbContext.ProjectEntities
@@ -142,6 +142,64 @@ public class ProjectService : IProjectService
 
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<ProjectListForUserDto> GetProjectListForUser(Guid userId)
+    {
+        var userProjects = await _dbContext.ProjectEntities
+            .Include(p => p.Team)
+                .ThenInclude(t => t!.Members)
+            .Include(p => p.TaskLists)
+                .ThenInclude(tl => tl.Tasks)
+            .Where(p => p.OwnerId == userId
+                        || (p.Team != null
+                            && p.Team.Members.Any(m => m.Id == userId)))
+            .ToListAsync();
+
+        var projectsOwner = _mapper.Map<IEnumerable<ProjectEntity>, List<ProjectBasicDto>>(userProjects
+            .Where(p => p.OwnerId == userId));
+
+        var projectsMember = _mapper.Map<IEnumerable<ProjectEntity>, List<ProjectBasicDto>>(userProjects
+            .ExceptBy(projectsOwner.Select(p => p.ProjectId), p => p.Id));
+
+        foreach (var project in projectsOwner)
+        {
+            var completionPercent = GetProjectCompletionPercent(userProjects.First(p => p.Id == project.ProjectId));
+
+            project.CompletionPercent = completionPercent;
+        }
+
+        foreach (var project in projectsMember)
+        {
+            var completionPercent = GetProjectCompletionPercent(userProjects.First(p => p.Id == project.ProjectId));
+
+            project.CompletionPercent = completionPercent;
+        }
+
+        var dto = new ProjectListForUserDto
+        {
+            ProjectsOwner = projectsOwner,
+            ProjectsMember = projectsMember
+        };
+
+        return dto;
+    }
+
+    private static int GetProjectCompletionPercent(ProjectEntity project)
+    {
+        var tasks = project.TaskLists.SelectMany(tl => tl.Tasks).ToList();
+
+        if (tasks.Count == 0)
+        {
+            return 100;
+        }
+
+        var completedTasksCount = tasks.Count(t => t.StatusId == TaskStatus.Done);
+
+        var completionPercent = (float)completedTasksCount / tasks.Count * 100.0f;
+
+        return (int)completionPercent;
+    }
+
     private Project ConvertProjectEntity(ProjectEntity projectEntity)
     {
         Team team = null!;
@@ -172,26 +230,5 @@ public class ProjectService : IProjectService
         };
 
         return project;
-		}
     }
-
-//public async Task DeleteTeamFromProject(Guid projectId, Guid teamIdToDelete)
-//   {
-//       var project = await _dbContext.ProjectEntities
-//           .Include(p => p.Teams)
-//           .FirstOrDefaultAsync(p => p.Id == projectId);
-//       if (project is null)
-//       {
-//           return;
-//       }
-//       var teamToRemove = project.Teams.FirstOrDefault(t => t.Id == teamIdToDelete);
-//       if(teamToRemove is null)
-//       {
-//           return;
-//       }
-//       project.Teams.Remove(teamToRemove);
-//       await _dbContext.SaveChangesAsync();
-//   }
-
-
-
+}
