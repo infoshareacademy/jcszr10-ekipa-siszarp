@@ -14,7 +14,11 @@
     </div>
     <div class="tabs_wrap">
         <ul>
-            <li data-tabs="myproject"><a asp-action="Create">Create new project</a></li>
+            <li data-tabs="myproject">
+                <a type="button"
+                   data-bs-toggle="modal" data-bs-target="#createProjectModal">
+                    Create new project
+                </a></li>
             <li data-tabs="male">My project`s</li>
             <li data-tabs="female">Projects with my involvement</li>
             <li data-tabs="both" class="active">Both </li>
@@ -30,6 +34,12 @@
 @section Scripts
 {
     @{
+        var modalBtnId = ViewData["ActivateModal"] switch
+        {
+            "Create" => "createProjectModal",
+            _ => null
+            };
+
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
 
         <script>
@@ -41,6 +51,15 @@
 
         </script>
 
+    }
+
+    @if (modalBtnId is not null)
+    {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                document.getElementById("@modalBtnId").click();
+            });
+        </script>
     }
 
     <script type="text/javascript">
