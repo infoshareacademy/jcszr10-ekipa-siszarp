@@ -45,7 +45,6 @@ namespace WebTaskMaster.Controllers
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Create()
         {
@@ -160,10 +159,12 @@ namespace WebTaskMaster.Controllers
                 Tasks = project.Tasks,
                 ProjectAddTeamModel = addTeamModel
             };
-            if (await _teamService.GetTeamById(project.ProjectTeamId) is null)
-            {
-                projectModel.ProjectTeam = new ProjectTeamModel();
-            }
+
+            //if (await _teamService.GetTeamById(project.ProjectTeamId) is null)
+            //{
+            //    projectModel.ProjectTeam = new ProjectTeamModel();
+            //}
+
             return projectModel;
         }
 

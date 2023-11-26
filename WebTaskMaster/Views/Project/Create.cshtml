@@ -5,8 +5,8 @@
 }
 
 <div class="container text-center">
-    <div class="row justify-content-center">
-        <h1 class="col-12">ViewData["Title"]</h1>
+    <div class="row justify-content-center text-dark bg-white rounded">
+        <h1 class="col-12">@ViewData["Title"]</h1>
 
         @if (Model.AvailableTeams?.Count > 0)
         {
@@ -36,14 +36,19 @@
                     <span asp-validation-for="@Model.TeamId" class="text-danger"></span>
                 </div>
 
-                <div class="col-12 col-md-3 col-xxl-2 d-grid">
+                <div class="col-12 col-md-3 col-xxl-2 d-grid mb-2">
                     <button class="btn btn-primary" type="submit">Create new project</button>
                 </div>
             </form>
         }
         else
         {
-            <div class="col-12 col-md-3 col-xxl-2 d-grid">
+            <div class="col-12 my-3">
+                <p class="fs-5">You cannot create a project because you are not the leader of any team.</p>
+                <p class="fs-5">If you want to create a project, add your own team first.</p>
+            </div>
+
+            <div class="col-12 col-md-3 col-xxl-2 d-grid mb-2">
                 <a class="btn btn-primary" asp-controller="Team" asp-action="Add">Add team</a>
             </div>
         }
