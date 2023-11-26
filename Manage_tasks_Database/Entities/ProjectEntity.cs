@@ -12,16 +12,10 @@ public class ProjectEntity
 
     public string? Description { get; set; }
 
-#warning Disallow nullable on OwnerId property.
-    public Guid? OwnerId { get; set; }
+    public Guid TeamId { get; set; }
 
-#warning Disallow nullable on Owner property.
-    public virtual UserEntity? Owner { get; set; }
+    public virtual TeamEntity Team { get; set; }
 
-	public Guid? TeamId { get; set; }
-
-	public virtual TeamEntity? Team { get; set; }
-
-	public virtual ICollection<TaskListEntity> TaskLists { get; set; }
+    public virtual ICollection<TaskListEntity> TaskLists { get; set; }
 }
 

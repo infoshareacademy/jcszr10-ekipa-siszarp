@@ -138,7 +138,7 @@ public class ProjectService : IProjectService
 
         project.Team = newTeam;
         project.TeamId = newTeam.Id;
-        project.Team.Leader = newTeam.Leader;
+        //project.Team.Leader = newTeam.Leader;
 
         await _dbContext.SaveChangesAsync();
     }
@@ -147,33 +147,20 @@ public class ProjectService : IProjectService
     {
         var userProjects = await _dbContext.ProjectEntities
             .Include(p => p.Team)
-                .ThenInclude(t => t!.Members)
+                .ThenInclude(t => t.Members)
             .Include(p => p.TaskLists)
                 .ThenInclude(tl => tl.Tasks)
-            .Where(p => p.OwnerId == userId
-                        || (p.Team != null
-                            && p.Team.Members.Any(m => m.Id == userId)))
+            .Where(p => p.Team.Members.Any(m => m.Id == userId))
             .ToListAsync();
 
         var projectsOwner = _mapper.Map<IEnumerable<ProjectEntity>, List<ProjectBasicDto>>(userProjects
-            .Where(p => p.OwnerId == userId));
+            .Where(p => p.Team.LeaderId == userId));
 
         var projectsMember = _mapper.Map<IEnumerable<ProjectEntity>, List<ProjectBasicDto>>(userProjects
             .ExceptBy(projectsOwner.Select(p => p.ProjectId), p => p.Id));
 
-        foreach (var project in projectsOwner)
-        {
-            var completionPercent = GetProjectCompletionPercent(userProjects.First(p => p.Id == project.ProjectId));
-
-            project.CompletionPercent = completionPercent;
-        }
-
-        foreach (var project in projectsMember)
-        {
-            var completionPercent = GetProjectCompletionPercent(userProjects.First(p => p.Id == project.ProjectId));
-
-            project.CompletionPercent = completionPercent;
-        }
+        SetProjectCompletionPercent(projectsOwner);
+        SetProjectCompletionPercent(projectsMember);
 
         var dto = new ProjectListForUserDto
         {
@@ -182,6 +169,16 @@ public class ProjectService : IProjectService
         };
 
         return dto;
+
+        void SetProjectCompletionPercent(IEnumerable<ProjectBasicDto> projectDto)
+        {
+            foreach (var project in projectDto)
+            {
+                var completionPercent = GetProjectCompletionPercent(userProjects.First(p => p.Id == project.ProjectId));
+
+                project.CompletionPercent = completionPercent;
+            }
+        }
     }
 
     private static int GetProjectCompletionPercent(ProjectEntity project)
