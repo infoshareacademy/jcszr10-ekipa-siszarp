@@ -3,8 +3,8 @@
     --progress2: -n+25;
 
     /* progress bar */
-    --progress-bar-width: 200px;
-    --progress-bar-height: 200px;
+    --progress-bar-width: 150px;
+    --progress-bar-height: 150px;
     --font-size: 2rem;
 }
 
@@ -143,26 +143,7 @@ html {
     background: rgba(44, 65, 118,0.8);
 }
 
-.progress-bar-row {
-    background: rgba(71,93,156,1);
-    justify-content: space-between;
-    box-shadow: inset 3px -3px 15px rgba(0, 0, 0,0.5);
-    padding-top: 30px;
-    padding-bottom: 30px;
-    border-radius: 25px;
-}
-.block-progress-inProgress {
-    padding-top: 2vh;
-     
-}
-.progress-bar {
-    /*float: right;*/
 
-    position: relative;
-    bottom: 23%;
-    margin-left: auto;
-    margin-right: 5%;
-}
 
 .btn-orange:hover {
     background-color: #557ee5;
@@ -530,7 +511,7 @@ html {
     justify-content: center;
     align-items: center;
     margin-left:auto;
-    margin-right:15%;
+    margin-right:25%;
 }
 
 .inner-circle {
@@ -561,4 +542,37 @@ html {
         --progress-bar-height: 120px;
         --font-size: 1rem;
     }
+}
+
+
+ 
+.progress-bar-row {
+    background: rgba(71,93,156,1);
+    justify-content: space-between;
+    box-shadow: inset 3px -3px 15px rgba(0, 0, 0,0.5);
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 25px;
+}
+
+.block-progress-inProgress {
+    padding-top: 2vh;
+}
+
+.progress-bar {
+    position: relative;
+    bottom: 23%;
+    margin-left: auto;
+    margin-right: 5%;
+
+}
+
+/* accordion  */
+.color-accordion {
+    background: rgba(71,93,156,1) !important;
+    border-radius: 25px !important;
+    border-color: #ffc107;
+    border: 1px solid #4b6dbe !important;
+    box-shadow: 2px 5px 10px #8aabff;
+    color: #8aabff !important;
 }

@@ -3,7 +3,7 @@
     var info = document.querySelector(".info");
     var task = document.querySelector(".task");
 
-    // Инициализация при загрузке страницы
+    
     tabs.forEach((tab) => {
         tab.addEventListener("click", () => {
             tabs.forEach((tab) => {
@@ -24,7 +24,7 @@
         })
     });
 
-    // Сделаем активной вкладку "Project Information" после обработки кликов
+    
     document.querySelector("[data-tabs='info']").click();
 });
 
