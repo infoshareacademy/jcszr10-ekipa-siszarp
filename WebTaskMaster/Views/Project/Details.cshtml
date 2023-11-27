@@ -94,7 +94,7 @@
 								<div class="row col-md-4  justify-content-start align-items-lg-start overflow-auto team-list">
 									<div class="container" style="margin-bottom: 20px;  margin-top: 20px;">
 
-										@foreach (var Ekipa in Model.Teams)
+										@foreach (var Ekipa in new[] {Model.ProjectTeam})
 										{
 											counter++;
 											<div class="p-1 ">
@@ -109,7 +109,7 @@
 														<i class="fa-solid fa-trash" style="color: #fcfcfc;"></i>
 													</button>
 													@* hidden link for modal *@
-													<a id="link@(counter)" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@Ekipa.Id"></a>
+													@* <a id="link@(counter)" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@Ekipa.Id"></a> *@
 												</div>
 											</div>
 										}

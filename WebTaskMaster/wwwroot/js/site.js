@@ -11,7 +11,7 @@ if (paragraphElement) {
     document.documentElement.style.setProperty('--progress', textInsideParagraph);
 }
 if (paragraphElement2) {
-	var textInsideParagraph = paragraphElement.innerText;
+	var textInsideParagraph = paragraphElement2.innerText;
 	document.documentElement.style.setProperty('--progress2', textInsideParagraph);
 }
 
