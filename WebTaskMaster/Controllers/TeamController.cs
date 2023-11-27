@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Humanizer;
 using Manage_tasks_Biznes_Logic.Dtos.Team;
 using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using WebTaskMaster.Extensions;
 using WebTaskMaster.Models.Team;
 
@@ -39,10 +37,14 @@ public class TeamController : Controller
     }
 
     [Authorize(Roles = "User")]
-    public IActionResult Add()
+    public IActionResult Add(bool fromCreateProjectView = false)
     {
-	     
-        return View();
+        var model = new TeamAddModel
+        {
+            fromCreateProjectView = fromCreateProjectView
+        };
+
+        return View(model);
     }
 
     [HttpPost]
@@ -65,6 +67,11 @@ public class TeamController : Controller
         await _teamService.AddTeam(dto);
 
         TempData.SetSuccessToastMessage("Team added.");
+
+        if (model.fromCreateProjectView)
+        {
+            return RedirectToAction("Create", "Project");
+        }
 
         return RedirectToAction("List");
     }

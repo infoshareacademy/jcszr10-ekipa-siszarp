@@ -9,14 +9,16 @@
         <h1 class="col-12">Add team</h1>
         
         <form asp-action="Add">
+            <input hidden="true" asp-for="fromCreateProjectView" />
+
             <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
-            
+
             <div class="form-floating my-2">
-                <input asp-for="@Model.Name" class="form-control" autocomplete="name" aria-required="true" />
+                <input asp-for="@Model.Name" class="form-control" autocomplete="name" aria-required="true"/>
                 <label asp-for="@Model.Name"></label>
                 <span asp-validation-for="@Model.Name" class="text-danger"></span>
             </div>
-            
+
             <div class="form-floating my-2">
                 <textarea asp-for="@Model.Description" class="form-control" autocomplete="description" aria-required="true"></textarea>
                 <label asp-for="@Model.Description"></label>
@@ -24,7 +26,7 @@
             </div>
 
             <div class="col-12 col-md-3 col-xxl-2 d-grid mb-2">
-                <button class ="btn btn-primary" type="submit">Add team</button>
+                <button class="btn btn-primary" type="submit">Add team</button>
             </div>
         </form>
     </div>
