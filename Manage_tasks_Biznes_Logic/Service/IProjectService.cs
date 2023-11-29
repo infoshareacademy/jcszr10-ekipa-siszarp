@@ -12,5 +12,6 @@ namespace Manage_tasks_Biznes_Logic.Service
         Task EditNameAndDescription(Guid projectId, string newName, string newDescription);
         Task ChangeProjectTeam(Guid projectId, Guid newTeamId);
         Task<ProjectListForUserDto> GetProjectListForUser(Guid userId);
+        Task AddListToProject(string NewTasksListName, Guid ProjectId);
     }
 }

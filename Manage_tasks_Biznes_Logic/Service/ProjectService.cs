@@ -142,7 +142,10 @@ public class ProjectService : IProjectService
 
         await _dbContext.SaveChangesAsync();
     }
-
+    public Task AddListToProject(string NewTasksListName, Guid ProjectId)
+    {
+        return _tasksListService.CreateTasksList(NewTasksListName, ProjectId);
+    }
     public async Task<ProjectListForUserDto> GetProjectListForUser(Guid userId)
     {
         var userProjects = await _dbContext.ProjectEntities
@@ -156,10 +159,7 @@ public class ProjectService : IProjectService
         var projectsOwner = _mapper.Map<IEnumerable<ProjectEntity>, List<ProjectBasicDto>>(userProjects
             .Where(p => p.Team.LeaderId == userId));
 
-        public Task AddListToProject(string NewTasksListName, Guid ProjectId)
-        {
-            return _tasksListService.CreateTasksList(NewTasksListName, ProjectId);
-        }
+        
 
         //private static List<Project> Projects = new();
         var projectsMember = _mapper.Map<IEnumerable<ProjectEntity>, List<ProjectBasicDto>>(userProjects

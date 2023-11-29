@@ -85,7 +85,15 @@ namespace Manage_tasks_Biznes_Logic.Service
             newTaskDetails.Description = task.TaskDescription;
             newTaskDetails.StatusId = (Manage_tasks_Database.TaskStatus)statusId;
             newTaskDetails.FinishDate = task.FinishDate;
-
+            if (Guid.TryParse(newValues[4], out Guid userId))
+            {
+                newTaskDetails.AssignedUserId = userId;
+            }
+            else
+            {
+                newTaskDetails.AssignedUserId = null;
+            }
+            
             await _dbContext.SaveChangesAsync();
 
         }
