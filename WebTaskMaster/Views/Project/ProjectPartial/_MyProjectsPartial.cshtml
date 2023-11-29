@@ -1,0 +1,76 @@
+﻿@using WebTaskMaster.Models.Project
+@model ProjectIndexModel
+
+
+
+<ul class="section">
+
+    @if (Model.ProjectsOwner.Count > 0)
+    {
+        var memberCounter1 = 0;
+
+        <div class="containeR">
+            @foreach (var project in Model.ProjectsOwner)
+            {
+                memberCounter1++;
+                string lolka = project.CompletionPercent.ToString();
+                lolka += "%";
+
+            <li class="item_wrap male online">
+                <div class="item">
+                    <div class="item_left">
+                        <div class="card">
+                            <h2>@memberCounter1 </h2>
+                            <h3>@project.Name</h3>
+                            <div id="myProgress">
+                                <div id="myBar" style="width: @Html.Raw(lolka)">@lolka</div>
+                            </div>
+                            <div class="content">
+
+                                <a asp-action="Details" asp-route-projectId="@project.ProjectId"
+                                   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Project details">Open</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            }
+        </div>
+    }
+
+    @if (Model.ProjectsMember.Count > 0)
+    {
+        var memberCounter2 = 0;
+
+        <div class="containeR">
+            @foreach (var project in Model.ProjectsMember)
+            {
+                memberCounter2++;
+
+                string lol = project.CompletionPercent.ToString();
+                lol += "%";
+
+            <li class="item_wrap female online">
+                <div class="item">
+                    <div class="item_left">
+                        <div class="card">
+                            <h2>@memberCounter2 </h2>
+                            <h3>@project.Name</h3>
+                            <div id="myProgress2">
+                                <div id="myBar2" style="width:@Html.Raw(lol)"> @lol  </div>
+                            </div>
+                            <div class="content">
+
+                                <a asp-action="Details" asp-route-projectId="@project.ProjectId"
+                                   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Project details">Open</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+            }
+        </div>
+    }
+</ul>

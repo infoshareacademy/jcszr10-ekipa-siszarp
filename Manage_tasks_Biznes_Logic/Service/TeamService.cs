@@ -47,6 +47,8 @@ public class TeamService : ITeamService
 
         return teams;
     }
+    // Функция которая обращаеться к teamuser , вытаскивает все тимы где я учасник и возвращает id этих команд , потом я ищу проекты с этой командой и возвращаю их .
+
 
     public async Task<TeamListForUserDto> GetTeamListForUser(Guid userId)
     {
@@ -55,7 +57,7 @@ public class TeamService : ITeamService
             .Include(t => t.Members)
             .Where(t => t.Members.Any(m => m.Id == userId));
 
-        var userTeams = await _mapper.ProjectTo<TeamBasicDto>(teamsQuery).ToArrayAsync();
+        var userTeams = await _mapper.ProjectTo<TeamBasicDto>(teamsQuery).ToListAsync();
 
         var teamsLeader = userTeams.Where(t => t.Leader.MemberId == userId).ToList();
         var teamsMember = userTeams.Except(teamsLeader).ToList();
@@ -69,6 +71,15 @@ public class TeamService : ITeamService
         return dto;
     }
 
+    public async Task<List<Guid>> GetAllTeamIdUserPartOfAsync(Guid userId)
+    {
+	    var UserPartOfteamListId = await _dbContext.TeamUserEntities
+		    .Where(a => a.UserId == userId).Select(a => a.TeamId).ToListAsync();
+
+
+	    return UserPartOfteamListId;
+
+    }
     public async Task AddTeam(TeamAddDto dto)
     {
         var team = _mapper.Map<TeamAddDto, TeamEntity>(dto);
@@ -171,7 +182,7 @@ public class TeamService : ITeamService
             .Where(u => u.Teams.Any(t => t.Id == teamId))
             .Where(u => u.TeamsLeader.All(t => t.Id != teamId));
 
-        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToArrayAsync();
+        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToListAsync();
 
         return dto;
     }
@@ -213,7 +224,7 @@ public class TeamService : ITeamService
         var availableUsersQuery = _dbContext.UserEntities
             .Where(u => u.Teams.All(t => t.Id != teamId));
 
-        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToArrayAsync();
+        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToListAsync();
 
         return dto;
     }
@@ -242,9 +253,9 @@ public class TeamService : ITeamService
 
         var users = await _dbContext.UserEntities
             .Where(u => dto.NewMemberIds.Any(nmId => nmId == u.Id))
-            .ToArrayAsync();
+            .ToListAsync();
 
-        if (users.Length < dto.NewMemberIds.Count)
+        if (users.Count < dto.NewMemberIds.Count)
         {
             throw new InvalidOperationException("Some members do not exist.");
         }
@@ -260,7 +271,7 @@ public class TeamService : ITeamService
             .Where(u => u.Teams.Any(t => t.Id == teamId))
             .Where(u => u.TeamsLeader.All(t => t.Id != teamId));
 
-        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToArrayAsync();
+        var dto = await _mapper.ProjectTo<TeamMemberDto>(availableUsersQuery).ToListAsync();
 
         return dto;
     }
@@ -313,7 +324,7 @@ public class TeamService : ITeamService
 
         var team = new Team
         {
-            Id = teamEntity.Id,
+            Id = teamEntity.Id, 
             Name = teamEntity.Name,
             Description = teamEntity.Description ?? string.Empty,
             Members = members

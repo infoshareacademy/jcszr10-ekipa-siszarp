@@ -4,6 +4,7 @@ using Manage_tasks_Database.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manage_tasks_Database.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231125191210_NewMigration")]
+    partial class NewMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,10 +39,15 @@ namespace Manage_tasks_Database.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid>("TeamId")
+                    b.Property<Guid?>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.HasIndex("TeamId");
 
@@ -187,11 +194,17 @@ namespace Manage_tasks_Database.Migrations
 
             modelBuilder.Entity("Manage_tasks_Database.Entities.ProjectEntity", b =>
                 {
+                    b.HasOne("Manage_tasks_Database.Entities.UserEntity", "Owner")
+                        .WithMany("OwnedProjects")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Manage_tasks_Database.Entities.TeamEntity", "Team")
                         .WithMany("Projects")
                         .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Owner");
 
                     b.Navigation("Team");
                 });
@@ -267,6 +280,8 @@ namespace Manage_tasks_Database.Migrations
 
             modelBuilder.Entity("Manage_tasks_Database.Entities.UserEntity", b =>
                 {
+                    b.Navigation("OwnedProjects");
+
                     b.Navigation("Tasks");
 
                     b.Navigation("TeamsLeader");

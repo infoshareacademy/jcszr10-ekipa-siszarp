@@ -11,7 +11,8 @@ public interface ITeamService
 
     Task<TeamListForUserDto> GetTeamListForUser(Guid userId);
 
-    Task AddTeam(TeamAddDto dto);
+    Task<List<Guid>>GetAllTeamIdUserPartOfAsync(Guid userIdGuid);
+	Task AddTeam(TeamAddDto dto);
 
     Task DeleteTeam(Guid teamId, Guid editorId);
 

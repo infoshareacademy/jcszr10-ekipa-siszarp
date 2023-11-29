@@ -18,17 +18,10 @@ internal class ProjectConfiguration : IEntityTypeConfiguration<ProjectEntity>
         builder.Property(p => p.Description)
             .HasMaxLength(500);
 
-#warning Change delete behavior to Cascade.
-        builder.HasOne(p => p.Owner)
-            .WithMany(u => u.OwnedProjects)
-            .HasForeignKey(p => p.OwnerId)
-            .HasPrincipalKey(u => u.Id)
-            .OnDelete(DeleteBehavior.SetNull);
-
-        builder.HasMany(p => p.Teams)
+        builder.HasOne(p => p.Team)
             .WithMany(t => t.Projects)
-            .UsingEntity<ProjectTeamEntity>(
-                l => l.HasOne<TeamEntity>().WithMany().HasForeignKey(pt => pt.TeamId).HasPrincipalKey(t => t.Id),
-                r => r.HasOne<ProjectEntity>().WithMany().HasForeignKey(pt => pt.ProjectId).HasPrincipalKey(p => p.Id));
+            .HasForeignKey(p => p.TeamId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

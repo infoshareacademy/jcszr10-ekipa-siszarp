@@ -15,7 +15,4 @@ public class TeamBasicModel
 
     [Display(Name = "Leader")]
     public TeamMemberModel Leader { get; set; }
-
-    //[Display(Name = "Number of members")]
-    //public int NumberOfMembers { get; set; }
 }

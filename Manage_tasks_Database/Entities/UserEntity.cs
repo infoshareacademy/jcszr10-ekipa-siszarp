@@ -22,8 +22,6 @@ public class UserEntity
 
 	public DateTime? DateOfBirth { get; set; }
 
-    public virtual ICollection<ProjectEntity> OwnedProjects { get; set; }
-
     public virtual ICollection<TeamEntity> Teams { get; set; }
 
     public virtual ICollection<TeamEntity> TeamsLeader { get; set; }

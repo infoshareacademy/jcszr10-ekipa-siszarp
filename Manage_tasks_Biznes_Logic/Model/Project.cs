@@ -7,9 +7,9 @@
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<Team> ProjectTeams { get; set; }
+        public Team? ProjectTeam { get; set; }
         public Guid ProjectTeamId { get; set; }
-
+        public Guid? OwnerId { get; set; }
         public List<TasksList> Tasks { get; set; }
 
         public int OutID { get; set; }
@@ -17,7 +17,7 @@
 
         public Project()
         {
-            
+
 
 
         }
@@ -30,9 +30,9 @@
         }
 
 
-        public void AddTeams(List<Team> teams)
+        public void AddTeams(Team team)
         {
-            ProjectTeams = teams;
+            ProjectTeam = team;
             ProjectTeamId = Guid.NewGuid();
         }
 
