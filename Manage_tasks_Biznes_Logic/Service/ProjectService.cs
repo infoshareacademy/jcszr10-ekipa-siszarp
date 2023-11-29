@@ -136,6 +136,11 @@ namespace Manage_tasks_Biznes_Logic.Service
             return project;
         }
 
+        public Task AddListToProject(string NewTasksListName, Guid ProjectId)
+        {
+            return _tasksListService.CreateTasksList(NewTasksListName, ProjectId);
+        }
+
         //private static List<Project> Projects = new();
 
         //const string _nameJsonFile = "ListaProjectow.json";

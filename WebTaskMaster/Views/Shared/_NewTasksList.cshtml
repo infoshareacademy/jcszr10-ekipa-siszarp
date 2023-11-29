@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions;
+@model WebTaskMaster.Models.Task.NewTasksListModel;
+@{
+    var url = Context.Request.GetEncodedUrl();
+}
+<form asp-controller="Task" asp-action="CreateNewTasksList">
+    <label>List Name</label>
+    <input asp-for="@Model.TasksListName" />
+    <input asp-for="@Model.ProjectId" readonly style="display: none" value="@Model.ProjectId"/>
+    <input asp-for="url" readonly style="display: none;" value="@url" />
+    <button type="submit">zrob</button>
+</form>

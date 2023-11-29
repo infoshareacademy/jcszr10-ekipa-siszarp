@@ -11,5 +11,6 @@ namespace Manage_tasks_Biznes_Logic.Service
         Task EditNameAndDescription(Guid projectId, string newName, string newDescription);
         Task AddTeamToProject(Guid projectId, IEnumerable<Guid> newTeamsIds);
         Task DeleteTeamFromProject(Guid projectId, Guid teamIdToDelete);
+        Task AddListToProject(string NewTasksListName, Guid ProjectId);
     }
 }

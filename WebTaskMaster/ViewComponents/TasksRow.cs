@@ -17,6 +17,7 @@ namespace WebTaskMaster.ViewComponents
         {
             WebTasksList tasksList = new WebTasksList();
             tasksList.Tasks = _tasksListService.GetListByStatus(list, statusId);
+            
             tasksList.TeamId = teamId;
             return View(tasksList);
         }

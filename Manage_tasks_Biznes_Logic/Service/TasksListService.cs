@@ -2,6 +2,7 @@
 using Manage_tasks_Database.Context;
 using Manage_tasks_Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,9 @@ namespace Manage_tasks_Biznes_Logic.Service
         Task CreateTasksList(string tasksListName, Guid projectId);
         TasksList EntityToModel(TaskListEntity entity);
         Task DeleteTask(Guid taskId);
+        Task MoveTask(Guid taskId, Guid destinationId);
+        Task MoveMultipleTasks(List<Guid> tasksIds, Guid destinationId);
+        Task DeleteTasksList(Guid tasksListId);
     }
     public class TasksListService : ITasksListService
     {
@@ -96,6 +100,21 @@ namespace Manage_tasks_Biznes_Logic.Service
             await _dbContext.AddAsync(newTasksList);
             await _dbContext.SaveChangesAsync();
         }
+        public async Task DeleteTasksList(Guid tasksListId)
+        {
+            var tasksList = await _dbContext.TaskListEntities.Include(t => t.Tasks).FirstOrDefaultAsync(t => t.Id == tasksListId);
+            if (tasksList is null)
+            {
+                return;
+            }
+            foreach (var task in tasksList.Tasks)
+            {
+                _dbContext.TaskEntities.Remove(task);
+            }
+            _dbContext.TaskListEntities.Remove(tasksList);
+            await _dbContext.SaveChangesAsync();
+
+        }
         public TasksList EntityToModel(TaskListEntity entity) 
         {
             TasksList list = new TasksList()
@@ -107,6 +126,35 @@ namespace Manage_tasks_Biznes_Logic.Service
             };
             return list;
         }
+        public async Task MoveTask(Guid taskId, Guid destinationId)
+        {
+            var task =  _dbContext.TaskEntities.Find(taskId);
+            if (task is null)
+            {
+                return;
+            }
+            var tasksList = _dbContext.TaskListEntities.Find(destinationId);
+            
+            task.TaskListId = destinationId;
+
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task MoveMultipleTasks(List<Guid> tasksIds, Guid destinationId)
+        {
+            if(tasksIds is null)
+            {
+                return;
+            }
+            else
+            {
+                foreach (var task in tasksIds)
+                {
+                    MoveTask(task, destinationId);
+                }
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+            
         public async Task DeleteTask(Guid taskId)
         {
             var task = await _dbContext.TaskEntities.FindAsync(taskId);

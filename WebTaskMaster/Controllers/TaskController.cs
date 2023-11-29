@@ -1,33 +1,57 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Manage_tasks_Biznes_Logic;
 using WebTaskMaster.Models.Task;
 using Manage_tasks_Biznes_Logic.Service;
-using Manage_tasks_Biznes_Logic.Model;
 using Microsoft.CodeAnalysis;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Extensions;
 
 namespace WebTaskMaster.Controllers
 {
-	[Authorize(Roles = "User")]
+    [Authorize(Roles = "User")]
 	public class TaskController : Controller
     {
         private readonly ITasksListService _tasksListService;
         private readonly ITaskService _taskService;
+        private readonly IProjectService _projectService;
         
         
-        public TaskController(ITasksListService tasksListService, ITaskService taskService)
+        public TaskController(ITasksListService tasksListService, ITaskService taskService, IProjectService projectService)
         {
             _tasksListService = tasksListService;
             _taskService = taskService;
+            _projectService = projectService;
         }
-        
-        
-       
+
+        [HttpPost]
+        public async Task<IActionResult> CreateNewTasksList(NewTasksListModel model)
+        {
+            await _projectService.AddListToProject(model.TasksListName, model.ProjectId);
+
+            return Redirect(model.url);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteTasksList(Guid listId, string url)
+        {
+            await _tasksListService.DeleteTasksList(listId);
+
+            return Redirect(url);
+        }
+            
 
         
-       
+
+        [HttpPost]
+        public async Task<IActionResult> MoveTasks(MoveTaskModel model)
+        {
+            List<String> taskIds = model.TasksIds.Split(",").ToList();
+
+
+            List<Guid> ids = taskIds.Select(task => Guid.Parse(task)).ToList();
+            _tasksListService.MoveMultipleTasks(ids, model.DestinationId);
+            return Redirect(model.url);
+        }
+
+
 
         [HttpPost]
         public async Task<IActionResult> CreateNewTask(NewTaskModel model)
