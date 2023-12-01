@@ -12,5 +12,6 @@ namespace WebTaskMaster.Models.Project
         public List<TasksList> Tasks { get; set; } = new List<TasksList>();
         public ProjectAddTeamModel? ProjectAddTeamModel { get; set; }
         public ProjectModel? ProjectEditModel { get; set; }
+        public Guid UserID { get; set; }
     }
 }
