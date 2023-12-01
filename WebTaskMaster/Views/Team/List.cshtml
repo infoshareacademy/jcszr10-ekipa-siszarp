@@ -1,155 +1,77 @@
-﻿@using Humanizer
-@using WebTaskMaster.Extensions
+﻿@using WebTaskMaster.Extensions
 
 @model WebTaskMaster.Models.Team.TeamListModel
 
 @{
     ViewData["Title"] = "Teams";
+
+    var teamsLeaderCount = 0;
+    var teamsMemberCount = 0;
 }
 
-<div class="container text-center">
-    <div class="row justify-content-center">
-        <h1 class="col-12">Teams</h1>
+<div class="newWrapper ">
+    <div class="title">
+        Project`s
+    </div>
+    <div class="tabs_wrap">
+        <ul>
+            <li data-tabs="myproject">
+                <a class="text-white" style="text-decoration:none" asp-action="add">
+                    Add team
+                </a>
+            </li>
+            <li data-tabs="male">My teams</li>
+            <li data-tabs="female">Teams i am a member of</li>
+            <li data-tabs="both" class="active">Both</li>
+        </ul>
     </div>
 
-    @*
-    @if (Model.TeamsLeader.Count > 0)
-    {
-    <div class="row row-cols-1 mt-2 text-wrap text-break text-dark bg-white rounded">
-    <h2 class="col my-2">You are the leader of these teams</h2>
+    <ul class="section">
+        <div class="containeR">
+            @foreach (var team in Model.TeamsLeader)
+            {
+                teamsLeaderCount++;
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 justify-content-start">
-    @foreach (var team in Model.TeamsLeader)
-    {
-    <div class="col my-2">
-    <div class="card h-100 border-primary border-2">
-    <h5 class="card-header">@team.Name</h5>
-
-    @if (team.Description is not null)
-    {
-    <div class="card-body">
-    <p class="card-text">@team.Description.Truncate(100)</p>
-    </div>
-    }
-
-    <div class="card-footer">
-    <a class="btn btn-primary" asp-action="Details" asp-route-teamId="@team.TeamId">Details</a>
-    </div>
-    </div>
-    </div>
-    }
-    </div>
-    </div>
-    }
-
-    @if (Model.TeamsMember.Count > 0)
-    {
-    <div class="row row-cols-1 mt-2 text-wrap text-break text-dark bg-white rounded">
-    <h2 class="col my-2">You are a member of these teams</h2>
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 justify-content-start">
-    @foreach (var team in Model.TeamsMember)
-    {
-    var leader = team.Leader;
-
-    <div class="col my-2">
-    <div class="card h-100 border-primary border-2">
-    <h5 class="card-header">@team.Name</h5>
-
-    @if (team.Description is not null)
-    {
-    <div class="card-body">
-    <p class="card-text">@team.Description.Truncate(100)</p>
-    </div>
-    }
-
-    <ul class="list-group list-group-flush">
-    <li class="list-group-item">
-    <label asp-for="@team.Leader"></label>
-    </li>
-
-    <li class="list-group-item">
-    <span>@leader.FirstName</span>
-    <span>@leader.LastName</span>
-    </li>
-    </ul>
-
-    <div class="card-footer">
-    <a class="btn btn-primary" asp-action="Details" asp-route-teamId="@team.TeamId">Details</a>
-    </div>
-    </div>
-    </div>
-    }
-    </div>
-    </div>
-    } *@
-
-    @* New UI *@
-    <div class="row justify-content-center">
-        <nav>
-            <div class="nav nav-pills" id="pills-tab" role="tablist">
-                <a class="col-3 d-grid nav-link" asp-action="Add">Add team</a>
-
-                <button class="nav-link active col-3 d-grid" id="pills-home-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                        aria-selected="true">
-                    Home
-                </button>
-
-                <button class="nav-link col-3 d-grid" id="pills-profile-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                        aria-selected="false">
-                    Profile
-                </button>
-
-                @* d-none *@
-
-                <button class="nav-link col-3 d-grid" id="pills-contact-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact"
-                        aria-selected="false">
-                    Contact
-                </button>
-            </div>
-        </nav>
-    </div>
-
-    <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-
-            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 justify-content-start">
-                @foreach (var team in Model.TeamsMember)
-                {
-                    var leader = team.Leader;
-
-                    <div class="col my-2">
-                        <div class="card h-100 border-1">
-                            <h5>@team.Name</h5>
-
-                            <a class="btn btn-primary" asp-action="Details" asp-route-teamId="@team.TeamId">Details</a>
+            <li class="item_wrap male online">
+                <div class="item">
+                    <div class="item_left">
+                        <div class="card">
+                            <h2>@teamsLeaderCount</h2>
+                            <h3>@team.Name</h3>
+                            <div class="content">
+                                <a asp-action="Details" asp-route-teamId="@team.TeamId"
+                                   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Team details">Open</a>
+                            </div>
                         </div>
                     </div>
-                }
-            </div>
-        </div>
+                </div>
+            </li>
+            }
+</div>
 
-        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+<div class="containeR">
+            @foreach (var team in Model.TeamsMember)
+            {
+                teamsMemberCount++;
 
-            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 justify-content-start">
-                @foreach (var team in Model.TeamsLeader)
-                {
-                    <div class="col my-2">
-                        <div class="card h-100 border-1">
-                            <h5>@team.Name</h5>
-
-                            <a class="btn btn-primary" asp-action="Details" asp-route-teamId="@team.TeamId">Details</a>
+        <li class="item_wrap female online">
+            <div class="item">
+                <div class="item_left">
+                    <div class="card">
+                        <h2>@teamsMemberCount</h2>
+                        <h3>@team.Name</h3>
+                        <div class="content">
+                            <a asp-action="Details" asp-route-teamId="@team.TeamId"
+                               data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Team details">Open</a>
                         </div>
                     </div>
-                }
+                </div>
             </div>
-        </div>
+        </li>
+            }
+</div>
+</ul>
 
-        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">Contact</div>
-    </div>
 </div>
 
 <partial name="_ToastPartial" />
@@ -163,9 +85,18 @@
             bootstrap.Toast.getOrCreateInstance(document.getElementById('toast')).show();
         </script>
     }
-}
 
-@section Style
-{
-    <link href="@Url.Content("~/Css/Team/List.css")" rel="stylesheet" type="text/css" />
+    <script>
+        VanillaTilt.init(document.querySelectorAll(".card")
+            , {
+                max: 25,
+                speed: 300
+            });
+
+    </script>
+
+    <script type="text/javascript">
+        tooltipTriggerList = document.querySelectorAll('[data-bs-toggle-tooltip="tooltip"]');
+        tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    </script>
 }
