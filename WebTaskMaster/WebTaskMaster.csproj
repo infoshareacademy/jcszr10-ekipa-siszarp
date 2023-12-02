@@ -33,6 +33,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Servises\" />
+	  <Folder Include="wwwroot\css\Team\" />
 	</ItemGroup>
 
 </Project>
