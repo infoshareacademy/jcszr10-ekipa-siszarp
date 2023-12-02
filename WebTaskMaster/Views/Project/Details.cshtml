@@ -5,6 +5,7 @@
 	ViewData["Title"] = Model.Name;
 	ViewData["projectId"] = Model.Id;
 	int counter = 0;
+	
 }
 
 
@@ -35,8 +36,8 @@
 
 						<div>
 							<button class="btn btn-warning m-1 rounded-5"
-							        data-bs-toggle="modal" data-bs-target="#editProjectModal"
-							        data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description">
+									data-bs-toggle="modal" data-bs-target="#editProjectModal"
+									data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 									<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
 								</svg>
@@ -44,8 +45,8 @@
 							</button>
 
 							<button type="button" class="btn btn-danger m-1 ml-auto rounded-5"
-							        data-bs-toggle="modal" data-bs-target="#deleteProjectModal"
-							        data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete project">
+									data-bs-toggle="modal" data-bs-target="#deleteProjectModal"
+									data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete project">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
 									<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
 									<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
@@ -55,24 +56,24 @@
 						</div>
 
 					</div>
-				 
-						<div class="accordion accordion-flush   col-md-12 py-3 mb-2 " id="accordionFlushExample">
-							<div class="accordion-item color-accordion ">
-								<h2 class="accordion-header " id="flush-headingOne">
-									<button class="accordion-button color-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-										<h4>Project description</h4>
-									</button>
-								</h2>
-								<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-									<div class="accordion-body h3">@Model.Description</div>
-								</div>
+
+					<div class="accordion accordion-flush   col-md-12 py-3 mb-2 " id="accordionFlushExample">
+						<div class="accordion-item color-accordion ">
+							<h2 class="accordion-header " id="flush-headingOne">
+								<button class="accordion-button color-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+									<h4>Project description</h4>
+								</button>
+							</h2>
+							<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+								<div class="accordion-body h3">@Model.Description</div>
 							</div>
 						</div>
-					 
-						
-						 
+					</div>
+
+
+
 				</div>
-				
+
 
 
 
@@ -82,11 +83,25 @@
 						<div class="row col-md-4 shadow align-items-center custom-list-block ">
 							<h2 class="h-1 text-center   col-md-6 text-uppercase text-white text-opacity-75 fw-bold px-5 align-self-center">Teams</h2>
 							<div class="col-md-6 d-flex justify-content-end align-items-center mb-1 mt-1">
-								<button id="addTeamModalBtn" class="btn btn-warning btn-sm mx-1 m-1" type="button"
-										data-bs-toggle="modal" data-bs-target="#addTeamModal"
-										data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Add team">
-									<i class="h1 bi bi-person-add"></i>
-								</button>
+								@{
+									if ( Model.UserID != Model.ProjectTeam.LeaderId)
+									{
+										<button id="addTeamModalBtn" class="btn btn-warning btn-sm mx-1 m-1" type="button"
+												data-bs-toggle="modal" data-bs-target="#addTeamModal"
+												data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" disabled data-bs-title="Add team">
+											<i class="h1 bi bi-person-add"></i>
+										</button>
+									}
+									else
+									{
+
+										<button id="addTeamModalBtn" class="btn btn-warning btn-sm mx-1 m-1" type="button"
+												data-bs-toggle="modal" data-bs-target="#addTeamModal"
+												data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Add team">
+											<i class="h1 bi bi-person-add"></i>
+										</button>
+									}
+								}
 							</div>
 						</div>
 						<div class="container">
@@ -94,7 +109,7 @@
 								<div class="row col-md-4  justify-content-start align-items-lg-start overflow-auto team-list">
 									<div class="container" style="margin-bottom: 20px;  margin-top: 20px;">
 
-										@foreach (var Ekipa in new[] {Model.ProjectTeam})
+										@foreach (var Ekipa in new[] { Model.ProjectTeam })
 										{
 											counter++;
 											<div class="p-1 ">
@@ -162,7 +177,7 @@
 								</div>
 							</div>
 
-							
+
 						</div>
 					</div>
 

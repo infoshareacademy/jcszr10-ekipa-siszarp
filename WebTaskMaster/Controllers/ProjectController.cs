@@ -128,15 +128,17 @@ namespace WebTaskMaster.Controllers
         private async Task<ProjectDetailsModel> CreateDetailsModel(Project project)
         {
             ProjectTeamModel team = null!;
+              HttpContext.User.Claims.TryGetAuthenticatedUserId(out var UserId);
 
-            if (project.ProjectTeam is not null)
+			if (project.ProjectTeam is not null)
             {
                 team = new ProjectTeamModel
                 {
                     Id = project.ProjectTeam.Id,
                     Name = project.ProjectTeam.Name,
-                    //Leader = project.ProjectTeam.Leader
-                };
+                    LeaderId = project.ProjectTeam.Leader.Id
+					//Leader = project.ProjectTeam.Leader
+				};
             }
 
             var addTeamModel = new ProjectAddTeamModel
@@ -146,6 +148,7 @@ namespace WebTaskMaster.Controllers
                         {
                             Id = t.Id,
                             Name = t.Name,
+                            
                             //Leader = t.Leader
                         })
                         .ToList()
@@ -157,7 +160,8 @@ namespace WebTaskMaster.Controllers
                 Description = project.Description,
                 ProjectTeam = team,
                 Tasks = project.Tasks,
-                ProjectAddTeamModel = addTeamModel
+                ProjectAddTeamModel = addTeamModel,
+                UserID = UserId
             };
 
             //if (await _teamService.GetTeamById(project.ProjectTeamId) is null)
