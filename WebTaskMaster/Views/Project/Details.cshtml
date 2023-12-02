@@ -5,6 +5,10 @@
 	ViewData["Title"] = Model.Name;
 	ViewData["projectId"] = Model.Id;
 	int counter = 0;
+
+	var Todo = Model.Tasks[0].GetCountCurrentStatusTasks("ToDo");
+	var InProgress = Model.Tasks[0].GetCountCurrentStatusTasks("InProgress");
+	var Done = Model.Tasks[0].GetCountCurrentStatusTasks("Done");
 	
 }
 
@@ -84,7 +88,7 @@
 							<h2 class="h-1 text-center   col-md-6 text-uppercase text-white text-opacity-75 fw-bold px-5 align-self-center">Teams</h2>
 							<div class="col-md-6 d-flex justify-content-end align-items-center mb-1 mt-1">
 								@{
-									if ( Model.UserID != Model.ProjectTeam.LeaderId)
+									if ( Model.UserID != Model.ProjectTeam.LeaderId)     
 									{
 										<button id="addTeamModalBtn" class="btn btn-warning btn-sm mx-1 m-1" type="button"
 												data-bs-toggle="modal" data-bs-target="#addTeamModal"
@@ -146,17 +150,17 @@
 
 											<div class="col block-progress-inProgress ">
 												<h3 class="text-center text-white text-opacity-75 fw-bold ">To do</h3>
-												<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="10" data-progress-color="rgb(255 193 7)" data-bg-color="#374979">
+												<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="@Todo" data-progress-color="rgb(255 193 7)" data-bg-color="#374979">
 													<div class="inner-circle"></div>
-													<p class="percentage">0%</p>
+													<p class="percentage"> %</p>
 												</div>
 											</div>
 
 											<div class="col block-progress-inProgress">
 												<h3 class="text-center text-white text-opacity-75 fw-bold ">In progress</h3>
-												<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="20" data-progress-color="#5786e9" data-bg-color="#374979">
+												<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="@InProgress" data-progress-color="#5786e9" data-bg-color="#374979">
 													<div class="inner-circle"></div>
-													<p class="percentage">0%</p>
+													<p class="percentage">%</p>
 												</div>
 											</div>
 
@@ -164,9 +168,9 @@
 											<div class="  block-progress-inProgress">
 												<div class="  block-progress-Done">
 													<h3 class="text-center text-white text-opacity-75 fw-bold ">Done</h3>
-													<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="30" data-progress-color="rgb(114 255 7)" data-bg-color="#374979">
+													<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="@Done" data-progress-color="rgb(114 255 7)" data-bg-color="#374979">
 														<div class="inner-circle"></div>
-														<p class="percentage">0%</p>
+														<p class="percentage">%</p>
 													</div>
 												</div>
 
@@ -235,7 +239,7 @@
 					<!--  and   -->
 					<!-- add new task-->
 					<!--  and   -->
-					<div class="block-progress-toDo">POKA</div>
+					 
 
 
 				</div>
