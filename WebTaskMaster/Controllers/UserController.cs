@@ -19,6 +19,7 @@ namespace WebTaskMaster.Controllers
             _userService = userService;
             _mapper = mapper;
         }
+
 		[Route("user")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Details()
@@ -35,6 +36,7 @@ namespace WebTaskMaster.Controllers
         }
 
         [HttpPost]
+        [Route("user")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Details(UserDetailsModel model)
         {

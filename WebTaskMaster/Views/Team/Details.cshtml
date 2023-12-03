@@ -6,135 +6,167 @@
 }
 
 <div class="container text-center">
-    <div class="row justify-content-center">
-        <div class="col-12 my-1">
-            <div class="card border-primary border-2 text-wrap text-break">
-                <h1 class="card-header">@Model.Name</h1>
-
-                <div class="card-body">
-                    @if (!string.IsNullOrWhiteSpace(Model.Description))
-                    {
-                        <p class="card-text">@Model.Description</p>
-                    }
-                </div>
-
-                @if (Model.CanEditTeam)
-                {
-                    <div class="card-footer">
-                        <a class="btn btn-outline-primary" asp-action="Edit" asp-route-teamId="@Model.TeamId">
-                            Edit name and description
-                        </a>
-                    </div>
-                }
-            </div>
-        </div>
-
-        <div class="col-12 my-1">
-            <div class="card border-primary border-2 text-wrap text-break">
-                <h4 class="card-header"><label asp-for="Leader"></label></h4>
-
-                <div class="card-body">
-
-                    <p class="card-text">
-                        <span>@Model.Leader.FirstName</span>
-                        <span>@Model.Leader.LastName</span>
-                    </p>
-
-                    @if (!string.IsNullOrWhiteSpace(Model.Leader.Position))
-                    {
-                        <p class="card-text">@Model.Leader.Position</p>
-                    }
-                </div>
-
-                @if (Model.CanEditTeam)
-                {
-                    <div class="card-footer">
-                        @if (Model.CanChangeLeader)
-                        {
-                            <a class="btn btn-outline-primary" asp-action="ChangeLeader" asp-route-teamId="@Model.TeamId">
-                                <span>Change leader</span>
-                            </a>
-                        }
-                        else
-                        {
-                            <button class="btn btn-outline-primary" disabled="disabled">Add more members to change leader</button>
-                        }
-                    </div>
-                }
-            </div>
-        </div>
-
-        <div class="col-12 my-1">
-            <div class="card border-primary border-2 text-wrap text-break">
-                <h4 class="card-header"><label asp-for="Members"></label></h4>
-
-                <div class="card-body">
-                    <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 gy-4 justify-content-start">
-                        @foreach (var member in Model.Members)
-                        {
-                            <div class="col">
-                                <div class="card border-info border-1">
-                                    <div class="card-body">
-                                        <p class="card-text">
-                                            <span>@member.FirstName</span>
-                                            <span>@member.LastName</span>
-
-                                            @if (!string.IsNullOrWhiteSpace(member.Position))
-                                            {
-                                                <br />
-                                                <span>@member.Position</span>
-                                            }
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-
-                @if (Model.CanEditTeam)
-                {
-                    <div class="card-footer">
-                        <a class="btn btn-outline-primary" asp-action="AddMembers" asp-route-teamId="@Model.TeamId">
-                            Add members
-                        </a>
-
-                        @if (Model.CanRemoveMembers)
-                        {
-                            <a class="btn btn-outline-primary" asp-action="RemoveMembers" asp-route-teamId="@Model.TeamId">
-                                Remove members
-                            </a>
-                        }
-                    </div>
-                }
-            </div>
+    <div class="row row-cols-1">
+        <div id="viewTitle" class="col p-2 border-1 border-bottom">
+            <h1>Team info</h1>
         </div>
     </div>
 
-    @if (Model.CanEditTeam)
-    {
-        <div class="row justify-content-end">
-            @* Delete Team Modal button  *@
-            <div class="col-12 col-md-3 col-lg-2 d-grid mt-1">
-                <button type="button" class="btn btn-danger"
-                        data-bs-toggle="modal" data-bs-target="#deleteTeamModal">
-                    Delete team
-                </button>
+    <div class="row">
+        <div id="detailsHead" class="col-12 py-4 px-2 mt-4 rounded-top-5">
+            <div class="row">
+                <div class="col-12 col-xl-10 mt-1 text-start">
+                    <h1 id="teamName">Team: @Model.Name</h1>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl-1 mt-1 d-grid">
+                    <a class="btn btn-warning rounded-5" asp-action="Edit" asp-route-teamId="@Model.TeamId"
+                       data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description">
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                            </svg>
+                            <span>Edit</span>
+                        </p>
+                    </a>
+                </div>
+
+                <div class="col-12 col-md col-xl-1 6 mt-1 d-grid">
+                    @if (Model.CanEditTeam)
+                    {
+                        @* Delete Team Modal button  *@
+                        <button type="button" class="btn btn-danger rounded-5"
+                                data-bs-toggle="modal" data-bs-target="#deleteTeamModal"
+                                data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team">
+                            <p>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                </svg>
+                                <span>Delete</span>
+                            </p>
+                        </button>
+                    }
+                    else
+                    {
+                        @* Leave Team Modal button  *@
+                        <button type="button" class="btn btn-danger rounded-5"
+                                data-bs-toggle="modal" data-bs-target="#leaveTeamModal"
+                                data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Leave team">
+                            <p>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                </svg>
+                                <span>Leave</span>
+                            </p>
+                        </button>
+                    }
+                </div>
             </div>
         </div>
-    }
-    else
-    {
-        <div class="row justify-content-end">
-            @* Leave Team Modal button  *@
-            <div class="col-12 col-md-3 col-lg-2 d-grid mt-1">
-                <button type="button" class="btn btn-danger"
-                        data-bs-toggle="modal" data-bs-target="#leaveTeamModal">
-                    Leave team
-                </button>
+
+        <div id="detailsBody" class="col-12 rounded-bottom-5">
+            <div class="accordion my-4">
+                <div class="accordion-item">
+                    <h4 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 rounded-top-5" type="button" data-bs-toggle="collapse" data-bs-target="#teamDescription" aria-expanded="true" aria-controls="teamDescription">
+                            Team description
+                        </button>
+                    </h4>
+                    <div id="teamDescription" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <p class="fs-5">@Model.Description</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#teamLeader" aria-expanded="false" aria-controls="teamLeader">
+                            Team leader
+                        </button>
+                    </h4>
+                    <div id="teamLeader" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <p class="fs-5">
+                                <span>@Model.Leader.FirstName</span>
+                                <span>@Model.Leader.LastName</span>
+                            </p>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Leader.Position))
+                            {
+                                <p class="fs-5">
+                                    <span>Leader position: </span>
+                                    <span>@Model.Leader.Position</span>
+                                </p>
+                            }
+
+                            @if (Model.CanEditTeam)
+                            {
+                                @if (Model.CanChangeLeader)
+                                {
+                                    <a class="btn btn-warning" asp-action="ChangeLeader" asp-route-teamId="@Model.TeamId">
+                                        <span>Change leader</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-warning" disabled="disabled">Add more members to change leader</button>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h4 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#teamMembers" aria-expanded="false" aria-controls="teamMembers">
+                            Team members
+                        </button>
+                    </h4>
+                    <div id="teamMembers" class="accordion-collapse collapse">
+                        <div class="accordion-body rounded-bottom-5">
+                            <div class="row g-3 justify-content-start">
+                                @foreach (var member in Model.Members)
+                                {
+                                    <div class="col-12 col-lg-6 col-xxl-4">
+                                        <div class="memberCol pt-4 pb-2 rounded-5">
+                                            <p class="fs-5">
+                                                <span>@member.FirstName</span>
+                                                <span>@member.LastName</span>
+
+                                                @if (!string.IsNullOrWhiteSpace(member.Position))
+                                                {
+                                                    <br />
+                                                    <span>Member position: </span>
+                                                    <span>@member.Position</span>
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            @if (Model.CanEditTeam)
+                            {
+                                <div class="mt-3">
+                                    <a class="btn btn-warning" asp-action="AddMembers" asp-route-teamId="@Model.TeamId">
+                                        Add members
+                                    </a>
+
+                                    @if (Model.CanRemoveMembers)
+                                    {
+                                        <a class="btn btn-warning" asp-action="RemoveMembers" asp-route-teamId="@Model.TeamId">
+                                            Remove members
+                                        </a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    }
+    </div>
 </div>
 
 @if (Model.CanEditTeam)
@@ -191,7 +223,7 @@ else
 <partial name="_ToastPartial" />
 
 @section Scripts
-    {
+{
 
     @* show toast response *@
     @if (TempData.ContainsToastMessage())
@@ -200,4 +232,9 @@ else
             bootstrap.Toast.getOrCreateInstance(document.getElementById('toast')).show();
         </script>
     }
+}
+
+@section Style
+{
+    <link rel="stylesheet" href="~/css/Team/Details.css" />
 }
