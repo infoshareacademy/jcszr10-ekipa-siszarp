@@ -3,7 +3,9 @@
     var info = document.querySelector(".info");
     var task = document.querySelector(".task");
 
-    
+     
+    var activeTab = localStorage.getItem('activeTab');
+
     tabs.forEach((tab) => {
         tab.addEventListener("click", () => {
             tabs.forEach((tab) => {
@@ -21,11 +23,19 @@
             else if (tabval == "task") {
                 task.style.display = "block";
             }
+
+             
+            localStorage.setItem('activeTab', tabval);
         })
     });
 
     
-    document.querySelector("[data-tabs='info']").click();
+    if (activeTab) {
+        document.querySelector("[data-tabs='" + activeTab + "']").click();
+    } else {
+        
+        document.querySelector("[data-tabs='info']").click();
+    }
 });
 
 const circularProgress = document.querySelectorAll(".circular-progress");

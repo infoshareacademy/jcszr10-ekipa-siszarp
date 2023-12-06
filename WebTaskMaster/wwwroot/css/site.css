@@ -545,7 +545,7 @@ html {
 }
 
 
- 
+
 .progress-bar-row {
     background: rgba(71,93,156,1);
     justify-content: space-between;
@@ -575,6 +575,21 @@ html {
     border: 1px solid #4b6dbe !important;
     box-shadow: 2px 5px 10px #8aabff;
     color: #8aabff !important;
+}
+
+
+.form-body {
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(75,14,154,1) 35%, rgba(0,212,255,1) 100%);
+    font-family: 'Poppins', sans-serif;
+    height: 1000px;
+}
+.btn-register {
+    height: 50px;
+    width: 100%;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(75,14,154,1) 35%, rgba(0,212,255,1) 100%);
+}
 }
 
 

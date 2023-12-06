@@ -11,6 +11,7 @@ namespace WebTaskMaster.Models.Project
         public string Name { get; set; }
         [Display(Name = "Team Leader")]
         public TeamMemberModel? Leader { get; set; }
+        public Guid LeaderId { get; set; }
     }
 }
 

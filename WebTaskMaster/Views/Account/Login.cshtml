@@ -3,50 +3,55 @@
     ViewData["Title"] = "Login";
 }
 
-<h1 class="text-center pt-5">@ViewData["Title"]</h1>
-<div class="row justify-content-center text-center">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to login.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-floating">
-                    <input asp-for="@Model.Email" class="form-control" autocomplete="username" aria-required="true" />
-                    <label asp-for="@Model.Email" class="form-label"></label>
-                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="@Model.Password" class="form-control" autocomplete="current-password" aria-required="true" />
-                    <label asp-for="@Model.Password" class="form-label"></label>
-                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
-                </div>
-                <div>
-                    <div class="checkbox text-start">
-                        <label asp-for="@Model.RememberMe" class="form-label">
-                            <input class="form-check-input" asp-for="@Model.RememberMe" />
-                            <label asp-for="@Model.RememberMe" class="form-label"></label>
-                        </label>
-                    </div>
-                </div>
+<div class="container-fluid form-body m-0 py-5" >
+    <div class="container border-primary rounded-4 pt-2 text-white col-md-4" style=" background-color: #0c162d;">
+        <h1 class="text-center pt-5">@ViewData["Title"]</h1>
+        <div class="row justify-content-center text-center">
+            <div class="col-auto my-4">
+                <section>
+                    <form  id="account" method="post">
+                        <h3>Use a local account to login.</h3>
+                        <hr />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-floating my-2 text-start">
+                            <input asp-for="@Model.Email" class="form-control" autocomplete="username" aria-required="true" />
+                            <label asp-for="@Model.Email" class="form-label"></label>
+                            <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating my-2 text-start">
+                            <input asp-for="@Model.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                            <label asp-for="@Model.Password" class="form-label"></label>
+                            <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <div class="checkbox text-start">
+                                <label asp-for="@Model.RememberMe" class="form-label">
+                                    <input class="form-check-input" asp-for="@Model.RememberMe" />
+                                    <label asp-for="@Model.RememberMe" class="form-label"></label>
+                                </label>
+                            </div>
+                        </div>
 
-                @if (Model is not null && !Model.LoginWasSuccessful)
-                {
-                    <div>
-                        <p class="text-danger">Invalid email or password.</p>
-                    </div>
-                }
+                        @if (Model is not null && !Model.LoginWasSuccessful)
+                        {
+                            <div>
+                                <p class="text-danger">Invalid email or password.</p>
+                            </div>
+                        }
 
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Login</button>
-                </div>
-                <div>
-                    <p>
-                        <a asp-action="Register">Register as a new user</a>
-                    </p>
-                </div>
-            </form>
-        </section>
+                        <div class="btn-group col-8 py-3" role="group">
+                            <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-outline-primary rounded-end rounded-5 ">Login</button>
+                             <a asp-action="Register" class="w-100 btn btn-lg btn-outline-primary rounded-start rounded-5 button">Register</a>
+                        </div>
+                        <div>
+                            <p >
+                                <a asp-controller="Home" asp-action="Index">Return to Home Page</a>
+                            </p>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
     </div>
 </div>
 
