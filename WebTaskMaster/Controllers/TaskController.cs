@@ -26,7 +26,7 @@ namespace WebTaskMaster.Controllers
         public async Task<IActionResult> CreateNewTasksList(NewTasksListModel model)
         {
             await _projectService.AddListToProject(model.TasksListName, model.ProjectId);
-
+            
             return Redirect(model.url);
         }
         [HttpPost]
