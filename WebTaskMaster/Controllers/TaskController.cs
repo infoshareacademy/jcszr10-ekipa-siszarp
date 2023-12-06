@@ -36,7 +36,12 @@ namespace WebTaskMaster.Controllers
 
             return Redirect(url);
         }
-            
+        [HttpPost]
+        public async Task<IActionResult> EditTasksListName(Guid tasksListId, string newTasksListName, string url)
+        {
+            await _tasksListService.EditTasksListName(tasksListId, newTasksListName);
+            return Redirect(url);
+        }
 
         
 

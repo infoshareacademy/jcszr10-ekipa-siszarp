@@ -576,3 +576,25 @@ html {
     box-shadow: 2px 5px 10px #8aabff;
     color: #8aabff !important;
 }
+
+
+
+.task-style {
+    background: rgba(255,255,255,0.1) !important;
+    color: white !important;
+}
+.task-style input {
+    background: inherit !important;
+    color: inherit !important;
+}
+.task-style select {
+    background: inherit !important;
+    color: inherit !important;
+}
+.task-style textarea {
+    background: inherit !important;
+    color: inherit !important;
+}
+.task-style a {
+    color: inherit !important;
+}

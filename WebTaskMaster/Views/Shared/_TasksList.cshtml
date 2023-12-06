@@ -63,6 +63,14 @@
         document.getElementById("TasksIds").value = listToMove;
         document.getElementById("moveTasks").submit();
     }
+
+    function setActiveLink(clickedLink) {
+        
+        $('.pagination .page-item').removeClass('active');
+
+        
+        $(clickedLink).parent().addClass('active');
+    }
     
 </script>
 
@@ -73,19 +81,19 @@
         var last = listQuantity - 1;
         for (int i = 0; i < listQuantity - 1; i++)
         {
-            
-            
-                <li class="page-item "><a class="page-link" href="?list=@i">@Model.Tasks[i].TasksListName</a></li>
+
+
+            <li class="page-item "><a class="page-link" href="?list=@i" onclick="setActiveLink(this)">@Model.Tasks[i].TasksListName</a></li>
             
 
         }
-       
-            
-        
-            <li class="page-item active"><a class="page-link" href="?list=@last">@Model.Tasks[last].TasksListName</a></li>
-        
 
-                <li class="page-item "><a class="page-link" href="?list=new">New</a></li>
+
+
+        <li class="page-item "><a class="page-link" href="?list=@last" onclick="setActiveLink(this)">@Model.Tasks[last].TasksListName</a></li>
+
+
+        <li class="page-item "><a class="page-link" href="?list=new" onclick="setActiveLink(this)">New</a></li>
     }       
 </ul>
 @{
@@ -116,8 +124,10 @@
 
     if(intParam >= 0)
     {
+        
     <form asp-controller="Task" asp-action="MoveTasks" id="moveTasks">
             <input name="url" readonly style="display: none;" value="@url" />
+                <label>Target List</label>
                 <select name="DestinationId">
                 @foreach (var taskList in Model.Tasks)
                 {
@@ -136,7 +146,8 @@
 
             <button type="button" onclick="moveTasks()">Move</button>
     </form>
-    <form asp-controller="Task" asp-action="DeleteTasksList">
+        
+        <form asp-controller="Task" asp-action="DeleteTasksList">
             <input type="hidden" name="listId" value="@Model.Tasks[intParam].Id" />
             <input name="url" readonly style="display: none;" value="@url" />
             <button type="submit">delete list</button>

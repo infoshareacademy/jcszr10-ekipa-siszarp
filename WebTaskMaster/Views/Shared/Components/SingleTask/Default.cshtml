@@ -39,13 +39,13 @@
    
 
 </script>
-<div class="card" id="@Model.ProjectTask.Id" style="width: 18rem; background: rgba(255,255,255,0.1);" draggable="true" ondragstart="drag(event)">
+<div class="card task-style" id="@Model.ProjectTask.Id" style="width: 18rem; " draggable="true" ondragstart="drag(event)">
   <div class="card-body">      
         <form asp-controller="Task" asp-action="DeleteTask" onsubmit="return deleteConfirmation();" >
             <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;" />
             <input asp-for="TasksListId" readonly style="display: none;" />
             <input asp-for="ProjectId" readonly style="display: none;" />
-            <button type="submit" class="btn-close" aria-label="Close" style="float: right"></button>
+            <button type="submit" class="btn-close" aria-label="Close" style="float: right></button>
             <input asp-for="url" readonly style="display: none;" value="@url" />
         </form>
 

@@ -23,6 +23,7 @@ namespace Manage_tasks_Biznes_Logic.Service
         Task MoveTask(Guid taskId, Guid destinationId);
         Task MoveMultipleTasks(List<Guid> tasksIds, Guid destinationId);
         Task DeleteTasksList(Guid tasksListId);
+        Task EditTasksListName(Guid tasksListId, string newTasksListName);
     }
     public class TasksListService : ITasksListService
     {
@@ -122,6 +123,17 @@ namespace Manage_tasks_Biznes_Logic.Service
             _dbContext.TaskListEntities.Remove(tasksList);
             await _dbContext.SaveChangesAsync();
 
+        }
+        public async Task EditTasksListName(Guid tasksListId, string newTasksListName)
+        {
+            var tasksList = await _dbContext.TaskListEntities.FindAsync(tasksListId);
+            if(tasksList is null)
+            {
+                return;
+            }
+            
+            tasksList.Name = newTasksListName;
+            await _dbContext.SaveChangesAsync();
         }
         public TasksList EntityToModel(TaskListEntity entity) 
         {
