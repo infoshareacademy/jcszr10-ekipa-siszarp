@@ -72,6 +72,20 @@ namespace Manage_tasks_Biznes_Logic.Model
             _editTask.EditTask(newValue, task);
         }
 
+        public int GetCountCurrentStatusTasks(string currentStatus)
+        {
+            var TaskCount = Tasks.Where(a => a.Status.CurrentStatus == currentStatus).Count();
+            int result = 0;
+            if (Tasks.Count != 0)
+            {
+                result = (100 / Tasks.Count()) * TaskCount;
+            }
+            if (result == 0)
+            {
+                result = 1;
+            }
+            return result;
+        }
 
 
     }
