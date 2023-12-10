@@ -5,6 +5,10 @@
 	ViewData["Title"] = Model.Name;
 	ViewData["projectId"] = Model.Id;
 	int counter = 0;
+
+	var Todo = Model.Tasks[0].GetCountCurrentStatusTasks("ToDo");
+	var InProgress = Model.Tasks[0].GetCountCurrentStatusTasks("InProgress");
+	var Done = Model.Tasks[0].GetCountCurrentStatusTasks("Done");
 }
 
 
@@ -18,14 +22,9 @@
 			<li data-tabs="task">Tasks</li>
 
 		</ul>
-
 	</div>
 	<ul class="section  mt-3 ">
 		<li class="item_wrapNew info online  ">
-
-
-
-			<!-- Project name and description -->
 			<div class="container project-info-dashboard shadow">
 				<div class="row">
 					<div class=" col-md-12 py-3 mb-2 team-style d-flex justify-content-between align-items-center">
@@ -78,7 +77,6 @@
 
 				<div class="row col-md-12 ">
 					<div class="container m-5 ">
-
 						<div class="row col-md-4 shadow align-items-center custom-list-block ">
 							<h2 class="h-1 text-center   col-md-6 text-uppercase text-white text-opacity-75 fw-bold px-5 align-self-center">Teams</h2>
 							<div class="col-md-6 d-flex justify-content-end align-items-center mb-1 mt-1">
@@ -103,23 +101,18 @@
 												<p class="h-1 text-start col-md-6 text-uppercase text-white text-opacity-100 fw-bold px-5">@Ekipa.Name</p>
 												<div class="col-md-6 d-flex justify-content-end align-items-center mt-2">
 													<a asp-controller="Team" asp-action="Details" asp-route-teamId="@Ekipa.Id" class="btn btn-info btn-sm mx-1" data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Details"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
-													<button class="btn btn-danger btn-sm mx-1"
-															data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team"
-															data-bs-toggle="modal" data-bs-target="#deleteTeamModal" data-bs-link-id="link@(counter)">
-														<i class="fa-solid fa-trash" style="color: #fcfcfc;"></i>
-													</button>
+													 
 													@* hidden link for modal *@
 													@* <a id="link@(counter)" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@Ekipa.Id"></a> *@
 												</div>
 											</div>
 										}
 									</div>
-
 								</div>
 							</div>
 						</div>
 
-						<!-- info about tasks-->
+					
 						<div class=" col-md-3  progress-bar offset-md-8">
 
 							<div class="container ">
@@ -144,8 +137,6 @@
 													<p class="percentage">0%</p>
 												</div>
 											</div>
-
-
 											<div class="  block-progress-inProgress">
 												<div class="  block-progress-Done">
 													<h3 class="text-center text-white text-opacity-75 fw-bold ">Done</h3>
@@ -200,7 +191,7 @@
 					</div>
 				</div>
 
-				<!--  and   -->
+			 
 
 
 
@@ -210,9 +201,6 @@
 		<li class="item_wrapNew task online">
 			<div class="item">
 				<div class="item_left">
-
-					<!-- Task  to-do/inprogres/done -->
-					@*Tasks*@
 					<div class="task">
 						<partial name="_TasksList" model="Model" />
 					</div>
