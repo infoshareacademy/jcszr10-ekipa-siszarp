@@ -3,7 +3,7 @@
 }
 
 #teamName {
-    color: rgb(138, 171, 255);
+    color: rgb(255, 255, 255);
 }
 
 #detailsHead {
@@ -32,19 +32,20 @@
     background-color: rgba(255, 255, 255, 0) !important;
 }
 
-.accordion-button {
-    background-color: rgb(71, 93, 156) !important;
-    color: rgb(138, 171, 255) !important;
-}
-
 .accordion-body {
     background-color: rgb(71, 93, 156) !important;
     color: rgb(138, 171, 255) !important;
 }
 
 .accordion-button {
+    background-color: rgb(71, 93, 156) !important;
+    /*color: rgb(138, 171, 255) !important;*/
     border-color: rgb(75, 109, 190) !important;
 }
+
+    .accordion-button:not(.collapsed) {
+        box-shadow: rgba(255, 255, 255,0) 0px -1px 0px 0px inset
+    }
 
 .memberCol {
     background-color: rgba(44, 65, 118, 0.8) !important;

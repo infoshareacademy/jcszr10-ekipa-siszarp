@@ -14,55 +14,62 @@
 
     <div class="row">
         <div id="detailsHead" class="col-12 py-4 px-2 mt-4 rounded-top-5">
-            <div class="row">
-                <div class="col-12 col-xl-10 mt-1 text-start">
-                    <h1 id="teamName">Team: @Model.Name</h1>
-                </div>
+            <div class="row justify-content-around">
 
-                <div class="col-12 col-md-6 col-xl-1 mt-1 d-grid">
-                    <a class="btn btn-warning rounded-5" asp-action="Edit" asp-route-teamId="@Model.TeamId"
-                       data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description">
-                        <p>
+                @if (Model.CanEditTeam)
+                {
+                    <div class="col-12 col-xl-8 mt-1 text-start">
+                        <h1 id="teamName">Team: @Model.Name</h1>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-2 mt-1 d-grid">
+                        <button class="btn btn-warning rounded-5 fs-5" onclick="location.href='@Url.Action("Edit", "Team",new{Model.TeamId})'"
+                                data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Edit name and/or description">
+
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
                             </svg>
                             <span>Edit</span>
-                        </p>
-                    </a>
-                </div>
 
-                <div class="col-12 col-md col-xl-1 6 mt-1 d-grid">
-                    @if (Model.CanEditTeam)
-                    {
+                        </button>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-2 mt-1 d-grid">
                         @* Delete Team Modal button  *@
-                        <button type="button" class="btn btn-danger rounded-5"
+                        <button type="button" class="btn btn-danger rounded-5 fs-5"
                                 data-bs-toggle="modal" data-bs-target="#deleteTeamModal"
                                 data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team">
-                            <p>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                </svg>
-                                <span>Delete</span>
-                            </p>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                            </svg>
+                            <span>Delete</span>
+
                         </button>
-                    }
-                    else
-                    {
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 col-md-9 col-xl-10 mt-1 text-start">
+                        <h1 id="teamName">Team: @Model.Name</h1>
+                    </div>
+
+                    <div class="col-12 col-md-3 col-xl-2 mt-1 d-grid">
                         @* Leave Team Modal button  *@
-                        <button type="button" class="btn btn-danger rounded-5"
+                        <button type="button" class="btn btn-danger rounded-5 fs-5"
                                 data-bs-toggle="modal" data-bs-target="#leaveTeamModal"
                                 data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Leave team">
-                            <p>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                </svg>
-                                <span>Leave</span>
-                            </p>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                            </svg>
+                            <span>Leave</span>
+
                         </button>
-                    }
-                </div>
+                    </div>
+                }
             </div>
         </div>
 
@@ -70,32 +77,32 @@
             <div class="accordion my-4">
                 <div class="accordion-item">
                     <h4 class="accordion-header">
-                        <button class="accordion-button collapsed fs-4 rounded-top-5" type="button" data-bs-toggle="collapse" data-bs-target="#teamDescription" aria-expanded="true" aria-controls="teamDescription">
+                        <button class="accordion-button collapsed fs-4 rounded-top-5 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#teamDescription" aria-expanded="true" aria-controls="teamDescription">
                             Team description
                         </button>
                     </h4>
                     <div id="teamDescription" class="accordion-collapse collapse">
                         <div class="accordion-body">
-                            <p class="fs-5">@Model.Description</p>
+                            <p class="fs-5 text-white">@Model.Description</p>
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
                     <h4 class="accordion-header">
-                        <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#teamLeader" aria-expanded="false" aria-controls="teamLeader">
+                        <button class="accordion-button collapsed fs-4 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#teamLeader" aria-expanded="false" aria-controls="teamLeader">
                             Team leader
                         </button>
                     </h4>
                     <div id="teamLeader" class="accordion-collapse collapse">
                         <div class="accordion-body">
-                            <p class="fs-5">
+                            <p class="fs-5 text-white">
                                 <span>@Model.Leader.FirstName</span>
                                 <span>@Model.Leader.LastName</span>
                             </p>
 
                             @if (!string.IsNullOrWhiteSpace(Model.Leader.Position))
                             {
-                                <p class="fs-5">
+                                <p class="fs-5 text-white">
                                     <span>Leader position: </span>
                                     <span>@Model.Leader.Position</span>
                                 </p>
@@ -119,7 +126,7 @@
                 </div>
                 <div class="accordion-item">
                     <h4 class="accordion-header">
-                        <button class="accordion-button collapsed fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#teamMembers" aria-expanded="false" aria-controls="teamMembers">
+                        <button class="accordion-button collapsed fs-4 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#teamMembers" aria-expanded="false" aria-controls="teamMembers">
                             Team members
                         </button>
                     </h4>
@@ -130,7 +137,7 @@
                                 {
                                     <div class="col-12 col-lg-6 col-xxl-4">
                                         <div class="memberCol pt-4 pb-2 rounded-5">
-                                            <p class="fs-5">
+                                            <p class="fs-5 text-white">
                                                 <span>@member.FirstName</span>
                                                 <span>@member.LastName</span>
 
