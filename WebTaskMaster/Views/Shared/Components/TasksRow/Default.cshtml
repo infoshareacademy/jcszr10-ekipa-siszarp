@@ -7,12 +7,10 @@
     {       
         @foreach (var task in Model.Tasks.Tasks)
         {
-            <div class="container">
-            <div class="row">
+            
                     <div class="col"><input type="checkbox" class="chckBox" value="@task.Id"></div>
                     <div class=col>@await Component.InvokeAsync("SingleTask", new { taskGuid = task.Id, teamGuid = Model.TeamId })</div>
-            </div>
-            </div>
+            
         }      
     }
     
