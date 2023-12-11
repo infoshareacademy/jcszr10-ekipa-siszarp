@@ -6,10 +6,9 @@
     ViewData["projectId"] = Model.Id;
     int counter = 0;
 
-    var Todo = Model.Tasks[0].GetCountCurrentStatusTasks("ToDo");
-    var InProgress = Model.Tasks[0].GetCountCurrentStatusTasks("InProgress");
-    var Done = Model.Tasks[0].GetCountCurrentStatusTasks("Done");
-
+	var Todo = Model.Tasks[0].GetCountCurrentStatusTasks("ToDo");
+	var InProgress = Model.Tasks[0].GetCountCurrentStatusTasks("InProgress");
+	var Done = Model.Tasks[0].GetCountCurrentStatusTasks("Done");
 }
 
 
@@ -22,21 +21,16 @@
             <li data-tabs="info" class="active">Project information</li>
             <li data-tabs="task">Tasks</li>
 
-        </ul>
-
-    </div>
-    <ul class="section  mt-3 ">
-        <li class="item_wrapNew info online  ">
-
-
-
-            <!-- Project name and description -->
-            <div class="container project-info-dashboard shadow">
-                <div class="row">
-                    <div class=" col-md-12 py-3 mb-2 team-style d-flex justify-content-between align-items-center">
-                        <p class="col-md-3 col-sm-6 h  display-4 lol " style="white-space: nowrap;">
-                            Project: @Model.Name
-                        </p>
+		</ul>
+	</div>
+	<ul class="section  mt-3 ">
+		<li class="item_wrapNew info online  ">
+			<div class="container project-info-dashboard shadow">
+				<div class="row">
+					<div class=" col-md-12 py-3 mb-2 team-style d-flex justify-content-between align-items-center">
+						<p class="col-md-3 col-sm-6 h  display-4 lol " style="white-space: nowrap;">
+							Project: @Model.Name
+						</p>
 
                         <div>
                             <button class="btn btn-warning m-1 rounded-5"
@@ -61,43 +55,39 @@
 
                     </div>
 
-                    <div class="accordion accordion-flush   col-md-12 py-3 mb-2 " id="accordionFlushExample">
-                        <div class="accordion-item color-accordion ">
-                            <h2 class="accordion-header " id="flush-headingOne">
-                                <button class="accordion-button color-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                    <h4>Project description</h4>
-                                </button>
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body h3">@Model.Description</div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
+					<div class="accordion accordion-flush   col-md-12 py-3 mb-2 " id="accordionFlushExample">
+						<div class="accordion-item color-accordion ">
+							<h2 class="accordion-header " id="flush-headingOne">
+								<button class="accordion-button color-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+									<h4>Project description</h4>
+								</button>
+							</h2>
+							<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+								<div class="accordion-body h3">@Model.Description</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
 
 
 
-                <div class="row col-md-12 ">
-                    <div class="container m-5 ">
-
-                        <div class="row col-md-4 shadow align-items-center custom-list-block ">
-                            <h2 class="h-1 text-center   col-md-6 text-uppercase text-white text-opacity-75 fw-bold px-5 align-self-center">Teams</h2>
-                            <div class="col-md-6 d-flex justify-content-end align-items-center mb-1 mt-1">
-                                @{
-                                    if (Model.UserID != Model.ProjectTeam.LeaderId)
-                                    {
-                                        <button id="addTeamModalBtn" class="btn btn-warning btn-sm mx-1 m-1" type="button"
-                                                data-bs-toggle="modal" data-bs-target="#addTeamModal"
-                                                data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" disabled data-bs-title="Add team">
-                                            <i class="h1 bi bi-person-add"></i>
-                                        </button>
-                                    }
-                                    else
-                                    {
+				<div class="row col-md-12 ">
+					<div class="container m-5 ">
+						<div class="row col-md-4 shadow align-items-center custom-list-block ">
+							<h2 class="h-1 text-center   col-md-6 text-uppercase text-white text-opacity-75 fw-bold px-5 align-self-center">Teams</h2>
+							<div class="col-md-6 d-flex justify-content-end align-items-center mb-1 mt-1">
+								@{
+									if ( Model.UserID != Model.ProjectTeam.LeaderId)     
+									{
+										<button id="addTeamModalBtn" class="btn btn-warning btn-sm mx-1 m-1" type="button"
+												data-bs-toggle="modal" data-bs-target="#addTeamModal"
+												data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" disabled data-bs-title="Add team">
+											<i class="h1 bi bi-person-add"></i>
+										</button>
+									}
+									else
+									{
 
                                         <button id="addTeamModalBtn" class="btn btn-warning btn-sm mx-1 m-1" type="button"
                                                 data-bs-toggle="modal" data-bs-target="#addTeamModal"
@@ -113,33 +103,28 @@
                                 <div class="row col-md-4  justify-content-start align-items-lg-start overflow-auto team-list">
                                     <div class="container" style="margin-bottom: 20px;  margin-top: 20px;">
 
-                                        @foreach (var Ekipa in new[] { Model.ProjectTeam })
-                                        {
-                                            counter++;
-                                            <div class="p-1 ">
-                                            </div>
-                                            <div class="row text-start border-opacity-50 border-5 mx-2 mb-1   p-3  item_list">
-                                                <p class="h-1 text-start col-md-6 text-uppercase text-white text-opacity-100 fw-bold px-5">@Ekipa.Name</p>
-                                                <div class="col-md-6 d-flex justify-content-end align-items-center mt-2">
-                                                    <a asp-controller="Team" asp-action="Details" asp-route-teamId="@Ekipa.Id" class="btn btn-info btn-sm mx-1" data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Details"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
-                                                    <button class="btn btn-danger btn-sm mx-1"
-                                                            data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Delete team"
-                                                            data-bs-toggle="modal" data-bs-target="#deleteTeamModal" data-bs-link-id="link@(counter)">
-                                                        <i class="fa-solid fa-trash" style="color: #fcfcfc;"></i>
-                                                    </button>
-                                                    @* hidden link for modal *@
-                                                    @* <a id="link@(counter)" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@Ekipa.Id"></a> *@
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
+										@foreach (var Ekipa in new[] { Model.ProjectTeam })
+										{
+											counter++;
+											<div class="p-1 ">
+											</div>
+											<div class="row text-start border-opacity-50 border-5 mx-2 mb-1   p-3  item_list">
+												<p class="h-1 text-start col-md-6 text-uppercase text-white text-opacity-100 fw-bold px-5">@Ekipa.Name</p>
+												<div class="col-md-6 d-flex justify-content-end align-items-center mt-2">
+													<a asp-controller="Team" asp-action="Details" asp-route-teamId="@Ekipa.Id" class="btn btn-info btn-sm mx-1" data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Details"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
+													 
+													@* hidden link for modal *@
+													@* <a id="link@(counter)" hidden asp-action="DeleteTeam" asp-route-projectId="@Model.Id" asp-route-teamId="@Ekipa.Id"></a> *@
+												</div>
+											</div>
+										}
+									</div>
+								</div>
+							</div>
+						</div>
 
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- info about tasks-->
-                        <div class=" col-md-3  progress-bar offset-md-8">
+					
+						<div class=" col-md-3  progress-bar offset-md-8">
 
                             <div class="container ">
 
@@ -156,23 +141,21 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col block-progress-inProgress">
-                                                <h3 class="text-center text-white text-opacity-75 fw-bold ">In progress</h3>
-                                                <div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="@InProgress" data-progress-color="#5786e9" data-bg-color="#374979">
-                                                    <div class="inner-circle"></div>
-                                                    <p class="percentage">%</p>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="  block-progress-inProgress">
-                                                <div class="  block-progress-Done">
-                                                    <h3 class="text-center text-white text-opacity-75 fw-bold ">Done</h3>
-                                                    <div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="@Done" data-progress-color="rgb(114 255 7)" data-bg-color="#374979">
-                                                        <div class="inner-circle"></div>
-                                                        <p class="percentage">%</p>
-                                                    </div>
-                                                </div>
+											<div class="col block-progress-inProgress">
+												<h3 class="text-center text-white text-opacity-75 fw-bold ">In progress</h3>
+												<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="@InProgress" data-progress-color="#5786e9" data-bg-color="#374979">
+													<div class="inner-circle"></div>
+													<p class="percentage">%</p>
+												</div>
+											</div>
+											<div class="  block-progress-inProgress">
+												<div class="  block-progress-Done">
+													<h3 class="text-center text-white text-opacity-75 fw-bold ">Done</h3>
+													<div class="circular-progress" data-inner-circle-color="#2e2e48" data-percentage="@Done" data-progress-color="rgb(114 255 7)" data-bg-color="#374979">
+														<div class="inner-circle"></div>
+														<p class="percentage">%</p>
+													</div>
+												</div>
 
                                             </div>
                                         </div>
@@ -219,33 +202,23 @@
                     </div>
                 </div>
 
-                <!--  and   -->
+			 
 
 
 
 
-            </div>
-        </li>
-        <li class="item_wrapNew task online">
-            <div class="item">
-                <div class="item_left">
-
-                    <!-- Task  to-do/inprogres/done -->
-                    @*Tasks*@
-                    <div class="task">
-                        <partial name="_TasksList" model="Model" />
-                    </div>
-
-                    <!--  and   -->
-                    <!-- add new task-->
-                    <!--  and   -->
-
-
-
-                </div>
-            </div>
-        </li>
-    </ul>
+			</div>
+		</li>
+		<li class="item_wrapNew task online">
+			<div class="item">
+				<div class="item_left">
+					<div class="task">
+						<partial name="_TasksList" model="Model" />
+					</div>
+				</div>
+			</div>
+		</li>
+	</ul>
 </div>
 
 
