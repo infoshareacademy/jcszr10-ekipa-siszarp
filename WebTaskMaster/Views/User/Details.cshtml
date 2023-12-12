@@ -5,51 +5,59 @@
     ViewData["Title"] = "User details";
 }
 
-<div class="container">
+<div class="container col-md-8" >
+    <h1 class="text-center fw-bold pt-5 pb-2 mb-4">@ViewData["Title"]</h1>
 
-    <form class="row justify-content-start needs-validation" asp-action="Details">
-        <input hidden="true" asp-for="UserId" />
+    <div class="row border-white rounded-5 p-5 justify-content-center" style="background-color: rgb(76, 112, 166);">
 
-        <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+        <form class="col-md-10 needs-validation p-3" asp-action="Details">
 
-        <div class="form-floating my-2">
-            <input class="form-control" asp-for="FirstName" />
-            <label class="form-label ms-1" asp-for="FirstName"></label>
-            <span class="text-danger" asp-validation-for="FirstName"></span>
+            <div class="row pb-3">
+                <h2 class="text-start col-md-9 fw-semibold">Edit Profile</h2>
+                <a type="button" class="btn btn-danger text-white col-md-3 rounded-5 justify-content-end" asp-controller="Account" asp-action="Delete">Delete account</a>
+            </div>
+
+            <input hidden="true" asp-for="UserId" />
+
+            <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+            <div class="form-floating my-2">
+                <input class="form-control" asp-for="FirstName" />
+                <label class="form-label ms-1" asp-for="FirstName"></label>
+                <span class="text-danger" asp-validation-for="FirstName"></span>
+            </div>
+
+            <div class="form-floating my-2">
+                <input class="form-control" asp-for="LastName" />
+                <label class="form-label ms-1" asp-for="LastName"></label>
+                <span class="text-danger" asp-validation-for="LastName"></span>
+            </div>
+
+            <div class="form-floating my-2">
+                <input class="form-control" asp-for="Position" />
+                <label class="form-label ms-1" asp-for="Position"></label>
+                <span class="text-danger" asp-validation-for="Position"></span>
+            </div>
+
+            <div class="form-floating my-2">
+                <input class="form-control" asp-for="DateOfBirth" />
+                <label class="form-label ms-1" asp-for="DateOfBirth"></label>
+                <span class="text-danger" asp-validation-for="DateOfBirth"></span>
+            </div>
+
+            <button class="btn btn-primary text-white rounded-5 col-12 col-md-3 my-3 d-block" type="submit">Save changes</button>
+        </form>
+        <div class=" row justify-content-center p-4 border-top border-light" >
+            <p class="lead text-white text-center my-3">Manage your email and password</p>
+            <div class="btn-group col-6" role="group">
+                <a class="btn btn-outline-primary text-white rounded-end rounded-5 col-md-1" asp-controller="Account" asp-action="EditEmail">Edit email</a>
+                <a class="btn btn-outline-primary text-white rounded-start rounded-5 col-md-1" asp-controller="Account" asp-action="EditPassword">Edit password</a>
+            </div>
         </div>
-
-        <div class="form-floating my-2">
-            <input class="form-control" asp-for="LastName" />
-            <label class="form-label ms-1" asp-for="LastName"></label>
-            <span class="text-danger" asp-validation-for="LastName"></span>
-        </div>
-
-        <div class="form-floating my-2">
-            <input class="form-control" asp-for="Position" />
-            <label class="form-label ms-1" asp-for="Position"></label>
-            <span class="text-danger" asp-validation-for="Position"></span>
-        </div>
-        
-        <div class="form-floating my-2">
-            <input class="form-control" asp-for="DateOfBirth" />
-            <label class="form-label ms-1" asp-for="DateOfBirth"></label>
-            <span class="text-danger" asp-validation-for="DateOfBirth"></span>
-        </div>
-
-        <button class="btn btn-primary col-12 col-md-3 my-2" type="submit">Save changes</button>
-    </form>
-    
-    <div class="row justify-content-start mt-2 pt-2">
-        <a class="btn btn-primary col-12 col-md-3" asp-controller="Account" asp-action="EditEmail">Edit email</a>
     </div>
-    
-    <div class="row justify-content-start mt-2 pt-2">
-        <a class="btn btn-primary col-12 col-md-3" asp-controller="Account" asp-action="EditPassword">Edit password</a>
-    </div>
 
-    <div class="row justify-content-end">
-        <a type="button" class="btn btn-danger col-12 col-sm-2" asp-controller="Account" asp-action="Delete">Delete account</a>
-    </div>
+
+
 </div>
 
 <partial name="_ToastPartial" />
