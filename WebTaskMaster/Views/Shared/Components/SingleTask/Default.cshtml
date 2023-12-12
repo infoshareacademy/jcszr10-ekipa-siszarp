@@ -39,7 +39,7 @@
    
 
 </script>
-<div class="card" id="@Model.ProjectTask.Id" style="width: 18rem;" draggable="true" ondragstart="drag(event)">
+<div class="card task-style" id="@Model.ProjectTask.Id" style="width: 18rem; " draggable="true" ondragstart="drag(event)">
   <div class="card-body">      
         <form asp-controller="Task" asp-action="DeleteTask" onsubmit="return deleteConfirmation();" >
             <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;" />
@@ -81,11 +81,11 @@
                         {
                             if(i == statusNumber)
                             {
-                                                            <option value="@statusNumber" selected>@statusMsg[statusNumber]</option>
+                                <option style="background-color: #38609C" value="@statusNumber" selected>@statusMsg[statusNumber]</option>
                             }
                             else
                             {
-                                                            <option value="@i">@statusMsg[i]</option>
+                                <option style="background-color: #38609C" value="@i">@statusMsg[i]</option>
                             }
                         }
                     }
@@ -108,7 +108,7 @@
                 
                 <label>Assigned User</label>
                 <select asp-for="@Model.newValues[4]" class="card-text form-select disabled-@Model.ProjectTask.Id" disabled disableddraggable="false">
-                    <option value="">none</option>
+                    <option style="background-color: #38609C" value="">none</option>
                     @{
                         if(Model.Team is null)
                         {
@@ -118,16 +118,33 @@
                         {                        
                             foreach(var member in Model.Team.Members)
                             {
-                                    <option value="@member.Id">@member.FirstName @member.LastName</option>
+                                if(Model.ProjectTask.AssignedUser is null)
+                                {
+                                    <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
+                                }
+                                else
+                                {
+                                    if(member.Id == Model.ProjectTask.AssignedUser.Id)
+                                    {
+                                        <option style="background-color: #38609C" value="@member.Id" selected>@member.FirstName @member.LastName</option>
+                                    }
+                                    else
+                                    {
+                                        <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
+                                    }
+                                }
+                                
+                                
                             }
+                            
                         }
                         }
                 </select>
               
                 <br />
-                <button type="button" id="edit-@Model.ProjectTask.Id" class="btn-orange btn">Edit</button>
+                <button type="button" id="edit-@Model.ProjectTask.Id" class="btn-warning btn">Edit</button>
                     
-                <button type="reset" id="reset-@Model.ProjectTask.Id" style="display: none" class="btn-orange btn">Cancel</button>
+                <button type="reset" id="reset-@Model.ProjectTask.Id" style="display: none" class="btn-warning btn">Cancel</button>
                 <button type="submit" id="submit-@Model.ProjectTask.Id" style="display: none" class="btn btn-success">Save</button>
       </form>
             

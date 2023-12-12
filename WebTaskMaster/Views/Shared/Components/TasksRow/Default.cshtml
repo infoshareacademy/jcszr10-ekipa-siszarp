@@ -1,14 +1,19 @@
 ﻿@model WebTaskMaster.Models.Task.WebTasksList;
 @{
-    if (Model.Tasks == null)
+    if (Model.Tasks.Tasks == null)
     {
     }
     else
-    {
-        foreach (var task in Model.Tasks.Tasks)
+    {       
+        @foreach (var task in Model.Tasks.Tasks)
         {
-            @await Component.InvokeAsync("SingleTask", new{taskGuid = task.Id,teamGuid = Model.TeamId})
-        }
+            <div class="container">
+            <div class="row">
+                    <div class="col"><input type="checkbox" class="chckBox" value="@task.Id"></div>
+                    <div class=col>@await Component.InvokeAsync("SingleTask", new { taskGuid = task.Id, teamGuid = Model.TeamId })</div>
+            </div>
+            </div>
+        }      
     }
     
 }

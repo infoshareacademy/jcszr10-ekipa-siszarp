@@ -5,6 +5,7 @@ using Manage_tasks_Database.Context;
 using Manage_tasks_Database.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -26,9 +27,11 @@ namespace Manage_tasks_Biznes_Logic.Service
     {
         private readonly DataBaseContext _dbContext;
         
+        
         public TaskService(DataBaseContext context)
         {
              _dbContext = context;
+            
         }
         
         public ProjectTask CreateNewTask(string taskName, string taskDescription)
@@ -54,7 +57,7 @@ namespace Manage_tasks_Biznes_Logic.Service
             editTaskDescription.EditTask(newValues[1], task);
             TasksList editTaskStatus = new TasksList(new EditTaskStatus());
             editTaskStatus.EditTask(newValues[2], task);
-
+            
             if (Int32.Parse(newValues[2]) == 2)
             {
                 TasksList editTaskFinishDate = new TasksList(new EditTaskFinishDate());
@@ -67,13 +70,27 @@ namespace Manage_tasks_Biznes_Logic.Service
         {
             Status status = new Status();
             status.ChangeStatus(((byte)taskEntity.StatusId));
+            User user = new User();
+            if (taskEntity.AssignedUser != null)
+            {
+                user.Id = taskEntity.AssignedUser.Id;
+                user.FirstName = taskEntity.AssignedUser.FirstName;
+                user.LastName = taskEntity.AssignedUser.LastName;
+                user.Position = taskEntity.AssignedUser.Position ?? string.Empty;                
+            }
+            else
+            {
+                user = null;
+            }
+
             ProjectTask task = new ProjectTask()
             {
                 TaskName = taskEntity.Name,
                 TaskDescription = taskEntity.Description,
                 Id = taskEntity.Id,
                 FinishDate = taskEntity.FinishDate,
-                Status = status
+                Status = status,
+                AssignedUser = user
             };
             return task;
         }

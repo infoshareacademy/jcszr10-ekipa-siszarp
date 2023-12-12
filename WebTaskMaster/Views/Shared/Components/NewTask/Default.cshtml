@@ -3,12 +3,13 @@
 @*
     newtask
 *@
+
 @{
     var url = Context.Request.GetEncodedUrl();
 }
-<div class="card" style="width: 18rem;">
+<div class="card task-style" style="width: 18rem;">
     <div class="card-body">
-    <form asp-controller="Task" asp-action="CreateNewTask">
+    <form asp-controller="Task" asp-action="CreateNewTask" id="createForm">
         <label>Task Name</label>
             <input asp-for="Name" class="card-title form-control" draggable="false" />
         <label>Task Description</label>
@@ -16,8 +17,8 @@
 
             </textarea>
             <input asp-for="TasksListId" readonly style="display: none;" />
-            <input asp-for="ProjectId" readonly style="display: none;" />
-            <button type="submit" class="btn btn-success">Create</button>
+            <input asp-for="ProjectId" readonly style="display: none;" />           
             <input asp-for="url" readonly style="display: none;" value="@url" />
+            <button type="submit" class="btn btn-success">Create</button>
     </form>
     </div></div>

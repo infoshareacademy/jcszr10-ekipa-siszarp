@@ -578,6 +578,29 @@ html {
 }
 
 
+
+.task-style {
+    background: rgba(255,255,255,0.1) !important;
+    color: white !important;
+}
+.task-style input {
+    background: inherit !important;
+    color: inherit !important;
+}
+.task-style select {
+    background: inherit !important;
+    color: inherit !important;
+}
+.task-style textarea {
+    background: inherit !important;
+    color: inherit !important;
+}
+.task-style a {
+    color: inherit !important;
+}
+
+
+
 .form-body {
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(75,14,154,1) 35%, rgba(0,212,255,1) 100%);
     font-family: 'Poppins', sans-serif;
