@@ -6,3 +6,5 @@ global using Manage_tasks_Database.Context;
 global using Microsoft.Data.Sqlite;
 global using Microsoft.EntityFrameworkCore;
 global using System.Data.Common;
+global using FluentAssertions;
+global using Manage_tasks_Database.Entities;

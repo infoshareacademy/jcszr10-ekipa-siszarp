@@ -4,6 +4,7 @@ using Manage_tasks_Biznes_Logic.Model;
 using Manage_tasks_Database.Context;
 using Manage_tasks_Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop.Infrastructure;
 using NuGet.Packaging;
 
 namespace Manage_tasks_Biznes_Logic.Service;
@@ -73,11 +74,11 @@ public class TeamService : ITeamService
 
     public async Task<List<Guid>> GetAllTeamIdUserPartOfAsync(Guid userId)
     {
-	    var UserPartOfteamListId = await _dbContext.TeamUserEntities
-		    .Where(a => a.UserId == userId).Select(a => a.TeamId).ToListAsync();
+        var UserPartOfteamListId = await _dbContext.TeamUserEntities
+            .Where(a => a.UserId == userId).Select(a => a.TeamId).ToListAsync();
 
 
-	    return UserPartOfteamListId;
+        return UserPartOfteamListId;
 
     }
     public async Task AddTeam(TeamAddDto dto)
@@ -301,12 +302,13 @@ public class TeamService : ITeamService
             throw new InvalidOperationException("One of the members to be removed is the leader.");
         }
 
-        if (team.Members.Count < dto.RemoveMemberIds.Count)
+        if (team.Members.IntersectBy(dto.RemoveMemberIds, m => m.Id).Count() < dto.RemoveMemberIds.Count)
         {
             throw new InvalidOperationException("Some members are not part of the team.");
         }
 
-        team.Members.Clear();
+        var membersNotDeleted = team.Members.ExceptBy(dto.RemoveMemberIds, m => m.Id);
+        team.Members = membersNotDeleted.ToList();
 
         await _dbContext.SaveChangesAsync();
     }
@@ -324,7 +326,7 @@ public class TeamService : ITeamService
 
         var team = new Team
         {
-            Id = teamEntity.Id, 
+            Id = teamEntity.Id,
             Name = teamEntity.Name,
             Description = teamEntity.Description ?? string.Empty,
             Members = members
