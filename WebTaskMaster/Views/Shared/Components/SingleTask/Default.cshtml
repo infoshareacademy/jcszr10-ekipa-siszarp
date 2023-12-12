@@ -81,11 +81,11 @@
                         {
                             if(i == statusNumber)
                             {
-                                                            <option value="@statusNumber" selected>@statusMsg[statusNumber]</option>
+                                <option style="background-color: #38609C" value="@statusNumber" selected>@statusMsg[statusNumber]</option>
                             }
                             else
                             {
-                                                            <option value="@i">@statusMsg[i]</option>
+                                <option style="background-color: #38609C" value="@i">@statusMsg[i]</option>
                             }
                         }
                     }
@@ -108,7 +108,7 @@
                 
                 <label>Assigned User</label>
                 <select asp-for="@Model.newValues[4]" class="card-text form-select disabled-@Model.ProjectTask.Id" disabled disableddraggable="false">
-                    <option value="">none</option>
+                    <option style="background-color: #38609C" value="">none</option>
                     @{
                         if(Model.Team is null)
                         {
@@ -120,17 +120,17 @@
                             {
                                 if(Model.ProjectTask.AssignedUser is null)
                                 {
-                                    <option value="@member.Id">@member.FirstName @member.LastName</option>
+                                    <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
                                 }
                                 else
                                 {
                                     if(member.Id == Model.ProjectTask.AssignedUser.Id)
                                     {
-                                        <option value="@member.Id" selected>@member.FirstName @member.LastName</option>
+                                        <option style="background-color: #38609C" value="@member.Id" selected>@member.FirstName @member.LastName</option>
                                     }
                                     else
                                     {
-                                        <option value="@member.Id">@member.FirstName @member.LastName</option>
+                                        <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
                                     }
                                 }
                                 
