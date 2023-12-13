@@ -599,6 +599,22 @@ html {
     color: inherit !important;
 }
 
+.task-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+}
+.task-row {
+    
+}
+
+.tasks-list {
+    display:inline-block !important;
+}
+.tasks-list-left {
+   
+}
+
+
 
 
 .form-body {

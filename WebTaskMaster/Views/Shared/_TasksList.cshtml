@@ -124,11 +124,12 @@
 
     if(intParam >= 0)
     {
-        
+    <div class="tasks-list">
+     <div class="tasks-list-left tasks-list">  
     <form asp-controller="Task" asp-action="MoveTasks" id="moveTasks">
             <input name="url" readonly style="display: none;" value="@url" />
                 <label>Target List</label>
-                <select name="DestinationId">
+            <select name="DestinationId" style="background: rgba(255,255,255,0.1) !important; color: white !important" class="form-control">
                 @foreach (var taskList in Model.Tasks)
                 {
                     if(taskList.TasksListName == Model.Tasks[intParam].TasksListName)
@@ -144,27 +145,38 @@
             
             <input type="hidden" name="TasksIds" id="TasksIds" />
 
-            <button type="button" onclick="moveTasks()">Move</button>
+            <button type="button" onclick="moveTasks()" class="btn btn-success">Move</button>
     </form>
-        
+    </div>
+    <div class="tasks-list-middle tasks-list">
+        <form asp-controller="Task" asp-action="EditTasksListName">
+            <input type="hidden" name="listId" value="@Model.Tasks[intParam].Id" />
+            <input name="url" readonly style="display: none;" value="@url" />
+            <input name="newTasksListName" value="@Model.Tasks[intParam].TasksListName" class="form-control" style="background: rgba(255,255,255,0.1) !important; color: white !important" />
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+    </div>
+    <div class="tasks-list-right tasks-list">
         <form asp-controller="Task" asp-action="DeleteTasksList">
             <input type="hidden" name="listId" value="@Model.Tasks[intParam].Id" />
             <input name="url" readonly style="display: none;" value="@url" />
-            <button type="submit">delete list</button>
-    </form>
+            <button type="submit" class="btn btn-danger">Delete list</button>
+        </form>
+    </div>
+        </div>
     <div class="container text-center">
                     <div class="row ">
-                        <div class="col" id="drop-0" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="col task-row" id="drop-0" ondrop="drop(event)" ondragover="allowDrop(event)">
                             To Do
                             @await Component.InvokeAsync("NewTask", new {tasksListId = Model.Tasks[intParam].Id}) 
 
                             @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[intParam],statusId = 0,teamId = Model.ProjectTeam.Id})            
                         </div>
-                        <div class="col" id="drop-1" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="col task-row" id="drop-1" ondrop="drop(event)" ondragover="allowDrop(event)">
                             In Progress
                             @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[intParam],statusId = 1,teamId = Model.ProjectTeam.Id})
                         </div>
-                        <div class="col" id="drop-2" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="col task-row" id="drop-2" ondrop="drop(event)" ondragover="allowDrop(event)">
                             Done
                             @await Component.InvokeAsync("TasksRow", new {list = Model.Tasks[intParam],statusId = 2,teamId = Model.ProjectTeam.Id})
                         </div>
