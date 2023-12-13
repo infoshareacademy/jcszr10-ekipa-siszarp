@@ -5,20 +5,21 @@
 *@
 
 @{
-    var url = Context.Request.GetEncodedUrl();
+	var url = Context.Request.GetEncodedUrl();
 }
 <div class="card task-style" style="width: 18rem;">
-    <div class="card-body">
-    <form asp-controller="Task" asp-action="CreateNewTask" id="createForm">
-        <label>Task Name</label>
-            <input asp-for="Name" class="card-title form-control" draggable="false" />
-        <label>Task Description</label>
-            <textarea asp-for="@Model.Description" class="card-text form-control" draggable="false" rows="4" cols="50">
+	<div class="card-body">
+		<form asp-controller="Task" asp-action="CreateNewTask" id="createForm">
+			<label>Task Name</label>
+			<input asp-for="Name" class="card-title form-control" draggable="false" />
+			<label>Task Description</label>
+			<textarea asp-for="@Model.Description" class="card-text form-control" draggable="false" rows="4" cols="50">
 
-            </textarea>
-            <input asp-for="TasksListId" readonly style="display: none;" />
-            <input asp-for="ProjectId" readonly style="display: none;" />           
-            <input asp-for="url" readonly style="display: none;" value="@url" />
-            <button type="submit" class="btn btn-success">Create</button>
-    </form>
-    </div></div>
+			</textarea>
+			<input asp-for="TasksListId" readonly style="display: none;" />
+			<input asp-for="ProjectId" readonly style="display: none;" />
+			<input asp-for="url" readonly style="display: none;" value="@url" />
+			<button type="submit" class="btn btn-success">Create</button>
+		</form>
+	</div>
+</div>

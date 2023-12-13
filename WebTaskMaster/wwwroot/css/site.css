@@ -1,7 +1,6 @@
 ﻿:root {
     --progress: -n+25;
     --progress2: -n+25;
-
     /* progress bar */
     --progress-bar-width: 150px;
     --progress-bar-height: 150px;
@@ -510,8 +509,8 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left:auto;
-    margin-right:25%;
+    margin-left: auto;
+    margin-right: 25%;
 }
 
 .inner-circle {
@@ -564,7 +563,6 @@ html {
     bottom: 23%;
     margin-left: auto;
     margin-right: 5%;
-
 }
 
 /* accordion  */
@@ -583,21 +581,25 @@ html {
     background: rgba(255,255,255,0.1) !important;
     color: white !important;
 }
-.task-style input {
-    background: inherit !important;
-    color: inherit !important;
-}
-.task-style select {
-    background: inherit !important;
-    color: inherit !important;
-}
-.task-style textarea {
-    background: inherit !important;
-    color: inherit !important;
-}
-.task-style a {
-    color: inherit !important;
-}
+
+    .task-style input {
+        background: inherit !important;
+        color: inherit !important;
+    }
+
+    .task-style select {
+        background: inherit !important;
+        color: inherit !important;
+    }
+
+    .task-style textarea {
+        background: inherit !important;
+        color: inherit !important;
+    }
+
+    .task-style a {
+        color: inherit !important;
+    }
 
 
 
@@ -606,6 +608,7 @@ html {
     font-family: 'Poppins', sans-serif;
     height: 1000px;
 }
+
 .btn-register {
     height: 50px;
     width: 100%;
@@ -613,3 +616,25 @@ html {
     border-radius: 50px;
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(75,14,154,1) 35%, rgba(0,212,255,1) 100%);
 }
+.ul_position_list {
+    margin: 20px !important;
+    display: flex !important;
+}
+.list-start {   
+    background: #2e2e48 !important;
+   
+}
+.list-last {
+    background: #2e2e48 !important;
+    border-right: 1px solid #5071c7 !important;
+    padding: 13px 15px !important;
+    -webkit-transition: all !important;
+    -o-transition: all 0.2s ease !important;
+    transition: all 0.2s ease !important;
+    color: white !important;
+    border :1px solid #4167ad !important;
+}
+    .list-last:hover {
+        background: #5071c7 !important;
+        box-shadow: 0px 5px 8px rgba(89, 136, 255,1) !important;
+    }
