@@ -12,8 +12,8 @@
         document.getElementById("edit-" + element).style.display = "none";
         var disabledElements = document.getElementsByClassName("disabled-" + element);
         for (var i = 0; i < disabledElements.length; i++)
-        {
-            disabledElements[i].removeAttribute("disabled");
+        {                                     
+            disabledElements[i].removeAttribute("disabled");                        
         }                            
         document.getElementById(element).setAttribute("draggable", "false");   
         document.getElementById("url-" + element).value = window.location.href;
@@ -34,6 +34,13 @@
     function deleteConfirmation() 
     { 
         return window.confirm("Chcesz usunąć to zadanie?");
+    }
+    function enableTaskDate(element) { 
+        document.getElementById("task-date-" + element).removeAttribute("disabled");
+    }
+    function submitTaskEdit(element) {
+        enableTaskDate(element);
+        document.getElementById("form-" + element).submit();
     }
     
    
@@ -81,11 +88,11 @@
                         {
                             if(i == statusNumber)
                             {
-                                <option style="background-color: #38609C" value="@statusNumber" selected>@statusMsg[statusNumber]</option>
+                                                <option style="background-color: #38609C" value="@statusNumber" selected>@statusMsg[statusNumber]</option>
                             }
                             else
                             {
-                                <option style="background-color: #38609C" value="@i">@statusMsg[i]</option>
+                                                <option style="background-color: #38609C" value="@i">@statusMsg[i]</option>
                             }
                         }
                     }
@@ -104,7 +111,7 @@
 
                 }
                 <label>Task Finish Date</label>
-                <input asp-for="@Model.newValues[3]" value="@finishDate" type="date" class="card-text form-control disabled-@Model.ProjectTask.Id" disabled draggable="false" />
+                <input asp-for="@Model.newValues[3]" value="@finishDate" type="date" id="task-date-@Model.ProjectTask.Id" class="card-text form-control" disabled draggable="false" />
                 
                 <label>Assigned User</label>
                 <select asp-for="@Model.newValues[4]" class="card-text form-select disabled-@Model.ProjectTask.Id" disabled disableddraggable="false">
@@ -120,17 +127,17 @@
                             {
                                 if(Model.ProjectTask.AssignedUser is null)
                                 {
-                                    <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
+                                                    <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
                                 }
                                 else
                                 {
                                     if(member.Id == Model.ProjectTask.AssignedUser.Id)
                                     {
-                                        <option style="background-color: #38609C" value="@member.Id" selected>@member.FirstName @member.LastName</option>
+                                                        <option style="background-color: #38609C" value="@member.Id" selected>@member.FirstName @member.LastName</option>
                                     }
                                     else
                                     {
-                                        <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
+                                                        <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
                                     }
                                 }
                                 
@@ -145,7 +152,7 @@
                 <button type="button" id="edit-@Model.ProjectTask.Id" class="btn-warning btn">Edit</button>
                     
                 <button type="reset" id="reset-@Model.ProjectTask.Id" style="display: none" class="btn-warning btn">Cancel</button>
-                <button type="submit" id="submit-@Model.ProjectTask.Id" style="display: none" class="btn btn-success">Save</button>
+                <button type="button" onclick="submitTaskEdit('@Model.ProjectTask.Id')" id="submit-@Model.ProjectTask.Id" style="display: none" class="btn btn-success">Save</button>
                 
       </form>
             

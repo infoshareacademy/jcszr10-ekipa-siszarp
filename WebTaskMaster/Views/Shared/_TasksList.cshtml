@@ -38,6 +38,7 @@
             for (var i = 0; i < disabledElements.length; i++) {
                 disabledElements[i].removeAttribute("disabled");
             }
+            enableTaskDate(data);
             ev.target.appendChild(document.getElementById("submit-" + data));
             document.getElementById("form-" + data).submit();
             
