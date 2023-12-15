@@ -9,7 +9,7 @@
         {
             <div class="container">
             <div class="row task-grid">
-                    <div class="col"><input type="checkbox" class="chckBox" value="@task.Id"></div>
+                    <div class="col"><input style="display: none" type="checkbox" class="chckBox chck-@Model.Tasks.Id" value="@task.Id"></div>
                     <div class="col">@await Component.InvokeAsync("SingleTask", new { taskGuid = task.Id, teamGuid = Model.TeamId })</div>
             </div>
             </div>

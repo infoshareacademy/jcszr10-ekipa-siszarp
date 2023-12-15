@@ -48,11 +48,17 @@ namespace WebTaskMaster.Controllers
         [HttpPost]
         public async Task<IActionResult> MoveTasks(MoveTaskModel model)
         {
-            List<String> taskIds = model.TasksIds.Split(",").ToList();
+            if(model.TasksIds is null)
+            {
 
-
-            List<Guid> ids = taskIds.Select(task => Guid.Parse(task)).ToList();
-            _tasksListService.MoveMultipleTasks(ids, model.DestinationId);
+            }
+            else
+            {
+                List<String> taskIds = model.TasksIds.Split(",").ToList();
+                List<Guid> ids = taskIds.Select(task => Guid.Parse(task)).ToList();
+                _tasksListService.MoveMultipleTasks(ids, model.DestinationId);
+            }
+            
             return Redirect(model.url);
         }
 
