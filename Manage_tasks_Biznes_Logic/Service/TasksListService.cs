@@ -169,9 +169,9 @@ namespace Manage_tasks_Biznes_Logic.Service
             {
                 foreach (var task in tasksIds)
                 {
-                    MoveTask(task, destinationId);
+                     await MoveTask(task, destinationId);
                 }
-                await _dbContext.SaveChangesAsync();
+               
             }
         }
             

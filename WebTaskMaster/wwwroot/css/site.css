@@ -601,6 +601,22 @@ html {
         color: inherit !important;
     }
 
+.task-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+}
+.task-row {
+    
+}
+
+.tasks-list {
+    display:inline-block !important;
+}
+.tasks-list-left {
+   
+}
+
+
 
 
 .form-body {
@@ -633,8 +649,87 @@ html {
     transition: all 0.2s ease !important;
     color: white !important;
     border :1px solid #4167ad !important;
+    margin:1em 0em!important;
 }
     .list-last:hover {
         background: #5071c7 !important;
         box-shadow: 0px 5px 8px rgba(89, 136, 255,1) !important;
     }
+
+
+.NewTask {
+    background: #2e2e48 !important;
+    border-right: 1px solid #5071c7 !important;
+    padding: 13px 15px !important;
+    -webkit-transition: all !important;
+    -o-transition: all 0.2s ease !important;
+    transition: all 0.2s ease !important;
+    color: white !important;
+    border: 1px solid #4167ad !important;
+    border-top-left-radius: 0.75rem !important;
+    border-bottom-left-radius: 0.75rem !important;
+}
+    .NewTask:hover {
+        background: #5071c7 !important;
+        box-shadow: 0px 5px 8px rgba(89, 136, 255,1) !important;
+    }
+    .NewTask.active {
+        background: #5071c7 !important;
+    }
+    .list-last.active {
+        background: #5071c7 !important;
+        box-shadow: 0px 5px 8px rgba(89, 136, 255,1) !important;
+    }
+
+.LastItem {
+    background: #971d5b !important;
+    border-right: 1px solid #971d5b !important;
+    padding: 13px 15px !important;
+    -webkit-transition: all !important;
+    -o-transition: all 0.2s ease !important;
+    transition: all 0.2s ease !important;
+    color: white !important;
+    border: 1px solid #4167ad !important;
+    border-top-right-radius: 0.75rem !important;
+    border-bottom-right-radius: 0.75rem !important;
+    margin: -0.2em;
+}
+
+    .LastItem:hover {
+        background: rgba(197, 38, 119,1) !important;
+        box-shadow: 0px 5px 5px rgba(224, 81, 154,1) !important;
+    }
+
+.MidleItem {
+    background: #2e2e48 !important;
+    border-right: 1px solid #5071c7 !important;
+    padding: 13px 15px !important;
+    -webkit-transition: all !important;
+    -o-transition: all 0.2s ease !important;
+    transition: all 0.2s ease !important;
+    color: white !important;
+    border: 1px solid #4167ad !important;
+    margin: -0.2em;
+}
+
+    .MidleItem:hover {
+        background: #5071c7 !important;
+        box-shadow: 0px 5px 8px rgba(89, 136, 255,1) !important;
+    }
+
+.list_color {
+    background: #38609c;
+    box-shadow: inset 3px -3px 15px rgba(0, 0, 0,0.5);
+}
+.boxsizeForTuskColumn {
+    height: 1000px !important;
+}
+
+.miniFormTaskColor {
+    background: #38609c !important;
+    box-shadow: inset 3px -3px 15px rgba(135, 168, 251,0.5);
+    border-color: rgba(0, 0, 0,0) !important;
+}
+.miniFormTaskColor:active{
+    border-color:yellow !important;
+}

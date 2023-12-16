@@ -20,23 +20,26 @@ namespace WebTaskMaster.Models.Project
 	        int allTasksCount = 0;
 	        int result = 0;
 
-			foreach (var item in  Tasks)
-	        {
-		        currentStatusCount += item.GetCountCurrentStatusTasks(currentTask , out int allCountInList);
-		        allTasksCount += allCountInList;
+	        
+		        foreach (var item in Tasks)
+		        {
+			        currentStatusCount += item.GetCountCurrentStatusTasks(currentTask, out int allCountInList);
+			        allTasksCount += allCountInList;
 
-			}
-			if (allTasksCount != 0)
-			{
-				result = (100 / allTasksCount) * currentStatusCount;
+		        }
+		        if (allTasksCount != 0)
+		        {
+			        result = (100 / allTasksCount) * currentStatusCount;
 
-			}
+		        }
 
-			if (result == 0)
-			{
+		        if (result == 0)
+		        {
 
-				result = 1;
-			}
+			        result = 1;
+		        }
+			 
+			
 
 			return result;
 		}
