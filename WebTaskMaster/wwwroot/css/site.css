@@ -722,7 +722,7 @@ html {
     box-shadow: inset 3px -3px 15px rgba(0, 0, 0,0.5);
 }
 .boxsizeForTuskColumn {
-    height: 1000px !important;
+    height: 100% !important;
 }
 
 .miniFormTaskColor {
