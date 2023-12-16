@@ -7,19 +7,39 @@
 @{
 	var url = Context.Request.GetEncodedUrl();
 }
-<div class="card task-style" style="width: 18rem;">
-	<div class="card-body">
-		<form asp-controller="Task" asp-action="CreateNewTask" id="createForm">
-			<label>Task Name</label>
-			<input asp-for="Name" class="card-title form-control" draggable="false" />
-			<label>Task Description</label>
-			<textarea asp-for="@Model.Description" class="card-text form-control" draggable="false" rows="4" cols="50">
+
+
+<button class="NewTask active" data-bs-toggle="modal" data-bs-target="#AddNewTask">Add Task </button>
+
+
+<div id="AddNewTask" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content text-dark">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5">Add Task</h1>
+				<button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+			</div>
+			<div class="modal-body">
+				<form asp-controller="Task" asp-action="CreateNewTask" id="createForm">
+					<label>Task Name</label>
+					<input asp-for="Name" class="card-title form-control" draggable="false" />
+					<label>Task Description</label>
+					<textarea asp-for="@Model.Description" class="card-text form-control" draggable="false" rows="4" cols="50">
 
 			</textarea>
-			<input asp-for="TasksListId" readonly style="display: none;" />
-			<input asp-for="ProjectId" readonly style="display: none;" />
-			<input asp-for="url" readonly style="display: none;" value="@url" />
-			<button type="submit" class="btn btn-success">Create</button>
-		</form>
+					<input asp-for="TasksListId" readonly style="display: none;" />
+					<input asp-for="ProjectId" readonly style="display: none;" />
+					<input asp-for="url" readonly style="display: none;" value="@url" />
+					<button type="submit" class="btn btn-success m-4">Create</button>
+				</form>
+			</div>
+			<div class="modal-footer">
+				
+				<button class="btn btn-danger" type="button" data-bs-dismiss="modal">Cancel</button>
+			</div>
+		</div>
 	</div>
 </div>
+
+
+ 

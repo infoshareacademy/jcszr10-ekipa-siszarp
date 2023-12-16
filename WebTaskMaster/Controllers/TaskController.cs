@@ -56,7 +56,7 @@ namespace WebTaskMaster.Controllers
             {
                 List<String> taskIds = model.TasksIds.Split(",").ToList();
                 List<Guid> ids = taskIds.Select(task => Guid.Parse(task)).ToList();
-                _tasksListService.MoveMultipleTasks(ids, model.DestinationId);
+                await _tasksListService.MoveMultipleTasks(ids, model.DestinationId);
             }
             
             return Redirect(model.url);
