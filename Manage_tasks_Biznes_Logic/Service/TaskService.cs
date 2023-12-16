@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Manage_tasks_Biznes_Logic.Service
 {
@@ -19,6 +20,8 @@ namespace Manage_tasks_Biznes_Logic.Service
         Task<ProjectTask?> GetTaskByGuid(Guid taskGuid);        
         ProjectTask EditTask(string[] newValues, ProjectTask task);
         ProjectTask EntityToModel(TaskEntity taskEntity);
+	    Task<List<ProjectTask>> GetTasksByUserId(Guid userId);
+
     }
 
 
@@ -48,7 +51,21 @@ namespace Manage_tasks_Biznes_Logic.Service
             }
             return EntityToModel(dbTask);
         }
-        
+
+        public async Task<List<ProjectTask>> GetTasksByUserId(Guid userId)
+        {
+	        List<ProjectTask> model = new List<ProjectTask>();
+          var myTasks = await  _dbContext.TaskEntities
+	          .Where(a=>a.AssignedUserId == userId && a.FinishDate == null)
+	          .ToListAsync();
+          foreach (var item in myTasks)
+          {
+
+				model.Add(EntityToModel(item)); 
+          }
+
+		  return model;
+        }
         public ProjectTask EditTask(string[] newValues, ProjectTask task)
         {
             TasksList editTaskName = new TasksList(new EditTaskName());

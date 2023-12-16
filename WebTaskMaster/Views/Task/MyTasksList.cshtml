@@ -1,0 +1,35 @@
+﻿@using Manage_tasks_Biznes_Logic.Model
+@model List<ProjectTask>
+
+ @{
+	 var counter = 0;
+ }
+
+<div class="d-flex flex-column align-items-center justify-content-center">
+	<h1 class="m-4">My Tasks</h1>
+	<div class="table m-3">
+		<table class="table   table-hover table-bordered table-primary  ">
+			<thead class="table-dark">
+			<tr>
+					<th scope="col" class="font-weight-bold">#</th>
+					<th scope="col" class="font-weight-bold">Task name</th>
+				<th scope="col" class="font-weight-bold">Task description</th>
+					<th scope="col" class="font-weight-bold">Status</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var item in Model)
+			{
+					counter++;
+				<tr>
+						<td>@counter</td>
+					<td>@item.TaskName</td>
+					<td >@item.TaskDescription</td>
+					<td >@item.Status.CurrentStatus</td>
+				</tr>
+					
+			}
+			</tbody>
+		</table>
+	</div>
+</div>

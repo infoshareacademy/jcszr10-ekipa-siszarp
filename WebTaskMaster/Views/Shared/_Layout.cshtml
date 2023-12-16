@@ -42,18 +42,25 @@
                                     <i class="fs-5 fa-solid fa-folder-tree" style="color: #ffffff;"></i><span class="fs-4 ms-3 d-none d-sm-inline">Project</span>
                                 </a>
                             </li>
-                            <li class="nav-item py-2 py-sm-0">
-                                <a asp-area="" asp-controller="Team" asp-action="Index" class="nav-link text-white" aria-current="page">
-                                    <i class="fs-5 fa fa-users"></i><span class="fs-4 ms-3 d-none d-sm-inline">Team</span>
-                                </a>
-                            </li>
+	                        <li class="nav-item py-2 py-sm-0">
+		                        <a asp-area="" asp-controller="Team" asp-action="List" class="nav-link text-white" aria-current="page">
+			                        <i class="fs-5 fa fa-users"></i><span class="fs-4 ms-3 d-none d-sm-inline">Team</span>
+		                        </a>
+	                        </li>
 
+	                        <li class="nav-item py-2 py-sm-0">
+		                        <a asp-area="" asp-controller="Task" asp-action="MyTasksList" class="nav-link text-white" aria-current="page">
+                                    <i class="fa-solid fa-list-check"></i><span class="fs-4 ms-3 d-none d-sm-inline">My Tasks</span>
+		                        </a>
+	                        </li>
 
-                            <li class="nav-item py-2 py-sm-0 ">
-                                <a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link text-white" aria-current="page">
-                                    <i class="fs-5 fa-solid fa-right-from-bracket" style="color: #ffffff;"></i><span class="fs-4 ms-3 d-none d-sm-inline">Logout</span>
-                                </a>
-                            </li>
+	                        <li class="nav-item py-2 py-sm-0 ">
+		                        <a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link text-white" aria-current="page">
+			                        <i class="fs-5 fa-solid fa-right-from-bracket" style="color: #ffffff;"></i><span class="fs-4 ms-3 d-none d-sm-inline">Logout</span>
+		                        </a>
+	                        </li>
+                            
+	                       
 
 
                         </ul>

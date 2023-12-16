@@ -1,6 +1,7 @@
 @using Microsoft.AspNetCore.Http.Extensions;
 @using Microsoft.AspNetCore.Mvc.RazorPages;
 @using WebTaskMaster.Models.Task;
+@using Castle.Core.Internal
 @model WebTaskMaster.Models.Project.ProjectDetailsModel
 @{
 	var url = Context.Request.GetEncodedUrl();
@@ -124,12 +125,12 @@
 		string param = ViewContext.HttpContext.Request.Query["list"];
 		var listQuantity = Model.Tasks.Count();
 		var last = listQuantity - 1;
-		 
 
 
-		
 
-		for (int i = 0; i < listQuantity  ; i++)
+
+
+		for (int i = 0; i < listQuantity; i++)
 		{
 
 
@@ -137,18 +138,20 @@
 
 
 		}
-		 
-		 
- 
+
+
+
 		<li class="page-item ">
 			<partial name="_NewTasksList" model="new NewTasksListModel()
-		{
-			ProjectId = Model.Id
-		}" />
+{
+	ProjectId = Model.Id
+}" />
 		</li>
 
 	}
 </ul>
+ 
+		 
 @{
 
 
@@ -179,14 +182,14 @@
 	{
 		<div class="tasks-list">
 
-			
-				@await Component.InvokeAsync("NewTask", new { tasksListId = Model.Tasks[intParam].Id })
+
+			@await Component.InvokeAsync("NewTask", new { tasksListId = Model.Tasks[intParam].Id })
 			<div class="tasks-list-left tasks-list ">
 				<button type="button" onclick="enableMoveTasks('@Model.Tasks[intParam].Id')" id="list-move-@Model.Tasks[intParam].Id" class="MidleItem ">Select Tasks To Move</button>
 				<form asp-controller="Task" asp-action="MoveTasks" id="moveTasks">
-					<input name="url" readonly style="display: none;" value="@url"/>
-					<label id="move-label-@Model.Tasks[intParam].Id" style="display: none" >Target List</label>
-					<select name="DestinationId" id="move-target-@Model.Tasks[intParam].Id" style="background: rgba(255,255,255,0.1) !important; color: white !important; display: none" class="form-control"  >
+					<input name="url" readonly style="display: none;" value="@url" />
+					<label id="move-label-@Model.Tasks[intParam].Id" style="display: none">Target List</label>
+					<select name="DestinationId" id="move-target-@Model.Tasks[intParam].Id" style="background: rgba(255,255,255,0.1) !important; color: white !important; display: none" class="form-control">
 						@foreach (var taskList in Model.Tasks)
 						{
 							if (taskList.TasksListName == Model.Tasks[intParam].TasksListName)
@@ -200,7 +203,7 @@
 						}
 					</select>
 
-					<input type="hidden" name="TasksIds" id="TasksIds"/>
+					<input type="hidden" name="TasksIds" id="TasksIds" />
 					<button type="button" style="display: none" id="list-confirm-move-@Model.Tasks[intParam].Id" onclick="moveTasks()" class="btn btn-success mt-3">Move</button>
 					<button type="button" style="display: none" id="list-cancel-move-@Model.Tasks[intParam].Id" onclick="disableMoveTasks('@Model.Tasks[intParam].Id')" class="btn-warning btn mt-3">Cancel</button>
 				</form>
@@ -241,12 +244,12 @@
 				</div>
 			</div>
 		</div>
-		 
+
 
 	}
 	else
 	{
-		 
+
 
 	}
 
@@ -254,15 +257,15 @@
 
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
-		 
+
 		var paramValue = '@param';
 
-		 
+
 		if (paramValue) {
-			 
+
 			var button = document.querySelector('.list-last[data-list="' + paramValue + '"]');
 
-			 
+
 			if (button) {
 				button.classList.add('active');
 			}

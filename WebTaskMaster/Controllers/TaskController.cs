@@ -4,6 +4,8 @@ using Manage_tasks_Biznes_Logic.Service;
 using Microsoft.CodeAnalysis;
 
 using Microsoft.AspNetCore.Authorization;
+using Manage_tasks_Biznes_Logic.Model;
+using WebTaskMaster.Extensions;
 
 namespace WebTaskMaster.Controllers
 {
@@ -21,8 +23,17 @@ namespace WebTaskMaster.Controllers
             _taskService = taskService;
             _projectService = projectService;
         }
+        [HttpGet]
+		public async Task<IActionResult> MyTasksList()
+		{
+			HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId);
 
-        [HttpPost]
+			var tasks = await _taskService.GetTasksByUserId(userId);
+ 
+			return View(tasks);
+		}
+
+		[HttpPost]
         public async Task<IActionResult> CreateNewTasksList(NewTasksListModel model)
         {
             await _projectService.AddListToProject(model.TasksListName, model.ProjectId);

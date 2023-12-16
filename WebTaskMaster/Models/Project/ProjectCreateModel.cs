@@ -7,7 +7,7 @@ public class ProjectCreateModel
 {
     [Display(Name = "Project name")]
     [Required(ErrorMessage = "Enter {0}")]
-    [StringLength(50, MinimumLength = 3, ErrorMessage = "{0} must contain between {2} and {1} characters.")]
+    [StringLength(maximumLength:17, MinimumLength = 3, ErrorMessage = "{0} must contain between {2} and {1} characters.")]
     public string Name { get; set; }
 
     [Display(Name = "Project description")]
@@ -20,3 +20,4 @@ public class ProjectCreateModel
     [Display(Name = "Available teams")]
     public ICollection<TeamBasicModel>? AvailableTeams { get; set; }
 }
+
