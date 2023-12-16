@@ -46,13 +46,13 @@
    
 
 </script>
-<div class="card task-style" id="@Model.ProjectTask.Id" style="width: 18rem; " draggable="true" ondragstart="drag(event)">
-  <div class="card-body">      
+<div class="card task-style rounded-5" id="@Model.ProjectTask.Id" style="width: 18rem; " draggable="true" ondragstart="drag(event)">
+  <div class="card-body ">      
         <form asp-controller="Task" asp-action="DeleteTask" onsubmit="return deleteConfirmation();" >
             <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;" />
             <input asp-for="TasksListId" readonly style="display: none;" />
             <input asp-for="ProjectId" readonly style="display: none;" />
-            <button type="submit" class="btn-close" aria-label="Close" style="float: right"></button>
+            <button type="submit" class="btn-close mb-2" aria-label="Close" style="float: right"></button>
             <input asp-for="url" readonly style="display: none;" value="@url" />
         </form>
 
@@ -64,7 +64,7 @@
             <input asp-for="TasksListId" readonly style="display: none;" />
             <input asp-for="ProjectId" readonly style="display: none;" />
             <input asp-for="url" readonly id="url-@Model.ProjectTask.Id" style="display: none;" value="@url"/>
-                <label>Task Name</label>
+                <label class="ms-3">Task Name</label>
                 <input asp-for="@Model.newValues[0]" value="@Model.ProjectTask.TaskName" class="card-title form-control disabled-@Model.ProjectTask.Id" disabled draggable="false" />
                       
             <label>Task Description</label>
