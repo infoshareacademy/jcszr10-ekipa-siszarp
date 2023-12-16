@@ -1,9 +1,23 @@
-﻿namespace WebTaskMaster.Models.Task
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebTaskMaster.Models.Task
 {
 	public class MyTasksListModel
 	{
-		public string Name { get; set; }
-		public string Description { get; set; }
-		public string? Status { get; set; }
-	}
+        public Guid TaskId { get; set; }
+
+        [Display(Name = "Task name")]
+        public string TaskName { get; set; }
+
+        [Display(Name = "Task description")]
+        public string? TaskDescription { get; set; }
+
+        public Guid ProjectId { get; set; }
+
+        [Display(Name = "Project name")]
+        public string ProjectName { get; set; }
+
+        [Display(Name = "Task status")]
+        public string TaskStatus { get; set; }
+    }
 }
