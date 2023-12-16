@@ -6,34 +6,40 @@ using Microsoft.CodeAnalysis;
 using Microsoft.AspNetCore.Authorization;
 using Manage_tasks_Biznes_Logic.Model;
 using WebTaskMaster.Extensions;
+using AutoMapper;
+using Manage_tasks_Biznes_Logic.Dtos.Task;
 
 namespace WebTaskMaster.Controllers
 {
     [Authorize(Roles = "User")]
-	public class TaskController : Controller
+    public class TaskController : Controller
     {
         private readonly ITasksListService _tasksListService;
         private readonly ITaskService _taskService;
         private readonly IProjectService _projectService;
-        
-        
-        public TaskController(ITasksListService tasksListService, ITaskService taskService, IProjectService projectService)
+        private readonly IMapper _mapper;
+
+        public TaskController(ITasksListService tasksListService, ITaskService taskService, IProjectService projectService, IMapper mapper)
         {
             _tasksListService = tasksListService;
             _taskService = taskService;
             _projectService = projectService;
+            _mapper = mapper;
         }
         [HttpGet]
-		public async Task<IActionResult> MyTasksList()
-		{
-			HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId);
+        public async Task<IActionResult> MyTasksList()
+        {
+            HttpContext.User.Claims.TryGetAuthenticatedUserId(out var userId);
 
-			var tasks = await _taskService.GetTasksByUserId(userId);
- 
-			return View(tasks);
-		}
+            var dto = await _taskService.GetTasksByUserId(userId);
 
-		[HttpPost]
+            var model = _mapper
+                .Map<List<TaskBasicForUserDto>, List<MyTasksListModel>>(dto);
+
+            return View(model);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> CreateNewTasksList(NewTasksListModel model)
         {
             await _projectService.AddListToProject(model.TasksListName, model.ProjectId);
@@ -54,12 +60,12 @@ namespace WebTaskMaster.Controllers
             return Redirect(url);
         }
 
-        
+
 
         [HttpPost]
         public async Task<IActionResult> MoveTasks(MoveTaskModel model)
         {
-            if(model.TasksIds is null)
+            if (model.TasksIds is null)
             {
 
             }
@@ -69,7 +75,7 @@ namespace WebTaskMaster.Controllers
                 List<Guid> ids = taskIds.Select(task => Guid.Parse(task)).ToList();
                 await _tasksListService.MoveMultipleTasks(ids, model.DestinationId);
             }
-            
+
             return Redirect(model.url);
         }
 
@@ -79,23 +85,23 @@ namespace WebTaskMaster.Controllers
         public async Task<IActionResult> CreateNewTask(NewTaskModel model)
         {
             await _tasksListService.AddNewTask(model.Name, model.Description, model.TasksListId);
-            
+
             return Redirect(model.url);
-        }       
+        }
         [HttpPost]
         public async Task<IActionResult> EditTask(WebTaskModel model)
         {
-            
+
             model.newValues[1] = HttpContext.Request.Form["Description"];
             await _tasksListService.EditTask(model.newValues, model.ProjectTask);
-            
+
             return Redirect(model.url);
         }
         [HttpPost]
         public async Task<IActionResult> DeleteTask(WebTaskModel model)
         {
             await _tasksListService.DeleteTask(model.ProjectTask.Id);
-            
+
             return Redirect(model.url);
         }
     }
