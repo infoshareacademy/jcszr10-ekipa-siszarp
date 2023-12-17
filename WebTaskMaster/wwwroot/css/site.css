@@ -606,6 +606,7 @@ html {
     flex-wrap: nowrap !important;
 }
 .task-row {
+    padding:3em;
     
 }
 
