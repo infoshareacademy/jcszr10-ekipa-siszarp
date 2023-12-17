@@ -57,6 +57,7 @@ namespace Manage_tasks_Biznes_Logic.Service
         public async Task<List<TaskBasicForUserDto>> GetTasksByUserId(Guid userId)
         {
             var query = _dbContext.TaskEntities
+                .Where(t => t.TaskListId != null)
                 .Include(t => t.TaskList)
                     .ThenInclude(tl => tl!.Project)
                 .Where(t => t.AssignedUserId == userId);
