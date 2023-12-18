@@ -1,7 +1,4 @@
-﻿using AutoFixture;
-using Manage_tasks_Biznes_Logic.Dtos.Team;
-using Manage_tasks_Biznes_Logic.Model;
-using NuGet.Protocol.Plugins;
+﻿using Manage_tasks_Biznes_Logic.Dtos.Team;
 
 namespace Manage_tasks_Biznes_Logic_Tests;
 
