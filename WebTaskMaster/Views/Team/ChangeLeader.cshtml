@@ -1,0 +1,50 @@
+﻿@model WebTaskMaster.Models.Team.TeamChangeLeaderModel
+
+@{
+    ViewData["Title"] = "Change leader";
+}
+
+<div class="container text-center">
+    <div class="row justify-content-center rounded-5 teamFormBody">
+        <h1 class="col-12 mt-4">Change leader</h1>
+
+        <form asp-action="ChangeLeader">
+            <input hidden="true" asp-for="TeamId" />
+
+            <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+            <p class="col-12 mt-2 fs-5">Are you sure you want to change the team leader?</p>
+            <p class="col-12 fs-5">The change will result in you losing permission to edit team data.</p>
+            <p class="col-12 mb-2 fs-5">This action cannot be undone!</p>
+
+            <div class="text-start fs-4 my-3 p-4 rounded-5 teamFormInputBody">
+                <label asp-for="@Model.AvailableLeaders" class="form-label"></label>
+
+                <select asp-for="@Model.NewLeaderId" class="form-select form-select-lg">
+                    @foreach (var leader in Model.AvailableLeaders!)
+                    {
+                        <option value="@leader.MemberId">@($"{leader.FirstName} {leader.LastName}")</option>
+                    }
+                </select>
+
+                <span asp-validation-for="@Model.NewLeaderId"></span>
+            </div>
+
+            <div class="col-12 col-md-3 col-xxl-2 d-grid mb-4">
+                <button class="btn btn-warning fs-5" type="submit">Change</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+@section Style
+            {
+    <link rel="stylesheet" href="~/css/Team/TeamEditShared.css" />
+}

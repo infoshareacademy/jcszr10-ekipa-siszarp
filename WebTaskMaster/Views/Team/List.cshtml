@@ -1,0 +1,102 @@
+﻿@using WebTaskMaster.Extensions
+
+@model WebTaskMaster.Models.Team.TeamListModel
+
+@{
+    ViewData["Title"] = "Teams";
+
+    var teamsLeaderCount = 0;
+    var teamsMemberCount = 0;
+}
+
+<div class="newWrapper ">
+    <div class="title">
+        Teams
+    </div>
+    <div class="tabs_wrap">
+        <ul>
+            <li data-tabs="myproject">
+                <a class="text-white" style="text-decoration:none" asp-action="add">
+                    Add team
+                </a>
+            </li>
+            <li data-tabs="male">My teams</li>
+            <li data-tabs="female">Teams i am a member of</li>
+            <li data-tabs="both" class="active">Both</li>
+        </ul>
+    </div>
+
+    <ul class="section">
+        <div class="containeR">
+            @foreach (var team in Model.TeamsLeader)
+            {
+                teamsLeaderCount++;
+
+            <li class="item_wrap male online">
+                <div class="item">
+                    <div class="item_left">
+                        <div class="card">
+                            <h2>@teamsLeaderCount</h2>
+                            <h3>@team.Name</h3>
+                            <div class="content">
+                                <a asp-action="Details" asp-route-teamId="@team.TeamId"
+                                   data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Team details">Open</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            }
+</div>
+
+<div class="containeR">
+            @foreach (var team in Model.TeamsMember)
+            {
+                teamsMemberCount++;
+
+        <li class="item_wrap female online">
+            <div class="item">
+                <div class="item_left">
+                    <div class="card">
+                        <h2>@teamsMemberCount</h2>
+                        <h3>@team.Name</h3>
+                        <div class="content">
+                            <a asp-action="Details" asp-route-teamId="@team.TeamId"
+                               data-bs-toggle-tooltip="tooltip" data-bs-trigger="hover" data-bs-title="Team details">Open</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+            }
+</div>
+</ul>
+
+</div>
+
+<partial name="_ToastPartial" />
+
+@section Scripts
+{
+    @* show toast for team add response *@
+    @if (TempData.ContainsToastMessage())
+    {
+        <script type="text/javascript">
+            bootstrap.Toast.getOrCreateInstance(document.getElementById('toast')).show();
+        </script>
+    }
+
+    <script>
+        VanillaTilt.init(document.querySelectorAll(".card")
+            , {
+                max: 25,
+                speed: 300
+            });
+
+    </script>
+
+    <script type="text/javascript">
+        tooltipTriggerList = document.querySelectorAll('[data-bs-toggle-tooltip="tooltip"]');
+        tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    </script>
+}

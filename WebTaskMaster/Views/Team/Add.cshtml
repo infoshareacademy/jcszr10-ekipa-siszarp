@@ -1,0 +1,45 @@
+﻿@model Manage_tasks_Biznes_Logic.Dtos.Team.TeamAddModel
+
+@{
+    ViewData["Title"] = "Add team";
+}
+
+<div class="container text-center">
+    <div class="row justify-content-center rounded-5 teamFormBody">
+        <h1 class="col-12 mt-4">Add team</h1>
+
+        <form asp-action="Add">
+            <input hidden="true" asp-for="fromCreateProjectView" />
+
+            <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+            <div class="text-start fs-4 my-3 p-4 rounded-5 teamFormInputBody">
+                <label asp-for="@Model.Name" class="form-label"></label>
+                <input asp-for="@Model.Name" class="form-control fs-4">
+                <span asp-validation-for="@Model.Name"></span>
+            </div>
+
+            <div class="text-start fs-4 my-3 p-4 rounded-5 teamFormInputBody">
+                <label asp-for="@Model.Description" class="form-label"></label>
+                <textarea asp-for="@Model.Description" class="form-control fs-4" rows="3"></textarea>
+                <span asp-validation-for="@Model.Description"></span>
+            </div>
+
+            <div class="col-12 col-md-3 col-xxl-2 d-grid mb-4">
+                <button class="btn btn-warning fs-5" type="submit">Add team</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+@section Style
+{
+    <link rel="stylesheet" href="~/css/Team/TeamEditShared.css" />
+}

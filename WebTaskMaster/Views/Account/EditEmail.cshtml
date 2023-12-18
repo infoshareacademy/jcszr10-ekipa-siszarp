@@ -1,0 +1,58 @@
+﻿@model WebTaskMaster.Models.Account.EditEmailModel
+@{
+    ViewData["Title"] = "Edit email";
+}
+
+<div class="container col-md-8">
+    <h1 class="text-center fw-bold pt-5 pb-2 mb-4"></h1>
+
+    <div class="row border-white rounded-5 p-5 justify-content-center shadow-lg m-5" style="background-color: rgb(76, 112, 166);">
+
+        <form class="col-md-10 justify-content-start needs-validation" asp-action="EditEmail">
+            <div class="row pb-3">
+                <h2 class="text-start col-md-9 fw-semibold">Edit Email</h2>
+            </div>
+
+            <input hidden="true" asp-for="UserId" />
+            <input hidden="true" asp-for="CurrentEmail" />
+
+            <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+            <div class="form-floating my-2">
+                <input class="form-control" disabled="disabled" value="@Model.CurrentEmail" />
+                <label class="form-label ms-1" asp-for="CurrentEmail"></label>
+            </div>
+
+            <div class="form-floating my-2">
+                <input class="form-control" asp-for="NewEmail" />
+                <label class="form-label ms-1" asp-for="NewEmail"></label>
+                <span class="text-danger" asp-validation-for="NewEmail"></span>
+            </div>
+
+            @if (Model is not null && Model.EditEmailFailed)
+            {
+                if (Model.NewEmailAlreadyInUse)
+                {
+                    <div>
+                        <p class="text-danger">New email is already in use.</p>
+                    </div>
+                }
+
+                if (Model.NewEmailIsCurrentEmail)
+                {
+                    <div>
+                        <p class="text-danger">New email must be different than current email.</p>
+                    </div>
+                }
+            }
+        </form>
+        <div class="row justify-content-center btn-group col-6 my-4 pt-3" role="group">
+            <button class="btn btn-primary text-white rounded-5 rounded-end col-md-3" type="submit">Save</button>
+            <a class="btn btn-outline-primary text-white rounded-5 rounded-start col-md-3" asp-controller="User" asp-action="Details"> Return to Profile </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

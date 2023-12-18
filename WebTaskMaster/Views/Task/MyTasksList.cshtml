@@ -1,0 +1,100 @@
+﻿@using System.Text
+@model IEnumerable<WebTaskMaster.Models.Task.MyTasksListModel>
+
+@{
+    var counter = 0;
+}
+
+<div class="d-flex flex-column align-items-center justify-content-center">
+    <h1 class="m-4">My Tasks</h1>
+    <div class="table m-3 p-3 bg-white rounded-3">
+        <table id="taskTable" class="table table-hover table-bordered table-primary">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="font-weight-bold">#</th>
+                    <th scope="col" class="font-weight-bold">
+                        @Html.DisplayNameFor(model => model.TaskName)
+                    </th>
+                    <th scope="col" class="font-weight-bold">
+                        @Html.DisplayNameFor(model => model.TaskDescription)
+                    </th>
+                    <th scope="col" class="font-weight-bold">
+                        @Html.DisplayNameFor(model => model.ProjectName)
+                    </th>
+                    <th scope="col" class="font-weight-bold">
+                        @Html.DisplayNameFor(model => model.TaskStatus)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model)
+                {
+                    counter++;
+
+                    <tr>
+                        <td>
+                            @counter
+                        </td>
+                        <td>
+                            @task.TaskName
+                        </td>
+                        <td>
+                            @task.TaskDescription
+                        </td>
+                        <td>
+                            <a asp-action="Details"
+                               asp-controller="Project"
+                               asp-route-projectId="@task.ProjectId"
+                               class="btn btn-light">
+                                @task.ProjectName
+                            </a>
+                        </td>
+                        <td>
+                            @FormatTaskStatus(task.TaskStatus)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@functions {
+    string FormatTaskStatus(string status)
+    {
+        var builder = new StringBuilder(status.Length * 2);
+
+        builder.Append(status[0]);
+
+        for (var i = 1; i < status.Length; i++)
+        {
+            if (char.IsUpper(status[i]) && status[i - 1] != ' ')
+            {
+                builder.Append(' ');
+                builder.Append(char.ToLower(status[i]));
+
+                continue;
+            }
+
+            builder.Append(status[i]);
+        }
+
+        return builder.ToString();
+    }
+}
+
+@section Scripts
+{
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#taskTable').DataTable();
+        });
+    </script>
+}
+
+@section Style
+{
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+}                        

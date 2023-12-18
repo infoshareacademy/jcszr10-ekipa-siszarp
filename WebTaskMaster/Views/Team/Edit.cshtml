@@ -1,0 +1,45 @@
+﻿@model WebTaskMaster.Models.Team.TeamEditModel
+
+@{
+    ViewData["Title"] = "Edit name and description";
+}
+
+<div class="container text-center">
+    <div class="row justify-content-center rounded-5 teamFormBody">
+        <h1 class="col-12 mt-4">Edit name and description</h1>
+
+        <form asp-action="Edit">
+            <input hidden="true" asp-for="TeamId" />
+
+            <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+            <div class="text-start fs-4 my-3 p-4 rounded-5 teamFormInputBody">
+                <label asp-for="@Model.Name" class="form-label"></label>
+                <input asp-for="@Model.Name" class="form-control fs-4">
+                <span asp-validation-for="@Model.Name"></span>
+            </div>
+
+            <div class="text-start fs-4 my-3 p-4 rounded-5 teamFormInputBody">
+                <label asp-for="@Model.Description" class="form-label"></label>
+                <textarea asp-for="@Model.Description" class="form-control fs-4" rows="3"></textarea>
+                <span asp-validation-for="@Model.Description"></span>
+            </div>
+
+            <div class="col-12 col-md-3 col-xxl-2 d-grid mb-4">
+                <button class="btn btn-warning fs-5" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+@section Style
+{
+    <link rel="stylesheet" href="~/css/Team/TeamEditShared.css" />
+}

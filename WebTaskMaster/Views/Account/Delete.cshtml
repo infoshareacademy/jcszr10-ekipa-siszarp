@@ -1,0 +1,31 @@
+﻿@model WebTaskMaster.Models.Account.DeleteAccountModel
+@{
+    ViewData["Title"] = "Delete account";
+}
+
+<div class="container">
+    <form class="row justify-content-start needs-validation" asp-action="Delete">
+        <input hidden="true" asp-for="UserId" />
+
+        <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+        <div class="form-floating my-2">
+            <input class="form-control" asp-for="Password" />
+            <label class="form-label ms-1" asp-for="Password"></label>
+            <span class="text-danger" asp-validation-for="Password"></span>
+        </div>
+
+        @if (Model is not null && Model.DeleteAccountFailed)
+        {
+            <div>
+                <p class="text-danger">Invalid password.</p>
+            </div>
+        }
+
+        <button class="btn btn-danger col-12 col-md-3 col-md-3 my-2" type="submit">Delete account</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

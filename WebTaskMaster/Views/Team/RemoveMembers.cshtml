@@ -1,0 +1,51 @@
+﻿@model WebTaskMaster.Models.Team.TeamRemoveMembersModel
+
+@{
+    ViewData["Title"] = "Remove members";
+}
+
+<div class="container">
+    <div class="row justify-content-center rounded-5 teamFormBody">
+        <h1 class="col-12 mt-4 text-center">Remove members</h1>
+
+        <form asp-action="RemoveMembers">
+            <input hidden="true" asp-for="TeamId" />
+
+            <div class="text-danger col-12" asp-validation-summary="ModelOnly"></div>
+
+            <div class="text-start fs-4 my-3 p-4 rounded-5 teamFormInputBody">
+                <label asp-for="@Model.AvailableRemoveMembers" class="form-label"></label>
+
+                <select asp-for="@Model.RemoveMemberIds" class="form-select form-select-lg">
+                    @foreach (var member in Model.AvailableRemoveMembers!)
+                    {
+                        <option value="@member.MemberId">@($"{member.FirstName} {member.LastName}")</option>
+                    }
+                </select>
+
+                <p class="fs-5 mt-1">
+                    <span class="text-warning">ctrl + click</span>
+                    <span class="text-info">- select multiple members.</span>
+                </p>
+
+                <span asp-validation-for="@Model.RemoveMemberIds"></span>
+            </div>
+
+            <div class="col-12 col-md-3 col-xxl-2 d-grid mb-4">
+                <button class="btn btn-warning fs-5" type="submit">Remove</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+@section Style
+                    {
+    <link rel="stylesheet" href="~/css/Team/TeamEditShared.css" />
+}

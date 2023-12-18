@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions;
+@model WebTaskMaster.Models.Task.NewTasksListModel;
+@{
+    var url = Context.Request.GetEncodedUrl();
+}
+
+
+
+
+<button class="page-link list-last" data-bs-toggle="modal" data-bs-target="#AddNewList"> Add new List</button>
+
+
+<div id="AddNewList" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content text-dark">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5">Add New List</h1>
+				<button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+			</div>
+			<div class="modal-body">
+				<form asp-controller="Task" asp-action="CreateNewTasksList">
+					<label class="h6 mr-5">List Name</label>
+					<input asp-for="@Model.TasksListName" class="  form-control" />
+					<input asp-for="@Model.ProjectId" readonly style="display: none" value="@Model.ProjectId"/>
+					<input asp-for="url" readonly style="display: none;" value="@url" />
+					<button class="btn btn-success m-2" type="submit">Create</button>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-danger" type="button" data-bs-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
