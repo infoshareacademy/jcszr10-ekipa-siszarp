@@ -192,14 +192,16 @@ public class AccountService : IAccountService
 
     public async Task<bool> DeleteAccount(DeleteAccountDto dto)
     {
-        var user = await _dbContext.UserEntities.FirstAsync(u => u.Id == dto.UserId);
+        var user = await _dbContext.UserEntities
+            .Include(u => u.TeamsLeader)
+            .FirstAsync(u => u.Id == dto.UserId);
 
         if (user.PasswordHash != GetHashedPassword(dto.Password, user.PasswordSalt))
         {
             return false;
         }
 
-        _dbContext.Remove(user);
+        _dbContext.UserEntities.Remove(user);
         await _dbContext.SaveChangesAsync();
 
         return true;

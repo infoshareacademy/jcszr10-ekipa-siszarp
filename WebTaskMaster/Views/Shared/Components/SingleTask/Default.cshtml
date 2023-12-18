@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Http.Extensions
 
 @model WebTaskMaster.Models.Task.WebTaskModel;
 @{
@@ -35,17 +35,24 @@
     { 
         return window.confirm("Chcesz usunąć to zadanie?");
     }
+    function enableTaskDate(element) { 
+        document.getElementById("task-date-" + element).removeAttribute("disabled");
+    }
+    function submitTaskEdit(element) {
+        enableTaskDate(element);
+        document.getElementById("form-" + element).submit();
+    }
     
    
 
 </script>
-<div class="card task-style" id="@Model.ProjectTask.Id" style="width: 18rem; " draggable="true" ondragstart="drag(event)">
-  <div class="card-body">      
+<div class="card task-style rounded-5" id="@Model.ProjectTask.Id" style="width: 18rem; " draggable="true" ondragstart="drag(event)">
+  <div class="card-body ">      
         <form asp-controller="Task" asp-action="DeleteTask" onsubmit="return deleteConfirmation();" >
             <input asp-for="@Model.ProjectTask.Id" readonly style="display: none;" />
             <input asp-for="TasksListId" readonly style="display: none;" />
             <input asp-for="ProjectId" readonly style="display: none;" />
-            <button type="submit" class="btn-close" aria-label="Close" style="float: right"></button>
+            <button type="submit" class="btn-close mb-2" aria-label="Close" style="float: right"></button>
             <input asp-for="url" readonly style="display: none;" value="@url" />
         </form>
 
@@ -57,7 +64,7 @@
             <input asp-for="TasksListId" readonly style="display: none;" />
             <input asp-for="ProjectId" readonly style="display: none;" />
             <input asp-for="url" readonly id="url-@Model.ProjectTask.Id" style="display: none;" value="@url"/>
-                <label>Task Name</label>
+                <label class="ms-3">Task Name</label>
                 <input asp-for="@Model.newValues[0]" value="@Model.ProjectTask.TaskName" class="card-title form-control disabled-@Model.ProjectTask.Id" disabled draggable="false" />
                       
             <label>Task Description</label>
@@ -81,11 +88,11 @@
                         {
                             if(i == statusNumber)
                             {
-                                <option style="background-color: #38609C" value="@statusNumber" selected>@statusMsg[statusNumber]</option>
+                                                <option style="background-color: #38609C" value="@statusNumber" selected>@statusMsg[statusNumber]</option>
                             }
                             else
                             {
-                                <option style="background-color: #38609C" value="@i">@statusMsg[i]</option>
+                                                <option style="background-color: #38609C" value="@i">@statusMsg[i]</option>
                             }
                         }
                     }
@@ -104,7 +111,7 @@
 
                 }
                 <label>Task Finish Date</label>
-                <input asp-for="@Model.newValues[3]" value="@finishDate" type="date" class="card-text form-control disabled-@Model.ProjectTask.Id" disabled draggable="false" />
+                <input asp-for="@Model.newValues[3]" value="@finishDate" type="date" id="task-date-@Model.ProjectTask.Id" class="card-text form-control" disabled draggable="false" />
                 
                 <label>Assigned User</label>
                 <select asp-for="@Model.newValues[4]" class="card-text form-select disabled-@Model.ProjectTask.Id" disabled disableddraggable="false">
@@ -120,17 +127,17 @@
                             {
                                 if(Model.ProjectTask.AssignedUser is null)
                                 {
-                                    <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
+                                                    <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
                                 }
                                 else
                                 {
                                     if(member.Id == Model.ProjectTask.AssignedUser.Id)
                                     {
-                                        <option style="background-color: #38609C" value="@member.Id" selected>@member.FirstName @member.LastName</option>
+                                                        <option style="background-color: #38609C" value="@member.Id" selected>@member.FirstName @member.LastName</option>
                                     }
                                     else
                                     {
-                                        <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
+                                                        <option style="background-color: #38609C" value="@member.Id">@member.FirstName @member.LastName</option>
                                     }
                                 }
                                 
@@ -143,9 +150,10 @@
               
                 <br />
                 <button type="button" id="edit-@Model.ProjectTask.Id" class="btn-warning btn">Edit</button>
-                    
+                <button type="button" onclick="submitTaskEdit('@Model.ProjectTask.Id')" id="submit-@Model.ProjectTask.Id" style="display: none" class="btn btn-success">Save</button>
                 <button type="reset" id="reset-@Model.ProjectTask.Id" style="display: none" class="btn-warning btn">Cancel</button>
-                <button type="submit" id="submit-@Model.ProjectTask.Id" style="display: none" class="btn btn-success">Save</button>
+                
+                
       </form>
             
         </div>

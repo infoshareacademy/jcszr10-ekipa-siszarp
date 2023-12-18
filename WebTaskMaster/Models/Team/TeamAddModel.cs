@@ -9,7 +9,7 @@ public class TeamAddModel
 
     [Display(Name = "Team name")]
     [Required(ErrorMessage = "Enter {0}")]
-    [StringLength(50, MinimumLength = 3, ErrorMessage = "{0} must contain between {2} and {1} characters.")]
+    [StringLength(17, MinimumLength = 3, ErrorMessage = "{0} must contain between {2} and {1} characters.")]
     public string Name { get; set; }
 
     [Display(Name = "Team description")]

@@ -14,7 +14,36 @@ namespace WebTaskMaster.Models.Project
         public ProjectModel? ProjectEditModel { get; set; }
         public Guid UserID { get; set; }
 
+        public int GetCountCurrentStatusTask(string currentTask)
+        {
+	        int currentStatusCount = 0;
+	        int allTasksCount = 0;
+	        int result = 0;
+
+	        
+		        foreach (var item in Tasks)
+		        {
+			        currentStatusCount += item.GetCountCurrentStatusTasks(currentTask, out int allCountInList);
+			        allTasksCount += allCountInList;
+
+		        }
+		        if (allTasksCount != 0)
+		        {
+			        result = (100 / allTasksCount) * currentStatusCount;
+
+		        }
+
+		        if (result == 0)
+		        {
+
+			        result = 1;
+		        }
+			 
+			
+
+			return result;
+		}
         
 
-    }
+}
 }
