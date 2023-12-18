@@ -100,6 +100,7 @@ public class AccountService : IAccountService
         }
 
         resultDto.LoginWasSuccessful = true;
+        resultDto.UserId = user.Id;
         resultDto.ClaimsIdentity = GetClaimsIdentity(user.Id, user.name);
         resultDto.AuthProp = GetAuthProp(dto.RememberMe);
 
